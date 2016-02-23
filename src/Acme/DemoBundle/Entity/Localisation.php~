@@ -1,0 +1,83 @@
+<?php
+
+namespace Acme\DemoBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Localisation
+ *
+ * @ORM\Table(name="localisation", indexes={@ORM\Index(name="fk_localisation_pdv_idx", columns={"pdv_id"}), @ORM\Index(name="fk_localisation_animateur_idx", columns={"animateur_id"}), @ORM\Index(name="fk_localisation_superviseur_idx", columns={"superviseur_id"})})
+ * @ORM\Entity
+ */
+class Localisation
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imagefilename", type="string", length=255, nullable=true)
+     */
+    private $imagefilename;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="longitude", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $longitude;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="latitude", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $latitude;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_creation", type="datetime", nullable=true)
+     */
+    private $dateCreation;
+
+    /**
+     * @var \Superviseur
+     *
+     * @ORM\ManyToOne(targetEntity="Superviseur")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="superviseur_id", referencedColumnName="id")
+     * })
+     */
+    private $superviseur;
+
+    /**
+     * @var \Animateur
+     *
+     * @ORM\ManyToOne(targetEntity="Animateur")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="animateur_id", referencedColumnName="id")
+     * })
+     */
+    private $animateur;
+
+    /**
+     * @var \Pdv
+     *
+     * @ORM\ManyToOne(targetEntity="Pdv")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="pdv_id", referencedColumnName="id")
+     * })
+     */
+    private $pdv;
+
+
+}

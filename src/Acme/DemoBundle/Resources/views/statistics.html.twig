@@ -1,0 +1,389 @@
+{% extends 'AcmeDemoBundle::app_layout.html.twig' %}
+
+{% block title %}{{ 'title_dashboard'|trans({}, 'SonataAdminBundle') }}{% endblock%}
+{% block breadcrumb %}{% endblock %}
+{% block content %}    
+	{# {{ dump(result_fideliteMarque) }} #}
+    <div class="row">
+        <div class="col-md-6">
+            <div id="placeholder1" style="width:100%; height:300px;"></div>
+            <center><b>Total contacts</b></center>
+        </div>
+        <div class="col-md-6">
+            <div id="placeholder2" style="width:100%; height:300px;"></div>
+            <center><b>Contacts atteints/refus par ville</b></center>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-6">
+            <div id="placeholder3" style="width:100%; height:300px;"></div>
+            <center><b>Provenance Contacts atteints</b></center>
+        </div>
+        <div class="col-md-6">
+            <div id="placeholder4" style="width:100%; height:300px;"></div>
+            <center><b>Provenance Contacts</b></center>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="placeholder5" style="width:100%; height:300px;"></div>
+            <center><b>Ventes par ville</b></center>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-6">
+            <div id="placeholder6" style="width:100%; height:300px;"></div>
+            <center><b>Age contacts atteints</b></center>
+        </div>
+        <div class="col-md-6">
+            <div id="placeholder7" style="width:100%; height:300px;"></div>
+            <center><b>Sexe contacts atteints</b></center>
+        </div>
+    </div>
+
+    <br/>
+    <div class="row">
+        <div class="col-md-6">
+            <div id="placeholder8" style="width:100%; height:300px;"></div>
+            <center><b>Raison de participation</b></center>
+        </div>
+        <div class="col-md-6">
+            <div id="placeholder9" style="width:100%; height:300px;"></div>
+            <center><b>Provenance refus</b></center>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div id="placeholder10" style="width:100%; height:300px;"></div>
+            <center><b>Contacts réussis / Fidélité Marque</b></center>
+        </div>
+    </div>
+
+    <!--[if lte IE 8]><script src="{{ asset('bundles/acmedemo/js/excanvas.min.js') }}"></script><![endif]-->
+    <script src="{{ asset('bundles/acmedemo/js/jquery.flot.js') }}"></script>
+    <script src="{{ asset('bundles/acmedemo/js/jquery.flot.pie.js') }}"></script>
+
+    <script type="text/javascript">
+        var data = [
+          { label: "Contacts atteints",  data: {{ result_contactsAtteintsEtRefus['atteints'] }} },
+          { label: "Refus",  data: {{ result_contactsAtteintsEtRefus['refus'] }}}
+        ];
+    	$.plot('#placeholder1', data, {
+            series: {
+                pie: {
+                    show: true,
+                    combine: {
+                        color: '#999',
+                        threshold: 0.1
+                    }
+                }
+            },
+            legend: {
+                show: false
+            }
+        });
+    </script>
+
+     <script type="text/javascript">
+        var data_contactsAtteints = [
+            {% for contactsAtteintsEtRefusParVille in result_contactsAtteintsEtRefusParVille %}
+            [{{ loop.index }}, {{ contactsAtteintsEtRefusParVille['atteints']}}],
+            {% endfor %}
+        ];
+        var data_contactsRefus= [
+            {% for contactsAtteintsEtRefusParVille in result_contactsAtteintsEtRefusParVille %}
+            [{{ loop.index }}, {{ contactsAtteintsEtRefusParVille['refus']}}],
+            {% endfor %}
+        ];
+        var ticks = [
+            {% for contactsAtteintsEtRefusParVille in result_contactsAtteintsEtRefusParVille %}
+            [{{ loop.index }}, '{{ contactsAtteintsEtRefusParVille['ville']}}' ],
+            {% endfor %}
+        ];
+
+        var dataset = [
+            {label:'Contacts atteints', data: data_contactsAtteints, color: "#AA4643", bars: {
+                show: true,
+                fill: true,
+                lineWidth: 1,
+                order: 1,
+                fillColor:  "#AA4643"
+            } },
+            {label:'Contacts refus', data: data_contactsRefus, color: "#5482FF",  bars: {
+                show: true,
+                fill: true,
+                lineWidth: 1,
+                order: 2,
+                fillColor:  "#5482FF"
+            } }
+        ];
+
+        var options = {
+            series: {
+                bars: {
+                show: true,
+                barWidth: 12*24*60*60*300,
+                lineWidth: 1,
+                }
+            },
+            bars: {
+                align: "center",
+                barWidth: 0.5
+            },
+            xaxis: {
+                axisLabel: "World Cities",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Verdana, Arial',
+                axisLabelPadding: 10,
+                ticks: ticks
+            },
+            yaxis: {
+                axisLabel: "Average Temperature",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Verdana, Arial',
+                axisLabelPadding: 3,
+                /*tickFormatter: function (v, axis) {
+                    return v + "°C";
+                }*/
+            },
+            legend: {
+                noColumns: 0,
+                labelBoxBorderColor: "#000000",
+                position: "nw"
+            },
+            grid: {
+                hoverable: true,
+                borderWidth: 2,
+                backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
+            }
+        };
+
+        $.plot('#placeholder2', dataset, options);
+    </script>
+
+    <script type="text/javascript">
+        var data = [
+            {% for provenanceContactsAtteints in result_provenanceContactsAtteints %}
+            { label : '{{ provenanceContactsAtteints['libelle'] }}', data : {{ provenanceContactsAtteints['nbrContacts']}} },
+            {% endfor %}
+        ];
+        $.plot('#placeholder3', data, {
+            series: {
+                pie: {
+                    show: true,
+                    combine: {
+                        color: '#999',
+                        threshold: 0.1
+                    }
+                }
+            },
+            legend: {
+                show: false
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        var data = [
+            {% for provenanceContacts in result_provenanceContacts %}
+            { label : '{{ provenanceContacts['libelle'] }}', data : {{ provenanceContacts['nbrContacts']}} },
+            {% endfor %}
+        ];
+        $.plot('#placeholder4', data, {
+            series: {
+                pie: {
+                    show: true,
+                    combine: {
+                        color: '#999',
+                        threshold: 0.1
+                    }
+                }
+            },
+            legend: {
+                show: false
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        var data = [
+            {% for venteParVille in result_ventesParVille %}
+            [{{ loop.index }}, {{ venteParVille[1]}}],
+            {% endfor %}
+        ];
+        var ticks = [
+        {% for venteParVille in result_ventesParVille %}
+            [{{ loop.index }}, "{{ venteParVille['ville']}}"],
+            {% endfor %}
+        ];
+
+        var dataset = [
+            { data: data, color: "#5482FF" }
+        ];
+
+        var options = {
+            series: {
+                bars: {
+                show: true,
+                barWidth: 12*24*60*60*300,
+                fill: true,
+                lineWidth: 1,
+                order: 1,
+                fillColor:  "#AA4643"
+                }
+            },
+            bars: {
+                align: "center",
+                barWidth: 0.5
+            },
+            xaxis: {
+                axisLabel: "World Cities",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Verdana, Arial',
+                axisLabelPadding: 10,
+                ticks: ticks
+            },
+            yaxis: {
+                axisLabel: "Average Temperature",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Verdana, Arial',
+                axisLabelPadding: 3,
+                /*tickFormatter: function (v, axis) {
+                    return v + "°C";
+                }*/
+            },
+            legend: {
+                noColumns: 0,
+                labelBoxBorderColor: "#000000",
+                position: "nw"
+            },
+            grid: {
+                hoverable: true,
+                borderWidth: 2,
+                backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
+            }
+        };
+
+
+        $.plot('#placeholder5', dataset, options);
+    </script>
+
+    <script type="text/javascript">
+        var data = [
+            {% for profilAgeContactsAtteints in result_profilAgeContactsAtteints %}
+            { label : '{{ profilAgeContactsAtteints['libelle'] }}', data : {{ profilAgeContactsAtteints['nbrContacts']}} },
+            {% endfor %}
+        ];
+        $.plot('#placeholder6', data, {
+            series: {
+                pie: {
+                    show: true,
+                    combine: {
+                        color: '#999',
+                        threshold: 0.1
+                    }
+                }
+            },
+            legend: {
+                show: false
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        var data = [
+            {% for profilSexeContactsAtteints in result_profilSexeContactsAtteints %}
+            { label : '{{ profilSexeContactsAtteints['sexe'] }}', data : {{ profilSexeContactsAtteints['nbrContacts']}} },
+            {% endfor %}
+        ];
+        $.plot('#placeholder7', data, {
+            series: {
+                pie: {
+                    show: true,
+                    combine: {
+                        color: '#999',
+                        threshold: 0.1
+                    }
+                }
+            },
+            legend: {
+                show: false
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        var data = [
+            {% for raisonParticipation in result_raisonParticipation %}
+            { label : '{{ raisonParticipation['libelle'] }}', data : {{ raisonParticipation['nbrContacts']}} },
+            {% endfor %}
+        ];
+        $.plot('#placeholder8', data, {
+            series: {
+                pie: {
+                    show: true,
+                    combine: {
+                        color: '#999',
+                        threshold: 0.1
+                    }
+                }
+            },
+            legend: {
+                show: false
+            }
+        });
+    </script>
+
+     <script type="text/javascript">
+        var data = [
+            {% for provenanceRefus in result_provenanceRefus %}
+            { label : '{{ provenanceRefus['libelle'] }}', data : {{ provenanceRefus['nbrContacts']}} },
+            {% endfor %}
+        ];
+        $.plot('#placeholder9', data, {
+            series: {
+                pie: {
+                    show: true,
+                    combine: {
+                        color: '#999',
+                        threshold: 0.1
+                    }
+                }
+            },
+            legend: {
+                show: false
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        var data = [
+            {% for fideliteMarque in result_fideliteMarque %}
+            { label : '{{ fideliteMarque['fidelite'] }}', data : {{ fideliteMarque['nbrContactReussis']}} },
+            {% endfor %}
+        ];
+        $.plot('#placeholder10', data, {
+            series: {
+                pie: {
+                    show: true,
+                    combine: {
+                        color: '#999',
+                        threshold: 0.1
+                    }
+                }
+            },
+            legend: {
+                show: false
+            }
+        });
+    </script>
+
+	{{ sonata_block_render_event('sonata.admin.dashboard.bottom', { 'admin_pool': admin_pool }) }}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'AcmeDemoBundle::app_layout.html.twig' %}
+
+{% block title %}{{ 'title_dashboard'|trans({}, 'SonataAdminBundle') }}{% endblock%}
+{% block breadcrumb %}{% endblock %}
+{% block content %}
+
+    <div style="margin:50px">
+      <h4>Upload du fichier pour le client :</h4><br/>
+      <form method="post" action="{{ path('_uploadXlsFileForClientExecute') }}" enctype="multipart/form-data">
+      <input type="file" name="fichier"/>
+      <br/>
+      <input type="submit" class="btn btn-danger" value="valider"/>
+      <br/>
+      {% if uploadDone is defined %}
+        {% if uploadDone == true %}
+        <div class="alert alert-success" style="margin:15px 0;">Le fichier a été uploadé.</div>
+        {% endif %}
+        {% if uploadDone == false %}
+        <div class="alert alert-danger" style="margin:15px 0;">Veuillez selectionner le fichier à uploader.</div>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    {{ sonata_block_render_event('sonata.admin.dashboard.bottom', { 'admin_pool': admin_pool }) }}
+
+{% endblock %}

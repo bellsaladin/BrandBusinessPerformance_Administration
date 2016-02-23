@@ -1,0 +1,188 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{% block title %}
+    {% if admin.id(object) is not null %}
+        {{ "title_edit"|trans({'%name%': admin.toString(object)|truncate(15) }, 'SonataAdminBundle') }}
+    {% else %}
+        {{ "title_create"|trans({}, 'SonataAdminBundle') }}
+    {% endif %}
+{% endblock%}
+
+{% block navbar_title %}
+    
+{% endblock %}
+
+{% block actions %}
+    <li>{% include 'SonataAdminBundle:Button:show_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:history_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:acl_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:list_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:create_button.html.twig' %}</li>
+{% endblock %}
+
+{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': admin_pool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
+
+{% block form %}
+
+{{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': object }) }}
+
+    {% set url = admin.id(object) is not null ? 'edit' : 'create' %}
+
+    {% if not admin.hasRoute(url)%}
+        <div>
+            {{ "form_not_available"|trans({}, "SonataAdminBundle") }}
+        </div>
+    {% else %}
+        <form
+              {% if admin_pool.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
+              role="form"
+              action="{{ admin.generateUrl(url, {'id': admin.id(object), 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}" {{ form_enctype(form) }}
+              method="POST"
+              {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+              >
+            {% if form.vars.errors|length > 0 %}
+                <div class="sonata-ba-form-error">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+
+            {% block sonata_pre_fieldsets %}
+                <div class="row">
+            {% endblock %}
+
+            {% block sonata_post_fieldsets %}
+                </div>
+            {% endblock %}
+
+            
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.nom) }}            
+                    {{ form_row(form.ville) }}
+                    {{ form_row(form.secteur) }}
+                    <!--<label class=" control-label">Licence</label>
+                    <div><input type="text" name="{{ form.licence.vars.full_name}}" required {% if object.licence is not null %} value="{{object.licence}}" {% endif %} class=" form-control"/></div>
+                    {{ form_row(form.externe) }}-->
+                    {{ form_row(form.poi) }} 
+                </div>
+                <div class="col-md-6">
+                    <label class=" control-label">Localisation</label>
+                    <div id="map_canvas"></div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            {{ form_row(form.longitude, { 'attr':{'disabled':'disabled'} }) }}
+                        </div>
+                        <div class="col-md-5">
+                            {{ form_row(form.latitude , { 'attr':{'disabled':'disabled'} }) }}
+                        </div>
+                    </div>  
+                    <style>
+                      #map_canvas {
+                        width: 500px;
+                        height: 400px;
+                      }
+                    </style>            
+                </div>
+            </div>
+            <script src="https://maps.googleapis.com/maps/api/js"></script>
+            <script>
+                
+                function initialize() {                   
+                    var default_latitude = 33.53223722395908;
+                    var default_longitude = -7.5860595703125; 
+                    var mapCanvas = document.getElementById('map_canvas');
+                    var mapOptions = {
+                      {% if object.longitude is not null %}
+                        center: new google.maps.LatLng({{ object.latitude}},  {{ object.longitude}}),
+                        {% else %}
+                        center: new google.maps.LatLng(default_latitude, default_longitude ),
+                        {% endif %}                      
+                      zoom: 15,
+                      mapTypeId: google.maps.MapTypeId.ROADMAP
+                    }
+                    var map = new google.maps.Map(mapCanvas, mapOptions);
+                    var marker = new google.maps.Marker({
+                        {% if object.longitude is not null %}
+                        position: new google.maps.LatLng({{ object.latitude}},  {{ object.longitude}}),
+                        {% else %}
+                        position: new google.maps.LatLng(default_latitude,  default_longitude),                        
+                        {% endif %}
+                        map: map
+                    });
+                    google.maps.event.addListener(map, 'click', function(event) {
+                        marker.setPosition(event.latLng);
+
+                        var lat = event.latLng.lat();
+                        var lng = event.latLng.lng();
+                        // populate yor box/field with lat, lng
+                        $('#{{ form.longitude.vars.id}}').val(lng);
+                        $('#{{ form.latitude.vars.id}}').val(lat);
+                        //alert("Lat=" + lat + "; Lng=" + lng);
+                        //marker = new google.maps.Marker({position: event.latLng, map: map});
+                    });
+                }
+                google.maps.event.addDomListener(window, 'load', initialize);
+                
+            </script>
+
+
+            {% block formactions %}
+                <div class="well well-small form-actions">
+                    {% if app.request.isxmlhttprequest %}
+                        {% if admin.id(object) is not null %}
+                            <button type="submit" class="btn btn-success" name="btn_update"><i class="fa fa-save"></i> {{ 'btn_update'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-success" name="btn_create"><i class="fa fa-plus-circle"></i> {{ 'btn_create'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% endif %}
+                    {% else %}
+                        {% if admin.supportsPreviewMode %}
+                            <button class="btn btn-info persist-preview" name="btn_preview" type="submit">
+                                <i class="fa fa-eye"></i>
+                                {{ 'btn_preview'|trans({}, 'SonataAdminBundle') }}
+                            </button>
+                        {% endif %}
+                        {% if admin.id(object) is not null %}
+                            <button type="submit" class="btn btn-success" name="btn_update_and_edit"><i class="fa fa-save"></i> {{ 'btn_update_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
+
+                            {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                <button type="submit" class="btn btn-success" name="btn_update_and_list"><i class="fa fa-save"></i> <i class="fa fa-list"></i> {{ 'btn_update_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% endif %}
+
+                            {% if admin.hasroute('delete') and admin.isGranted('DELETE', object) %}
+                                {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
+                                <a class="btn btn-danger" href="{{ admin.generateObjectUrl('delete', object) }}"><i class="fa fa-minus-circle"></i> {{ 'link_delete'|trans({}, 'SonataAdminBundle') }}</a>
+                            {% endif %}
+
+                            {% if admin.isAclEnabled() and admin.hasroute('acl') and admin.isGranted('MASTER', object) %}
+                                <a class="btn btn-info" href="{{ admin.generateObjectUrl('acl', object) }}"><i class="fa fa-users"></i> {{ 'link_edit_acl'|trans({}, 'SonataAdminBundle') }}</a>
+                            {% endif %}
+                        {% else %}
+                            {% if admin.hasroute('edit') and admin.isGranted('EDIT') %}
+                                <button class="btn btn-success" type="submit" name="btn_create_and_edit"><i class="fa fa-save"></i> {{ 'btn_create_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% endif %}
+                            {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                <button type="submit" class="btn btn-success" name="btn_create_and_list"><i class="fa fa-save"></i> <i class="fa fa-list"></i> {{ 'btn_create_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% endif %}
+                            <button class="btn btn-success" type="submit" name="btn_create_and_create"><i class="fa fa-plus-circle"></i> {{ 'btn_create_and_create_a_new_one'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {{ form_row(form._token) }}
+            {% endblock formactions %}
+        </form>
+    {% endif%}
+
+{% endblock %}
+
+

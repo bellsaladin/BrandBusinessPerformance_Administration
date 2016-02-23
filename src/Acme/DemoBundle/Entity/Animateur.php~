@@ -1,0 +1,77 @@
+<?php
+
+namespace Acme\DemoBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Animateur
+ *
+ * @ORM\Table(name="animateur", indexes={@ORM\Index(name="fk_animateur_user_idx", columns={"user_id"})})
+ * @ORM\Entity
+ */
+class Animateur
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=90, nullable=true)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prenom", type="string", length=90, nullable=true)
+     */
+    private $prenom;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_naissance", type="date", nullable=true)
+     */
+    private $dateNaissance;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom_utilisateur", type="string", length=45, nullable=true)
+     */
+    private $nomUtilisateur;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mot_de_passe", type="string", length=45, nullable=true)
+     */
+    private $motDePasse;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="superviseur_id", type="integer", nullable=true)
+     */
+    private $superviseurId;
+
+    /**
+     * @var \FosUserUser
+     *
+     * @ORM\ManyToOne(targetEntity="FosUserUser")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * })
+     */
+    private $user;
+
+
+}

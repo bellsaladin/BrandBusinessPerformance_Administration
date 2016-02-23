@@ -1,0 +1,55 @@
+Pdv:
+    type: entity
+    table: pdv
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        nom:
+            type: string
+            nullable: true
+            length: 70
+            fixed: false
+            comment: ''
+        code:
+            type: string
+            nullable: true
+            length: 45
+            fixed: false
+            comment: ''
+        longitude:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            comment: ''
+        latitude:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            comment: ''
+        rayon:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            comment: ''
+        licence:
+            type: integer
+            nullable: true
+            unsigned: false
+            comment: ''
+        adresse:
+            type: string
+            nullable: true
+            length: 100
+            fixed: false
+            comment: ''
+    lifecycleCallbacks: {  }

@@ -1,0 +1,74 @@
+<?php
+
+namespace Acme\DemoBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Pdv
+ *
+ * @ORM\Table(name="pdv")
+ * @ORM\Entity
+ */
+class Pdv
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=70, nullable=true)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=45, nullable=true)
+     */
+    private $code;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="longitude", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $longitude;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="latitude", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $latitude;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="rayon", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $rayon;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="licence", type="integer", nullable=true)
+     */
+    private $licence;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse", type="string", length=100, nullable=true)
+     */
+    private $adresse;
+
+
+}

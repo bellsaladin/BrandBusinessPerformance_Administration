@@ -1,0 +1,75 @@
+Localisation:
+    type: entity
+    table: localisation
+    indexes:
+        fk_localisation_pdv_idx:
+            columns:
+                - pdv_id
+        fk_localisation_animateur_idx:
+            columns:
+                - animateur_id
+        fk_localisation_superviseur_idx:
+            columns:
+                - superviseur_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        imagefilename:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+        longitude:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            comment: ''
+        latitude:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            comment: ''
+        dateCreation:
+            type: datetime
+            nullable: true
+            comment: ''
+            column: date_creation
+    manyToOne:
+        superviseur:
+            targetEntity: Superviseur
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                superviseur_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        animateur:
+            targetEntity: Animateur
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                animateur_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        pdv:
+            targetEntity: Pdv
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pdv_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

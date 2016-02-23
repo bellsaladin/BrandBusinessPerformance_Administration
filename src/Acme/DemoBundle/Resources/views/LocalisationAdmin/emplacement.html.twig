@@ -1,0 +1,41 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <td>
+    	<div id="map_canvas"></div>            
+
+            <style>
+              #map_canvas {
+                width: 500px;
+                height: 400px;
+              }
+            </style>            
+            <script src="https://maps.googleapis.com/maps/api/js"></script>
+            <script>
+                
+                function initialize() {                    
+                    var mapCanvas = document.getElementById('map_canvas');
+                    var mapOptions = {
+                      {% if object.longitude is not null %}
+                        center: new google.maps.LatLng({{ object.latitude}},  {{ object.longitude}}),
+                        {% else %}
+                        center: new google.maps.LatLng(33.80197351806589,  -7.53662109375),                        
+                        {% endif %}                      
+                      zoom: 15,
+                      mapTypeId: google.maps.MapTypeId.ROADMAP
+                    }
+                    var map = new google.maps.Map(mapCanvas, mapOptions);
+                    var marker = new google.maps.Marker({
+                        {% if object.longitude is not null %}
+                        position: new google.maps.LatLng({{ object.latitude}},  {{ object.longitude}}),
+                        {% else %}
+                        position: new google.maps.LatLng(33.80197351806589,  -7.53662109375),                        
+                        {% endif %}
+                        map: map
+                    });                    
+                }
+                google.maps.event.addDomListener(window, 'load', initialize);
+                
+            </script>	    
+	</td>
+{% endblock %}

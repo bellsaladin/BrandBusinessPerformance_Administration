@@ -1,0 +1,187 @@
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+      <service id="sonata.admin.rapport" class="Acme\DemoBundle\Admin\RapportAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Rapports" label="Rapport"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\Rapport</argument>
+            <argument />
+            <call method="setTranslationDomain">
+                <argument>AcmeDemoBundle</argument>
+            </call>
+      </service>
+      <service id="sonata.admin.planning" class="Acme\DemoBundle\Admin\PlanningAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Planning" label="Plannings" audit="false"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\Planning</argument>
+            <argument />
+            <call method="setTranslationDomain">
+                <argument>AcmeDemoBundle</argument>
+            </call>
+      </service>
+      <service id="sonata.admin.localisation" class="Acme\DemoBundle\Admin\LocalisationAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Rapports" label="Localisation"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\Localisation</argument>
+            <argument />
+            <call method="setTranslationDomain">
+                <argument>AcmeDemoBundle</argument>
+            </call>
+      </service>
+      <service id="sonata.admin.demandechangementlicence" class="Acme\DemoBundle\Admin\DemandechangementlicenceAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Demandes chang. licence" label="Demande chang. licence"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\Demandechangementlicence</argument>
+            <argument />
+            <call method="setTranslationDomain">
+                <argument>AcmeDemoBundle</argument>
+            </call>
+      </service>
+      <service id="sonata.admin.animateur" class="Acme\DemoBundle\Admin\AnimateurAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Animateur"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Animateur</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+      <service id="sonata.admin.superviseur" class="Acme\DemoBundle\Admin\SuperviseurAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Superviseur"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Superviseur</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+      <service id="sonata.admin.sfo" class="Acme\DemoBundle\Admin\SFOAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Administration" label="SFOs" audit="false"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\SFO</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+
+      <service id="sonata.admin.teamleader" class="Acme\DemoBundle\Admin\TeamLeaderAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Administration" label="Team Leaders" audit="false"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\TeamLeader</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+
+      <service id="sonata.admin.analyst" class="Acme\DemoBundle\Admin\AnalystAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Administration" label="Analysts" audit="false"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Analyst</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+
+      <service id="sonata.admin.client" class="Acme\DemoBundle\Admin\ClientAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Client"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Client</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+      <service id="sonata.admin.cadeau" class="Acme\DemoBundle\Admin\CadeauAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Cadeau"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Cadeau</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+
+      <service id="sonata.admin.marque" class="Acme\DemoBundle\Admin\MarqueAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Marque"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Marque</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+
+      <service id="sonata.admin.poi" class="Acme\DemoBundle\Admin\POIAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Points d'intérêt" />
+          <argument />
+          <argument>Acme\DemoBundle\Entity\POI</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+
+      <service id="sonata.admin.Raisonachat" class="Acme\DemoBundle\Admin\RaisonachatAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Raison d'achat"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Raisonachat</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+
+      <service id="sonata.admin.Raisonrefus" class="Acme\DemoBundle\Admin\RaisonrefusAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Raison de refus"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Raisonrefus</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+
+
+      <service id="sonata.admin.Trancheage" class="Acme\DemoBundle\Admin\TrancheageAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Tranche d'age"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Trancheage</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+
+      <!--<service id="sonata.admin.pdv" class="Acme\DemoBundle\Admin\PdvAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Points de vente"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Pdv</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>-->
+
+      <service id="sonata.admin.pdv" class="Acme\DemoBundle\Admin\PdvAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Points de vente" audit="false"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Pdv</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+          <call method="setTemplate">
+            <argument>edit</argument>
+            <argument>AcmeDemoBundle:PdvAdmin:edit.html.twig</argument>
+          </call>
+          <!--<call method="setSecurityContext">
+            <argument type="service" id="security.context"/>
+          </call>-->
+      </service>
+   </services>
+</container>

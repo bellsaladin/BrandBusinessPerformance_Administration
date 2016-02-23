@@ -1,0 +1,81 @@
+{% extends 'AcmeDemoBundle::app_layout.html.twig' %}
+
+{% block title %}{{ 'title_dashboard'|trans({}, 'SonataAdminBundle') }}{% endblock%}
+{% block breadcrumb %}{% endblock %}
+{% block content %}
+                        
+
+            <div id="map_canvas"></div>
+
+
+            <style>
+              #map_canvas {
+                width: 100%;
+                height: 600px;
+              }
+            </style>            
+            <script src="https://maps.googleapis.com/maps/api/js"></script>
+            <script>
+                
+                function initialize() {   
+                    var icon_blue = "http://maps.google.com/mapfiles/ms/icons/blue.png";
+                    var icon_red = "http://maps.google.com/mapfiles/ms/icons/red.png";
+                 
+                    var mapCanvas = document.getElementById('map_canvas');
+                    var mapOptions = {
+                        center: new google.maps.LatLng(33.57343808567733,  -7.5860595703125),
+                        zoom: 8,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    }
+                    var map = new google.maps.Map(mapCanvas, mapOptions);
+
+                    {% for animateurAndLastLocalisation in animateursAndLastLocalisationList %}
+                    var marker_animateur = new google.maps.Marker({
+                        position: new google.maps.LatLng({{ animateurAndLastLocalisation['localisation'].latitude }},  {{ animateurAndLastLocalisation['localisation'].longitude }}),
+                        map: map,
+                        animation: google.maps.Animation.DROP,
+                        icon: new google.maps.MarkerImage(icon_red)
+                    });
+                    var infowindow_{{loop.index}} = new google.maps.InfoWindow({
+                            content: '{{ animateurAndLastLocalisation['animateur'] }}'
+                    });                    
+                    google.maps.event.addListener(marker_animateur, 'mouseover', function() {
+                        infowindow_{{loop.index}}.open(map, this);
+                    });
+
+                    // assuming you also want to hide the infowindow when user mouses-out
+                    google.maps.event.addListener(marker_animateur, 'mouseout', function() {
+                        infowindow_{{loop.index}}.close();
+                    });
+                    {% endfor %}   
+
+                    {% for pdv in pdvsList %}
+
+                        {% if pdv.latitude is not empty and pdv.longitude is not empty %}
+                        var marker_pdv = new google.maps.Marker({
+                            position: new google.maps.LatLng({{ pdv.latitude }},  {{ pdv.longitude }}),
+                            map: map,                        
+                            icon: new google.maps.MarkerImage(icon_blue)
+                        });  
+
+                        var infowindow_pdv_{{loop.index}} = new google.maps.InfoWindow({
+                                content: '{{ pdv.licence }}'
+                        });                    
+                        google.maps.event.addListener(marker_pdv, 'mouseover', function() {
+                            infowindow_pdv_{{loop.index}}.open(map, this);
+                        });
+
+                        // assuming you also want to hide the infowindow when user mouses-out
+                        google.maps.event.addListener(marker_pdv, 'mouseout', function() {
+                            infowindow_pdv_{{loop.index}}.close();
+                        });
+                        {% endif %} 
+                    {% endfor %}                  
+                }
+                google.maps.event.addDomListener(window, 'load', initialize);
+                
+            </script>
+
+
+    {{ sonata_block_render_event('sonata.admin.dashboard.bottom', { 'admin_pool': admin_pool }) }}
+{% endblock %}

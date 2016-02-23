@@ -1,0 +1,45 @@
+#_welcome:
+#    pattern:  /
+#    defaults: { _controller: AcmeDemoBundle:Welcome:index }
+
+#_demo_secured:
+#    resource: "@AcmeDemoBundle/Controller/SecuredController.php"
+#    type:     annotation
+
+#_demo:
+#    resource: "@AcmeDemoBundle/Controller/DemoController.php"
+#    type:     annotation
+#    prefix:   /demo
+
+
+_mapDashboard:
+    pattern:  /admin/app/mapDashboard
+    defaults: { _controller: AcmeDemoBundle:Demo:mapDashboard }
+
+_statistics:
+    pattern:  /admin/app/statistics
+    defaults: { _controller: AcmeDemoBundle:Demo:statistics }
+
+_toggleActivateTombola:
+    pattern:  /admin/app/toggleActivateTombola
+    defaults: { _controller: AcmeDemoBundle:Demo:toggleActivateTombola }
+
+_generateXlsFileView:
+    pattern:  /admin/app/generateXlsFileView
+    defaults: { _controller: AcmeDemoBundle:Demo:generateXlsFileView }
+
+_generateXlsFileExecute:
+    pattern:  /admin/app/generateXlsFileExecute
+    defaults: { _controller: AcmeDemoBundle:Demo:generateXlsFileExecute }
+
+_uploadXlsFileForClientView:
+    pattern:  /admin/app/uploadXlsFileForClientView
+    defaults: { _controller: AcmeDemoBundle:Demo:uploadXlsFileForClientView }
+
+_uploadXlsFileForClientExecute:
+    pattern:  /admin/app/uploadXlsFileForClientExecute
+    defaults: { _controller: AcmeDemoBundle:Demo:uploadXlsFileForClientExecute }
+
+_webservice_authentification:
+    pattern:  /webservice/authentification
+    defaults: { _controller: AcmeDemoBundle:Webservice:authentification }

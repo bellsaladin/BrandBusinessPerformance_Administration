@@ -1,0 +1,49 @@
+<?php
+
+namespace Acme\DemoBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Demandechangementlicence
+ *
+ * @ORM\Table(name="demandechangementlicence", indexes={@ORM\Index(name="fk_demandechangementlicence_localisation_idx", columns={"localisation_id"})})
+ * @ORM\Entity
+ */
+class Demandechangementlicence
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="licence", type="integer", nullable=true)
+     */
+    private $licence;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="motif", type="string", length=200, nullable=true)
+     */
+    private $motif;
+
+    /**
+     * @var \Localisation
+     *
+     * @ORM\ManyToOne(targetEntity="Localisation")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="localisation_id", referencedColumnName="id")
+     * })
+     */
+    private $localisation;
+
+
+}
