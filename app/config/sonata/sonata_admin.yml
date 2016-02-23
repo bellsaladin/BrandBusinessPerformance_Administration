@@ -153,8 +153,9 @@ sonata_admin:
                 label: Base de données
                 icon:  '<i class="fa fa-database"></i>'
                 items:
+                    - sonata.admin.produit
+                    - sonata.admin.marque
                     - sonata.classification.admin.category
-                    - sonata.admin.client
                     - sonata.admin.pdv
                     - sonata.admin.poi
 

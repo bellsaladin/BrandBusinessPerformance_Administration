@@ -107,9 +107,19 @@
       </service>
 
       <service id="sonata.admin.marque" class="Acme\DemoBundle\Admin\MarqueAdmin">
-          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Marque"/>
+          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Marques"/>
           <argument />
           <argument>Acme\DemoBundle\Entity\Marque</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+
+      <service id="sonata.admin.produit" class="Acme\DemoBundle\Admin\ProduitAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Base de données" label="Produits"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Produit</argument>
           <argument />
           <call method="setTranslationDomain">
               <argument>AcmeDemoBundle</argument>

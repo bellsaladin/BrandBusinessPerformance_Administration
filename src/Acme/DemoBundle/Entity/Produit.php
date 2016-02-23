@@ -5,12 +5,12 @@ namespace Acme\DemoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Marque
+ * Produit
  *
- * @ORM\Table(name="marque")
+ * @ORM\Table(name="produit")
  * @ORM\Entity
  */
-class Marque
+class Produit
 {
     /**
      * @var integer
@@ -24,7 +24,14 @@ class Marque
     /**
      * @var string
      *
-     * @ORM\Column(name="libelle", type="string", length=100, nullable=true)
+     * @ORM\Column(name="sku", type="string", length=100, nullable=true)
+     */
+    private $sku;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="libelle", type="string", length=150, nullable=true)
      */
     private $libelle;
 
@@ -36,17 +43,18 @@ class Marque
     private $enabled;
 
     /**
-     * @var \categoriesProduits
-     * Explication : Catégories des produits dans lesquelles opère cette marque
-     *
-     * @ORM\ManyToMany(targetEntity="\AppBundle\Entity\Classification\Category")
-     */
-    private $categoriesProduits;
-
+    * @var \categorie
+    *
+    * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Classification\Category",cascade={"persist"})
+    * @ORM\JoinColumns({
+    *   @ORM\JoinColumn(name="categorie_id", referencedColumnName="id")
+    * })
+    */
+    private $categorie;
 
     public function __construct()
     {
-        $this->categoriesProduits = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->enabled = 1;
     }
 
     /**
@@ -60,10 +68,33 @@ class Marque
     }
 
     /**
+     * Set sku
+     *
+     * @param string $sku
+     * @return Produit
+     */
+    public function setSku($sku)
+    {
+        $this->sku = $sku;
+
+        return $this;
+    }
+
+    /**
+     * Get sku
+     *
+     * @return string 
+     */
+    public function getSku()
+    {
+        return $this->sku;
+    }
+
+    /**
      * Set libelle
      *
      * @param string $libelle
-     * @return Marque
+     * @return Produit
      */
     public function setLibelle($libelle)
     {
@@ -82,37 +113,24 @@ class Marque
         return $this->libelle;
     }
 
-     /**
-     * Add categoriesProduits
-     *
-     * @param \AppBundle\Entity\Classification\Category $categoriesProduits
-     * @return Planning
-     */
-    public function addCategoriesProduits(\AppBundle\Entity\Classification\Category $categorie)
-    {
-        $this->categoriesProduits[] = $categorie;
-
-        return $this;
-    }
-
     /**
-     * Remove categoriesProduits
+     * Set categorie
      *
      * @param \AppBundle\Entity\Classification\Category $categorie
      */
-    public function removeCategoriesProduits(\AppBundle\Entity\Classification\Category $categorie)
+    public function setCategorie(\AppBundle\Entity\Classification\Category $categorie)
     {
-        $this->categoriesProduits->removeElement($categorie);
+        $this->categorie = $categorie;
     }
 
     /**
-     * Get categoriesProduits
+     * Get categorie
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getCategoriesProduits()
+    public function getCategorie()
     {
-        return $this->categoriesProduits;
+        return $this->categorie;
     }
 
 
@@ -120,7 +138,7 @@ class Marque
      * Set enabled
      *
      * @param boolean $enabled
-     * @return Marque
+     * @return Produit
      */
     public function setEnabled($enabled)
     {

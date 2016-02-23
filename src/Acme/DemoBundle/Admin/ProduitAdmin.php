@@ -9,16 +9,17 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class MarqueAdmin extends Admin
+class ProduitAdmin extends Admin
 {
-    protected $baseRoutePattern = 'marque';
+    protected $baseRoutePattern = 'produit';
 
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('libelle', 'text', array('label' => 'Nom'))
-            ->add('categoriesProduits',null,array('label' => 'Catégories des produits'));
+            ->add('sku', 'text', array('label' => 'SKU'))
+            ->add('libelle', 'text', array('label' => 'Libéllé'))
+            ->add('categorie',null,array('label' => 'Catégorie'));
             //->add('author', 'entity', array('class' => 'Acme\DemoBundle\Entity\User'))
         ;
     }
@@ -36,9 +37,10 @@ class MarqueAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper            
-            ->addIdentifier('libelle','text',array('label' => 'Nom'))
+            ->addIdentifier('sku','text',array('label' => 'SKU'))
+            ->addIdentifier('libelle','text',array('label' => 'Libéllé'))
             ->add('enabled', null, array('editable' => true,'label' => 'Activé'))
-            ->add('categoriesProduits')
+            ->add('categorie',null,array('label' => 'Catégorie'))
             //->add('slug')
             //->add('author')
             ->add('_action', 'actions', array(
