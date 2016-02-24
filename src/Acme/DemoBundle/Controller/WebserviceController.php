@@ -12,7 +12,7 @@ class WebserviceController extends Controller
 {
     public function authentificationAction(Request $request)
     {
-        $animateurId = 0; //not found by default
+        $sfoId = 0; //not found by default
 
 	    $userName = $request->request->get('username');
 	    $password = $request->request->get('password');
@@ -28,16 +28,16 @@ class WebserviceController extends Controller
 		    	$em = $this->getDoctrine()->getManager();
 
 		    	// get FosUserUser entity using the found user's id		    	
-		        $animateur = $em->getRepository('AcmeDemoBundle:Animateur')->findOneBy(array('user' => $user->getId()));
+		        $sfo = $em->getRepository('AcmeDemoBundle:SFO')->findOneBy(array('user' => $user->getId()));
 
 		         //echo $entity->getId();
-		        if ($animateur) {
-		            $animateurId = $animateur->getId();
+		        if ($sfo) {
+		            $sfoId = $sfo->getId();
 		        }						    	
 		    }
 	    }
 	    
-	    return new Response($animateurId);
+	    return new Response($sfoId);
     }
 }
 

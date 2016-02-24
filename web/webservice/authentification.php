@@ -8,7 +8,7 @@
     mysql_select_db($db,$con) or die("db selection failed");
          
      
-    $r  = mysql_query("SELECT id FROM animateur WHERE nom_utilisateur='$username' AND mot_de_passe = '$password' LIMIT 1",$con);
+    $r  = mysql_query("SELECT id FROM sfo WHERE nom_utilisateur='$username' AND mot_de_passe = '$password' LIMIT 1",$con);
 
     if($row=mysql_fetch_array($r)){
         echo $row['id'];
