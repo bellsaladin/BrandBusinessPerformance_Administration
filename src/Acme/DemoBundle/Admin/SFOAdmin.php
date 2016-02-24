@@ -30,9 +30,11 @@ class SFOAdmin extends Admin
             ->end()
             ->with('Compte utilisateur', array('collapsed' => false))
             ->add('user.email', 'text')
-            ->add('user.username', 'text')
-            ->add('user.plainPassword', 'text', array('label'=>'Mot de passe'))
-        ;
+            ->add('user.username', 'text');
+        if(!$this->getRoot()->getSubject()->getId())
+          $formMapper->add('user.plainPassword', 'text', array('label'=>'Mot de passe'));
+        else
+          $formMapper->add('user.plainPassword', 'text', array('label'=>'Mot de passe ( Mettre une valeur si vous voulez changer le mot de passe)','required'=>false));
     }
 
     // Fields to be shown on filter forms

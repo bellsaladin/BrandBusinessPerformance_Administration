@@ -21,15 +21,24 @@ class TeamLeaderAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
       $formMapper
-      ->with('Informations personnelles', array('collapsed' => false))
-      ->add('nom')
-      ->add('prenom')
-      ->end()
-      ->with('Compte utilisateur', array('collapsed' => false))
-      ->add('user.email', 'text')
-      ->add('user.username', 'text')
-      ->add('user.plainPassword', 'text', array('label'=>'Mot de passe'))
-      ;
+        ->with('Informations personnelles', array('collapsed' => false))
+        ->add('nom')
+        ->add('prenom')
+        ->end()
+        ->with('Compte utilisateur', array('collapsed' => false))
+        /*->add('user', 'sonata_type_admin', array(
+                  'delete' => false ,
+                  'label' => false,
+                  'btn_add' => false
+              ))
+          ;
+          */
+        ->add('user.email', 'text')
+        ->add('user.username', 'text');
+      if(!$this->getRoot()->getSubject()->getId())
+          $formMapper->add('user.plainPassword', 'text', array('label'=>'Mot de passe'));
+      else
+          $formMapper->add('user.plainPassword', 'text', array('label'=>'Mot de passe ( Mettre une valeur si vous voulez changer le mot de passe)','required'=>false));
     }
 
     // Fields to be shown on filter forms

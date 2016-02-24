@@ -56,6 +56,10 @@ class SFO
      */
     private $user;
 
+    public function __construct()
+    {
+        $this->user = new \AppBundle\Entity\User\User();
+    }
 
 
     /**
