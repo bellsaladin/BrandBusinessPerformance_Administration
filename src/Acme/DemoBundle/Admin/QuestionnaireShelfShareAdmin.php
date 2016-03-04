@@ -10,24 +10,22 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 
-class LocalisationAdmin extends Admin
+class QuestionnaireShelfShareAdmin extends Admin
 {
-    protected $baseRoutePattern = 'localisation';
+    protected $baseRoutePattern = 'QuestionnaireShelfShare';
     protected $datagridValues = array(
         '_page' => 1,            // display the first page (default = 1)
         '_sort_order' => 'DESC', // reverse order (default = 'ASC')
         '_sort_by' => 'dateCreation'  // name of the ordered field
                                  // (default = the model's id field, if any)
-
-        // the '_sort_by' key can be of the form 'mySubModel.mySubSubModel.myField'.
-    );
-
+        );
+    
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            //->add('dateCreation')
-
+            ->add('dateCreation')
+            ->add('localisation.pdv')
         ;
     }
 
@@ -43,14 +41,15 @@ class LocalisationAdmin extends Admin
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper
+        $listMapper            
             ->addIdentifier('dateCreation', null, array(
                  'route' => array(
                      'name' => 'show'
                  )
              ))
-             ->add('pdv', 'entity', array('class' => 'Acme\DemoBundle\Entity\Pdv', 'associated_property' => 'nom'))
-
+            ->add('localisation.pdv', 'entity', array('label' => 'Pdv', 'route' => array('name' => 'show')))
+            ->add('localisation.sfo', 'entity', array('label' => 'SFO', 'route' => array('name' => 'show')))
+            
             //->add('slug')
             //->add('author')
             ->add('_action', 'actions', array(
@@ -66,19 +65,11 @@ class LocalisationAdmin extends Admin
 
     protected function configureShowFields(ShowMapper $showMapper)
     {
-        // Here we set the fields of the ShowMapper variable, $showMapper (but this can be called anything)
         $showMapper
-            ->add('dateCreation','datetime',array('label'=>'Date de création'))
-            ->add('pdv', 'entity', array('class' => 'Acme\DemoBundle\Entity\Pdv', 'associated_property' => 'nom'))
-            ->add('SFO', 'entity', array('class' => 'Acme\DemoBundle\Entity\Sfo', 'associated_property' => 'nom', 'label' => 'SFO'))
-            ->add('emplacement','string', array('template' => 'AcmeDemoBundle:LocalisationAdmin:emplacement_localisation.html.twig','label' =>'Emplacement'))
-            ->add('imagefilename', 'string', array('template' => 'AcmeDemoBundle:LocalisationAdmin:list_image.html.twig'))
-            ->add('questionnaires','sonata_type_collection', array('options'=>array(
-                 'route' => array(
-                     'name' => 'show'
-                 ))
-             ))
-        ;
+            ->add('dateCreation')
+            ->add('localisation.pdv', 'entity', array('label' => 'Point de Vente', 'route' => array('name' => 'show')))
+            //->add('quantities')
+            ;
     }
 
      /**
@@ -96,7 +87,6 @@ class LocalisationAdmin extends Admin
         // to remove a single route
         $collection->remove('create');
         $collection->remove('edit');
-        // $collection->remove('delete');
+        // $collection->remove('delete');        
     }
-
 }

@@ -1,9 +1,7 @@
 <?php
 
     include('_params.php');
-
-    ini_set('error_reporting', E_ALL);
-
+    
     $localisationId              = $_REQUEST['localisationId'];
 
     $achete                = $_REQUEST['achete'];

@@ -4,8 +4,7 @@
 
     // ini_set('error_reporting', E_ALL);
 
-    $animateurId        = $_REQUEST['animateurId'];
-    $superviseurId      = $_REQUEST['superviseurId'];
+    $sfoId              = $_REQUEST['sfoId'];
     $pdvId              = $_REQUEST['pdvId'];
     $longitude          = $_REQUEST['longitude'];
     $latitude           = $_REQUEST['latitude'];
@@ -17,7 +16,7 @@
     $base=$_REQUEST['image'];
     $imageBaseFileName = end(explode('/',$_REQUEST['imageFileName']));
     // Get file name posted from Android App
-    $imageFileName = $animateurId.'_'. $pdvId.'_'.$imageBaseFileName;
+    $imageFileName = $sfoId.'_'. $pdvId.'_'.$imageBaseFileName;
 
     // Decode Image
     $binary=base64_decode($base);
@@ -32,8 +31,8 @@
     mysql_select_db($db,$con) or die("db selection failed");
 
     $localisationId = 0;
-    if($r=mysql_query("insert into localisation (imagefilename, longitude, latitude, animateur_id, superviseur_id, pdv_id, date_creation)
-                        values('$imageFileName', $longitude, $latitude, $animateurId, $superviseurId, $pdvId, '$dateCreation') ",$con))
+    if($r=mysql_query("insert into localisation (imagefilename, longitude, latitude, sfo_id, pdv_id, date_creation)
+                        values('$imageFileName', $longitude, $latitude, $sfoId, $pdvId, '$dateCreation') ",$con))
     {
         $flag['code']=1;
     }

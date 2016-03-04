@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Localisation
  *
- * @ORM\Table(name="localisation", indexes={@ORM\Index(name="fk_localisation_pdv_idx", columns={"pdv_id"}), @ORM\Index(name="fk_localisation_animateur_idx", columns={"animateur_id"}), @ORM\Index(name="fk_localisation_superviseur_idx", columns={"superviseur_id"})})
+ * @ORM\Table(name="localisation", indexes={@ORM\Index(name="fk_localisation_pdv_idx", columns={"pdv_id"}), @ORM\Index(name="fk_localisation_sfo_idx", columns={"sfo_id"}) })
  * @ORM\Entity
  */
 class Localisation
@@ -50,24 +50,14 @@ class Localisation
     private $dateCreation;
 
     /**
-     * @var \Superviseur
+     * @var \SFO
      *
-     * @ORM\ManyToOne(targetEntity="Superviseur")
+     * @ORM\ManyToOne(targetEntity="SFO")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="superviseur_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="sfo_id", referencedColumnName="id")
      * })
      */
-    private $superviseur;
-
-    /**
-     * @var \Animateur
-     *
-     * @ORM\ManyToOne(targetEntity="Animateur")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="animateur_id", referencedColumnName="id")
-     * })
-     */
-    private $animateur;
+    private $sfo;
 
     /**
      * @var \Pdv
@@ -195,49 +185,26 @@ class Localisation
     }
 
     /**
-     * Set superviseur
+     * Set sfo
      *
-     * @param \Acme\DemoBundle\Entity\Superviseur $superviseur
+     * @param \Acme\DemoBundle\Entity\SFO $sfo
      * @return Localisation
      */
-    public function setSuperviseur(\Acme\DemoBundle\Entity\Superviseur $superviseur = null)
+    public function setSfo(\Acme\DemoBundle\Entity\SFO $sfo = null)
     {
-        $this->superviseur = $superviseur;
+        $this->sfo = $sfo;
 
         return $this;
     }
 
     /**
-     * Get superviseur
+     * Get sfo
      *
-     * @return \Acme\DemoBundle\Entity\Superviseur 
+     * @return \Acme\DemoBundle\Entity\SFO 
      */
-    public function getSuperviseur()
+    public function getSfo()
     {
-        return $this->superviseur;
-    }
-
-    /**
-     * Set animateur
-     *
-     * @param \Acme\DemoBundle\Entity\Animateur $animateur
-     * @return Localisation
-     */
-    public function setAnimateur(\Acme\DemoBundle\Entity\Animateur $animateur = null)
-    {
-        $this->animateur = $animateur;
-
-        return $this;
-    }
-
-    /**
-     * Get animateur
-     *
-     * @return \Acme\DemoBundle\Entity\Animateur 
-     */
-    public function getAnimateur()
-    {
-        return $this->animateur;
+        return $this->sfo;
     }
 
     /**

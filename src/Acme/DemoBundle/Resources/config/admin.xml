@@ -12,6 +12,20 @@
                 <argument>AcmeDemoBundle</argument>
             </call>
       </service>
+      <service id="sonata.admin.questionnaireshelfshare" class="Acme\DemoBundle\Admin\QuestionnaireShelfShareAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Données collectézes" label="Questionnaire Shelf Share"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\QuestionnaireShelfShare</argument>
+            <argument />
+            <call method="setTranslationDomain">
+                <argument>AcmeDemoBundle</argument>
+            </call>
+            <call method="setTemplate">
+            <argument>show</argument>
+            <argument>AcmeDemoBundle:QuestionnaireShelfShareAdmin:show.html.twig</argument>
+          </call>
+      </service>
+
       <service id="sonata.admin.planning" class="Acme\DemoBundle\Admin\PlanningAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Planning" label="Plannings" audit="false"/>
             <argument />
@@ -22,7 +36,7 @@
             </call>
       </service>
       <service id="sonata.admin.localisation" class="Acme\DemoBundle\Admin\LocalisationAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Rapports" label="Localisation"/>
+            <tag name="sonata.admin" manager_type="orm" group="Rapports" label="Localisations"/>
             <argument />
             <argument>Acme\DemoBundle\Entity\Localisation</argument>
             <argument />

@@ -1,0 +1,125 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{% block actions %}
+    <li>{% include 'SonataAdminBundle:Button:edit_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:history_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:list_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:create_button.html.twig' %}</li>
+{% endblock %}
+
+{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': admin_pool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
+
+{% block show %}
+    <div class="sonata-ba-view row">
+
+
+
+        {{ sonata_block_render_event('sonata.admin.show.top', { 'admin': admin, 'object': object }) }}
+
+        {% for name, view_group in admin.showgroups %}
+            <div class="{{ view_group.class | default('col-md-12') }}">
+                <div class="{{ view_group.box_class }}">
+                    {% if name %}
+                        <div class="box-header with-border">
+                            <h4 class="box-title">
+                                {% block show_title %}
+                                    {{ admin.trans(name) }}
+                                {% endblock %}
+                            </h4>
+                        </div>
+                    {% endif %}
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table">
+                            <tbody>
+                            {% for field_name in view_group.fields %}
+                                {% block show_field %}
+                                    <tr class="sonata-ba-view-container">
+                                        {% if elements[field_name] is defined %}
+                                            {{ elements[field_name]|render_view_element(object) }}
+                                        {% endif %}
+                                    </tr>
+                                {% endblock %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="sonata-ba-view-container" style="margin:20px">
+            <ul class="nav nav-tabs" id="myTab">
+            {% set previousCategorieProduits = null %}
+            {% for quantity in object.quantities %}
+                {% if quantity.categorieProduits != previousCategorieProduits %}
+                
+                  <li {% if loop.first %}class="active"{% endif %}>
+                    <a data-target="#{{quantity.categorieProduits.name}}" data-toggle="tab">{{quantity.categorieProduits.name}}</a>
+                   </li>
+                
+                {% endif %}
+                {% set previousCategorieProduits = quantity.categorieProduits %}
+            {% endfor %}
+            </ul>
+            <div class="tab-content">
+            {% set previousCategorieProduits = null %}
+            {% for quantity in object.quantities %}
+                {% if quantity.categorieProduits != previousCategorieProduits %}
+                  <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{quantity.categorieProduits.name}}">
+                    <table class="table">  
+                    {% set tableHeaderWritten = false %} 
+                    {% for quantityCopy1 in object.quantities %}
+                        {% if quantityCopy1.categorieProduits == quantity.categorieProduits %}
+                        
+                            {% if not tableHeaderWritten %}
+                                <tr>
+                                <td></td>
+                                {% set previousSegment = null %} 
+                                {% for quantityCopy2 in object.quantities %}
+                                    {% if   quantityCopy1.marque == quantityCopy2.marque 
+                                        and quantityCopy1.categorieProduits == quantityCopy2.categorieProduits %}
+                                        {% if quantityCopy2.segment != previousSegment %}
+                                            <td><b>{{quantityCopy2.segment.name}}</b></td>
+                                            {% set previousSegment = quantityCopy2.segment %} 
+                                        {% endif %}
+                                    {% endif %}    
+                                {% endfor %}
+                                </tr>
+                                {% set tableHeaderWritten = true %} 
+                            {% endif %}
+                            <tr>
+                                <td><b>{{quantityCopy1.marque.libelle}} -- {{quantityCopy1.poi.libelle}}</b></td>
+                                {% for quantityCopy2 in object.quantities %}
+                                    {% if   quantityCopy2.marque == quantityCopy1.marque  
+                                        and quantityCopy2.categorieProduits == quantityCopy1.categorieProduits
+                                        and quantityCopy2.poi == quantityCopy1.poi %}
+                                        <td>{{quantityCopy2.qte}}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </table>
+                  </div>
+                {% endif %} 
+                {% set previousCategorieProduits = quantity.categorieProduits %}
+            {% endfor %}
+        </div>
+        {#object.quantities.count()#}
+       
+
+        {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
+
+    </div>
+{% endblock %}

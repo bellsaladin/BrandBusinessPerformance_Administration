@@ -93,6 +93,65 @@
     }
 
     // ****************************************************************************************************
+    //                                      GET CATEGORIES ( catégories des produits )
+    // ****************************************************************************************************
+
+    $r  = mysql_query("select id, parent_id, context, name from classification__category WHERE enabled = 1",$con);
+
+    $categories = array();
+    while($row=mysql_fetch_array($r))
+    {
+        $categories[] = array('id'=>$row['id'], 'parent_id'=>$row['parent_id'], 'context'=> utf8_encode($row['context']), 'nom'=> utf8_encode($row['name']));
+    }
+
+    // ****************************************************************************************************
+    //                                      GET PRODUITS
+    // ****************************************************************************************************
+
+    $r  = mysql_query("select id, sku, libelle, categorie_id from produit WHERE enabled = 1",$con);
+
+    $produits = array();
+    while($row=mysql_fetch_array($r))
+    {
+        $produits[] = array('id'=>$row['id'], 'sku'=> utf8_encode($row['sku']), 'libelle'=> utf8_encode($row['libelle']), 'nom'=> $row['categorie_id']);
+    }
+
+    // ****************************************************************************************************
+    //                                      GET Marques_Categories
+    // ****************************************************************************************************
+
+    $r  = mysql_query("select marque_id, category_id from marque_category",$con);
+
+    $marquesCategories = array();
+    while($row=mysql_fetch_array($r))
+    {
+        $marquesCategories[] = array('marque_id'=>$row['marque_id'], 'categorie_id'=> $row['category_id']);
+    }
+
+    // ****************************************************************************************************
+    //                                      GET POIs
+    // ****************************************************************************************************
+    $r  = mysql_query("select distinct p.* from poi p order by p.libelle ASC",$con);
+    $pois = array();
+    while($row=mysql_fetch_array($r))
+    {
+        // $response['libelle']=$row['libelle'];
+        $pois[] = array('id'=>$row['id'],'libelle'=> $row['libelle']);
+    }
+
+    // ****************************************************************************************************
+    //                                      GET Pdvs_Pois
+    // ****************************************************************************************************
+
+    $r  = mysql_query("select pdv_id, poi_id from pdv_poi",$con);
+
+    $pdvsPois = array();
+    while($row=mysql_fetch_array($r))
+    {
+        $pdvsPois[] = array('pdv_id'=>$row['pdv_id'], 'poi_id'=> $row['poi_id']);
+    }
+
+    // ****************************************************************************************************
     //                                      SYNCRONIZATION
     // ****************************************************************************************************
 
@@ -106,9 +165,10 @@
     // ****************************************************************************************************
     //                                      CREATING THE RESPONSE
     // ****************************************************************************************************
-
-    $response = array('marques' => $marques, 'raisonsAchat' => $raisonsAchat , 'raisonsRefus' => $raisonsRefus, 'tranchesAge'=> $tranchesAge,
-                      'pdvs' => $pdvs, 'cadeaux' => $cadeaux, 'superviseurs' => $superviseurs, 'parameters' => $parameters);
+    
+    $response = array('marques' => $marques, 'raisonsAchat' => $raisonsAchat , 'raisonsRefus' => $raisonsRefus, 
+        'tranchesAge'=> $tranchesAge, 'pdvs' => $pdvs, 'cadeaux' => $cadeaux, 'superviseurs' => $superviseurs, 
+        'parameters' => $parameters, 'categories' => $categories, 'produits' => $produits,'marques_categories' =>$marquesCategories, 'pois' => $pois, 'pdvs_pois' =>$pdvsPois);
 
     print(json_encode($response));
     mysql_close($con);

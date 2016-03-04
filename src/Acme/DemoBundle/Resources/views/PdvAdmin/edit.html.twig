@@ -66,7 +66,7 @@ file that was distributed with this source code.
             {% endblock %}
 
             
-            <div class="row">
+            <div class="row" style="margin-bottom:10px">
                 <div class="col-md-6">
                     {{ form_row(form.nom) }}            
                     {{ form_row(form.ville) }}
@@ -81,10 +81,10 @@ file that was distributed with this source code.
                     <div id="map_canvas"></div>
                     <div class="row">
                         <div class="col-md-5">
-                            {{ form_row(form.longitude, { 'attr':{'disabled':'disabled'} }) }}
+                            {{ form_row(form.longitude, { 'attr':{'style':''} }) }}
                         </div>
                         <div class="col-md-5">
-                            {{ form_row(form.latitude , { 'attr':{'disabled':'disabled'} }) }}
+                            {{ form_row(form.latitude , { 'attr':{'style':''} }) }}
                         </div>
                     </div>  
                     <style>
