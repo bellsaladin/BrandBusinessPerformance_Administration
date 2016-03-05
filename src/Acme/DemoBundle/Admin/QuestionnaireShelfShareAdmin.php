@@ -12,7 +12,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class QuestionnaireShelfShareAdmin extends Admin
 {
-    protected $baseRoutePattern = 'QuestionnaireShelfShare';
+    protected $baseRoutePattern = 'questionnaireShelfShare';
     protected $datagridValues = array(
         '_page' => 1,            // display the first page (default = 1)
         '_sort_order' => 'DESC', // reverse order (default = 'ASC')

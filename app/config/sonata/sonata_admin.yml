@@ -4,6 +4,7 @@
 sonata_admin:
     # default value, change it to sonata.admin.security.handler.acl to use ACL
     security:
+        handler: sonata.admin.security.handler.role
         #handler: sonata.admin.security.handler.acl
         # acl security information
         #information:
@@ -27,14 +28,14 @@ sonata_admin:
         # default global templates
         # the layout template include javascript/stylesheet to the formatter bundle,
         # if you don't need it use the default one: SonataAdminBundle::standard_layout.html.twig
-        layout:  SonataAdminBundle::standard_layout.html.twig
+        layout:  AcmeDemoBundle::app_layout.html.twig
         ajax:    SonataAdminBundle::ajax_layout.html.twig
 
         # default value if done set, actions templates, should extends a global templates
         list:    SonataAdminBundle:CRUD:list.html.twig
         show:    SonataAdminBundle:CRUD:show.html.twig
         edit:    SonataAdminBundle:CRUD:edit.html.twig
-
+        
     dashboard:
         blocks:
 #            - { position: left, type: sonata.admin.block.admin_list }
@@ -175,7 +176,7 @@ sonata_admin:
                     - sonata.admin.teamleader
                     - sonata.admin.analyst
             #        - sonata.user.admin.user
-            #        - sonata.user.admin.group
+                    - sonata.user.admin.group
             #        - sonata.page.admin.site
             #        - sonata.notification.admin.message        
 
