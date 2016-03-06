@@ -79,8 +79,9 @@ file that was distributed with this source code.
                   <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{quantity.categorieProduits.name}}">
                     <table class="table">  
                     {% set tableHeaderWritten = false %} 
+                    {% set processedMarquePoiCouples = [] %}
                     {% for quantityCopy1 in object.quantities %}
-                        {% if quantityCopy1.categorieProduits == quantity.categorieProduits %}
+                        {% if quantityCopy1.categorieProduits == quantity.categorieProduits and processedMarquePoiCouples[(quantityCopy1.marque ~ quantityCopy1.poi)] is not defined %}
                         
                             {% if not tableHeaderWritten %}
                                 <tr>
@@ -108,8 +109,10 @@ file that was distributed with this source code.
                                     {% endif %}
                                 {% endfor %}
                             </tr>
+                            {% set processedMarquePoiCouples = processedMarquePoiCouples|merge({ (quantityCopy1.marque ~ quantityCopy1.poi) : quantityCopy1}) %}
                         {% endif %}
                     {% endfor %}
+                    {# dump(processedMarquePoiCouples) #}
                     </table>
                   </div>
                 {% endif %} 
