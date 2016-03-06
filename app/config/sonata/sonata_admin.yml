@@ -133,6 +133,7 @@ sonata_admin:
                 items:
                     - sonata.admin.localisation
                     - sonata.admin.questionnaireshelfshare
+                    - sonata.admin.questionnairedisponibilite
 
             # sonata.admin.group.site_builder:
             #     label:           Site Builder
