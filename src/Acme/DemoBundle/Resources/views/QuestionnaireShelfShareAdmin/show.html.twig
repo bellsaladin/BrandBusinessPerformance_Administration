@@ -121,6 +121,11 @@ file that was distributed with this source code.
         </div>
         {#object.quantities.count()#}
        
+        {% if not object.valide %}
+            <a href="{{ path('_custom_valider', {'id': object.id, '_sonata_admin' : 'sonata.admin.questionnaireshelfshare'}) }}" class="btn btn-sm btn-success">Valider</a>
+        {% else %}        
+            <a href="{{ path('_custom_devalider', {'id': object.id, '_sonata_admin' : 'sonata.admin.questionnaireshelfshare'}) }}" class="btn btn-sm btn-danger">Dévalider</a>
+        {% endif %}
 
         {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
 

@@ -49,7 +49,7 @@ class QuestionnaireShelfShareAdmin extends Admin
              ))
             ->add('localisation.pdv', 'entity', array('label' => 'Pdv', 'route' => array('name' => 'show')))
             ->add('localisation.sfo', 'entity', array('label' => 'SFO', 'route' => array('name' => 'show')))
-            
+            ->add('valide', null, array('editable' => true,'label' => 'Validé'))
             //->add('slug')
             //->add('author')
             ->add('_action', 'actions', array(

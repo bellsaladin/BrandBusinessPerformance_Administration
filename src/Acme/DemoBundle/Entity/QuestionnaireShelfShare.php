@@ -38,6 +38,13 @@ class QuestionnaireShelfShare
      */
     private $localisation;
 
+    /**
+     * @var \boolean
+     *
+     * @ORM\Column(name="valide", type="boolean", nullable=false)
+     */
+    private $valide;
+
     /** @ORM\OneToMany(targetEntity="QuestionnaireShelfShareMarque", mappedBy="questionnaireShelfShare") */
     private $quantities;
 
@@ -100,6 +107,29 @@ class QuestionnaireShelfShare
     public function getLocalisation()
     {
         return $this->localisation;
+    }
+
+    /**
+     * Set valide
+     *
+     * @param boolean $valide
+     * @return Questionnaire
+     */
+    public function setValide($valide)
+    {
+        $this->valide = $valide;
+
+        return $this;
+    }
+
+    /**
+     * Get valide
+     *
+     * @return boolean 
+     */
+    public function getValide()
+    {
+        return $this->valide;
     }
 
     public function getQuantities(){

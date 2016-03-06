@@ -49,12 +49,13 @@ class QuestionnaireDisponibiliteAdmin extends Admin
              ))
             ->add('localisation.pdv', 'entity', array('label' => 'Pdv', 'route' => array('name' => 'show')))
             ->add('localisation.sfo', 'entity', array('label' => 'SFO', 'route' => array('name' => 'show')))
-            
+            ->add('valide', null, array('editable' => true,'label' => 'Activé'))
             //->add('slug')
             //->add('author')
             ->add('_action', 'actions', array(
             'actions' => array(
                 'show' => array(),
+
                 //'edit' => array(),
                 //'delete' => array(),
             )
@@ -87,6 +88,7 @@ class QuestionnaireDisponibiliteAdmin extends Admin
         // to remove a single route
         $collection->remove('create');
         $collection->remove('edit');
-        // $collection->remove('delete');        
+        // $collection->remove('delete');  
+        $collection->add('valider', $this->getRouterIdParameter().'/valider'); 
     }
 }

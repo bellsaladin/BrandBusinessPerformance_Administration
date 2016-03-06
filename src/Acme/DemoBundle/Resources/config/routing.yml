@@ -43,3 +43,12 @@ _uploadXlsFileForClientExecute:
 _webservice_authentification:
     pattern:  /webservice/authentification
     defaults: { _controller: AcmeDemoBundle:Webservice:authentification }
+
+
+_custom_valider:
+    pattern:  /admin/app/valider
+    defaults: { _controller: AcmeDemoBundle:CRUD:valider }
+
+_custom_devalider:
+    pattern:  /admin/app/devalider
+    defaults: { _controller: AcmeDemoBundle:CRUD:devalider }

@@ -36,6 +36,7 @@
             <call method="setTemplate">
             <argument>show</argument>
             <argument>AcmeDemoBundle:QuestionnaireDisponibiliteAdmin:show.html.twig</argument>
+            <argument>AcmeDemoBundle:CRUD</argument>
           </call>
       </service>
       <service id="sonata.admin.planning" class="Acme\DemoBundle\Admin\PlanningAdmin">
