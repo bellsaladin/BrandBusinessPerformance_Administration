@@ -4,15 +4,17 @@
     
     $typeQuestionnaire          = $_REQUEST['type'];
     $localisationId             = $_REQUEST['localisationId'];
+    $nbrLignesTraitees          = $_REQUEST['nbrLignesTraitees'];
+    $tempsRemplissage           = $_REQUEST['tempsRemplissage'];
+
     $quantitiesData             = $_REQUEST['quantitiesData'];
     $dateCreation               = utf8_decode($_REQUEST['dateCreation']);
-
+    
     $con = mysql_connect($host,$uname,$pwd) or die("connection failed");
     mysql_select_db($db,$con) or die("db selection failed");
 
     if($typeQuestionnaire == 'SHELFSHARE'){
-        $request = "insert into questionnaireshelfshare (localisation_id, date_creation)
-                                    values ( $localisationId, '$dateCreation') ";
+        $request = "insert into questionnaireshelfshare (localisation_id, date_creation, nbrLignesTraitees, tempsRemplissage) values ( $localisationId, '$dateCreation', $nbrLignesTraitees, $tempsRemplissage)";
 
         if($r=mysql_query($request, $con))
         {
@@ -34,8 +36,7 @@
     }
 
     if($typeQuestionnaire == 'DISPONIBILITE'){
-        $request = "insert into questionnairedisponibilite (localisation_id, date_creation)
-                                    values ( $localisationId, '$dateCreation') ";
+        $request = "insert into questionnairedisponibilite (localisation_id, date_creation, nbrLignesTraitees, tempsRemplissage) values ( $localisationId, '$dateCreation', $nbrLignesTraitees, $tempsRemplissage) ";
 
         if($r=mysql_query($request, $con))
         {
@@ -60,6 +61,6 @@
 
     // print(json_encode($flag));
     // echo $request;
-    echo 'Le questionnaire a bien été enregistré !';
+    echo 'Le questionnaire a bien été enregistré !'. $nbrLignesTraitees;
     mysql_close($con);
 ?>

@@ -26,6 +26,8 @@ class QuestionnaireShelfShareAdmin extends Admin
         $formMapper
             ->add('dateCreation')
             ->add('localisation.pdv')
+            ->add('nbrLignesTraitees')
+            ->add('tempsRemplissage')
         ;
     }
 
@@ -68,6 +70,8 @@ class QuestionnaireShelfShareAdmin extends Admin
         $showMapper
             ->add('dateCreation')
             ->add('localisation.pdv', 'entity', array('label' => 'Point de Vente', 'route' => array('name' => 'show')))
+            ->add('nbrLignesTraitees')
+            ->add('tempsRemplissage')
             //->add('quantities')
             ;
     }

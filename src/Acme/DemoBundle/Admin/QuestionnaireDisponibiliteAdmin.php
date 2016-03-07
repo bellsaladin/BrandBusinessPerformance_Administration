@@ -26,6 +26,8 @@ class QuestionnaireDisponibiliteAdmin extends Admin
         $formMapper
             ->add('dateCreation')
             ->add('localisation.pdv')
+            ->add('nbrLignesTraitees')
+            ->add('tempsRemplissage')
         ;
     }
 
@@ -69,6 +71,8 @@ class QuestionnaireDisponibiliteAdmin extends Admin
         $showMapper
             ->add('dateCreation')
             ->add('localisation.pdv', 'entity', array('label' => 'Point de Vente', 'route' => array('name' => 'show')))
+            ->add('nbrLignesTraitees')
+            ->add('tempsRemplissage')
             //->add('quantities')
             ;
     }

@@ -58,6 +58,7 @@ class CommercialAdmin extends Admin
       $listMapper
       ->add('nom')
       ->add('prenom')
+      ->add('directeur')
       ->add('user.username','entity', array('class' => '\AppBundle\Entity\User\User', 'label' => 'Nom d\'utilisateur'))
       ->add('user.email'   ,'entity', array('class' => '\AppBundle\Entity\User\User', 'label' => 'Email'))
       ->add('user.enabled' , null, array('editable' => true,'label' => 'Activé'))

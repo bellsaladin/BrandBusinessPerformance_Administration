@@ -45,6 +45,20 @@ class QuestionnaireShelfShare
      */
     private $valide;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="nbrLignesTraitees", type="integer", nullable=false)
+     */
+    private $nbrLignesTraitees;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="tempsRemplissage", type="float", nullable=false)
+     */
+    private $tempsRemplissage;
+
     /** @ORM\OneToMany(targetEntity="QuestionnaireShelfShareMarque", mappedBy="questionnaireShelfShare") */
     private $quantities;
 
@@ -131,6 +145,17 @@ class QuestionnaireShelfShare
     {
         return $this->valide;
     }
+
+    public function getNbrLignesTraitees()
+    {
+        return $this->nbrLignesTraitees;
+    }
+
+    public function getTempsRemplissage()
+    {
+        return $this->tempsRemplissage;
+    }
+
 
     public function getQuantities(){
         return $this->quantities;

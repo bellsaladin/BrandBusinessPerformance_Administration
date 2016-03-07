@@ -45,11 +45,24 @@ class QuestionnaireDisponibilite
      */
     private $valide;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="nbrLignesTraitees", type="integer", nullable=false)
+     */
+    private $nbrLignesTraitees;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="tempsRemplissage", type="float", nullable=false)
+     */
+    private $tempsRemplissage;
+
     /** 
      * @ORM\OneToMany(targetEntity="QuestionnaireDisponibiliteProduit", mappedBy="questionnaireDisponibilite") 
      * @ORM\OrderBy({"categorieProduits" = "ASC", "produit" = "ASC", "poi" = "ASC"})
      */
-
     private $quantities;
 
     public function __construct()
@@ -134,6 +147,16 @@ class QuestionnaireDisponibilite
     public function getValide()
     {
         return $this->valide;
+    }
+
+    public function getNbrLignesTraitees()
+    {
+        return $this->nbrLignesTraitees;
+    }
+
+    public function getTempsRemplissage()
+    {
+        return $this->tempsRemplissage;
     }
 
     public function getQuantities(){
