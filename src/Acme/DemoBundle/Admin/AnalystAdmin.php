@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\CoreBundle\Validator\ErrorElement;
 
 use KnpMenuItemInterface as MenuItemInterface;
 
@@ -101,5 +102,19 @@ class AnalystAdmin extends Admin
         return array(
             //'json', 'xml', 'csv', 'xls'
         );
+    }
+
+    public function validate(ErrorElement $errorElement, $object)
+    {
+      $em = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getManager();
+      $user = $em->getRepository('AppBundle:User\User')->findBy(array('username' => $object->getUser()->getUsername()));
+      if($user){
+
+        $errorElement
+            ->with('user.username')
+                ->addViolation("Le nom d'utilisateur choisi est déjà utilisé !")
+            ->end()
+        ;
+      }
     }
 }
