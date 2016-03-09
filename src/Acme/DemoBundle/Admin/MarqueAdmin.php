@@ -16,9 +16,25 @@ class MarqueAdmin extends Admin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $em = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getManager();
+        $categories = $em->getRepository('AppBundle:Classification\Category')->findAll();
+        $rootCategories = array();
+        foreach($categories as $categorie){
+            if($categorie->getParent() == null)
+                $rootCategories[] = $categorie;
+        }
+
+        $choosableCategories = array();
+        foreach($categories as $categorie){
+            foreach($rootCategories as $rootCategorie){
+                if($categorie->getParent() == $rootCategorie)
+                    $choosableCategories[$categorie->getId()] = $categorie;
+            }
+        }
+
         $formMapper
             ->add('libelle', 'text', array('label' => 'Nom'))
-            ->add('categoriesProduits',null,array('label' => 'Catégories des produits'));
+            ->add('categoriesProduits',null,array('label' => 'Catégories des produits', 'choices' =>$choosableCategories));
             //->add('author', 'entity', array('class' => 'Acme\DemoBundle\Entity\User'))
         ;
     }
