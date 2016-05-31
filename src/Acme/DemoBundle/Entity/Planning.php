@@ -3,6 +3,7 @@
 namespace Acme\DemoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Planning
@@ -40,16 +41,15 @@ class Planning
 
 
     /**
-     * @var \Pdv
-     *
-     * @ORM\ManyToMany(targetEntity="Pdv")     
+     * @ORM\OneToMany(targetEntity="Visite", cascade={"persist", "remove"}, orphanRemoval=True, mappedBy="planning")
+     * @Assert\Valid
      */
-    private $pdv;
+    private $visites;
 
 
     public function __construct()
     {
-        $this->pdv = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->visites = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -109,36 +109,48 @@ class Planning
     }
 
     /**
-     * Add pdv
+     * @param Visites[] $visites
+     */
+    public function setInspections($visites)
+    {
+        $this->visites = new ArrayCollection();
+
+        foreach ($visites as $visite) {
+            $this->addInspection($visite);
+        }
+    }
+
+    /**
+     * Add visite
      *
-     * @param \Acme\DemoBundle\Entity\Pdv $pdv
+     * @param \Acme\DemoBundle\Entity\Visite $visite
      * @return Planning
      */
-    public function addPdv(\Acme\DemoBundle\Entity\Pdv $pdv)
+    public function addVisite(\Acme\DemoBundle\Entity\Visite $visite)
     {
-        $this->pdv[] = $pdv;
+        $this->visites[] = $visite;
 
         return $this;
     }
 
     /**
-     * Remove pdv
+     * Remove visite
      *
-     * @param \Acme\DemoBundle\Entity\Pdv $pdv
+     * @param \Acme\DemoBundle\Entity\Visite $visites
      */
-    public function removePdv(\Acme\DemoBundle\Entity\Pdv $pdv)
+    public function removeVisite(\Acme\DemoBundle\Entity\Visite $visite)
     {
-        $this->pdv->removeElement($pdv);
+        $this->visites->removeElement($visite);
     }
 
     /**
-     * Get pdv
+     * Get visites
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getPdv()
+    public function getVisites()
     {
-        return $this->pdv;
+        return $this->visites;
     }
 
     public function __toString()

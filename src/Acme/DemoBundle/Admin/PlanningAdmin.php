@@ -36,7 +36,13 @@ class PlanningAdmin extends Admin
                 'editable' => false,
                 'sortable'  => 'position',
             ))*/
-            ->add('pdv', 'sonata_type_model', array('expanded' => true, 'by_reference' => false, 'multiple' => true))
+            ->add('visites', 'sonata_type_collection', array(
+                    'by_reference'       => false,
+                    'cascade_validation' => true,
+                ), array(
+                    'edit' => 'inline',
+                    'inline' => 'table'
+                ))
         ;
     }
 
@@ -60,7 +66,7 @@ class PlanningAdmin extends Admin
                 )
              ))            
             ->add('sfo')
-            ->add('pdv')
+            ->add('visites')
             
             //->add('slug')
             //->add('author')
@@ -81,7 +87,7 @@ class PlanningAdmin extends Admin
         $showMapper
             ->add('dateDebutSemaine', 'date', array('label' => 'Semaine du : '))
             ->add('sfo', 'entity', array('class' => 'Acme\DemoBundle\Entity\SFO'))
-            ->add('pdv','')   
+            ->add('visites')   
         ;
     }
 
