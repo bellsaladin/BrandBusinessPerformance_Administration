@@ -111,20 +111,155 @@ class Pdv
      */
     private $userCreateur;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="outletName", type="string", length=45, nullable=true)
+     */
+    private $outletname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="channel", type="string", length=45, nullable=true)
+     */
+    private $channel;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=45, nullable=true)
+     */
+    private $status;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="family", type="string", length=45, nullable=true)
+     */
+    private $family;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="category", type="string", length=45, nullable=true)
+     */
+    private $category;
+
+    /**
+     * @var \Sfo
+     *
+     * @ORM\ManyToOne(targetEntity="\Acme\DemoBundle\Entity\Sfo",cascade={"persist"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="sfo_id", referencedColumnName="id")
+     * })
+     */
+    private $sfo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="week", type="string", length=45, nullable=true)
+     */
+    private $week;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="jourVisite", type="string", length=45, nullable=true)
+     */
+    private $jourvisite;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tempsVisite", type="string", length=45, nullable=true)
+     */
+    private $tempsvisite;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="commentaire", type="string", length=300, nullable=true)
+     */
+    private $commentaire;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="collabore", type="string", length=45, nullable=true)
+     */
+    private $collabore;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="incentive", type="string", length=45, nullable=true)
+     */
+    private $incentive;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="elimine", type="boolean", nullable=true)
+     */
+    private $elimine;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="managerPhone", type="string", length=45, nullable=true)
+     */
+    private $managerphone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="managerFullName", type="string", length=45, nullable=true)
+     */
+    private $managerfullname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ownerPhone", type="string", length=45, nullable=true)
+     */
+    private $ownerphone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ownerFullName", type="string", length=45, nullable=true)
+     */
+    private $ownerfullname;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="size", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $size;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="incentiveStartWeek", type="string", length=45, nullable=true)
+     */
+    private $incentivestartweek;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="dataStartWeek", type="string", length=45, nullable=true)
+     */
+    private $datastartweek;
+
+
     public function __construct()
     {
         $this->poi = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set nom
@@ -264,7 +399,6 @@ class Pdv
         return $this->licence;
     }
 
-
     /**
      * Set ville
      *
@@ -311,7 +445,6 @@ class Pdv
         return $this->secteur;
     }
 
-
     /**
      * Set adresse
      *
@@ -338,7 +471,7 @@ class Pdv
     /**
      * Set externe
      *
-     * @param string $externe
+     * @param boolean $externe
      * @return Pdv
      */
     public function setExterne($externe)
@@ -351,7 +484,7 @@ class Pdv
     /**
      * Get externe
      *
-     * @return string 
+     * @return boolean 
      */
     public function getExterne()
     {
@@ -390,30 +523,501 @@ class Pdv
         return $this->poi;
     }
 
-    public function __toString(){
-        return $this->nom ;
-    }
-
     /**
-     * Set user
+     * Set userCreateurId
      *
-     * @param \AppBundle\Entity\User\User $user
-     * @return Animateur
+     * @param integer $userCreateurId
+     * @return Pdv
      */
-    public function setUserCreateur(\AppBundle\Entity\User\User $user = null)
+    public function setUserCreateurId($userCreateurId)
     {
-        $this->userCreateur = $user;
+        $this->userCreateurId = $userCreateurId;
 
         return $this;
     }
 
     /**
-     * Get user
+     * Get userCreateurId
      *
-     * @return \AppBundle\Entity\User\User
+     * @return integer 
      */
-    public function getUserCreateur()
+    public function getUserCreateurId()
     {
-        return $this->userCreateur;
+        return $this->userCreateurId;
     }
+
+    /**
+     * Set outletname
+     *
+     * @param string $outletname
+     * @return Pdv
+     */
+    public function setOutletname($outletname)
+    {
+        $this->outletname = $outletname;
+
+        return $this;
+    }
+
+    /**
+     * Get outletname
+     *
+     * @return string 
+     */
+    public function getOutletname()
+    {
+        return $this->outletname;
+    }
+
+    /**
+     * Set channel
+     *
+     * @param string $channel
+     * @return Pdv
+     */
+    public function setChannel($channel)
+    {
+        $this->channel = $channel;
+
+        return $this;
+    }
+
+    /**
+     * Get channel
+     *
+     * @return string 
+     */
+    public function getChannel()
+    {
+        return $this->channel;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     * @return Pdv
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set family
+     *
+     * @param string $family
+     * @return Pdv
+     */
+    public function setFamily($family)
+    {
+        $this->family = $family;
+
+        return $this;
+    }
+
+    /**
+     * Get family
+     *
+     * @return string 
+     */
+    public function getFamily()
+    {
+        return $this->family;
+    }
+
+    /**
+     * Set category
+     *
+     * @param string $category
+     * @return Pdv
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return string 
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Set sfo
+     *
+     * @param integer $sfo
+     * @return Pdv
+     */
+    public function setSfo($sfo)
+    {
+        $this->sfo = $sfo;
+
+        return $this;
+    }
+
+    /**
+     * Get sfo
+     *
+     * @return integer 
+     */
+    public function getSfo()
+    {
+        return $this->sfo;
+    }
+
+    /**
+     * Set week
+     *
+     * @param string $week
+     * @return Pdv
+     */
+    public function setWeek($week)
+    {
+        $this->week = $week;
+
+        return $this;
+    }
+
+    /**
+     * Get week
+     *
+     * @return string 
+     */
+    public function getWeek()
+    {
+        return $this->week;
+    }
+
+    /**
+     * Set jourvisite
+     *
+     * @param string $jourvisite
+     * @return Pdv
+     */
+    public function setJourvisite($jourvisite)
+    {
+        $this->jourvisite = $jourvisite;
+
+        return $this;
+    }
+
+    /**
+     * Get jourvisite
+     *
+     * @return string 
+     */
+    public function getJourvisite()
+    {
+        return $this->jourvisite;
+    }
+
+    /**
+     * Set tempsvisite
+     *
+     * @param string $tempsvisite
+     * @return Pdv
+     */
+    public function setTempsvisite($tempsvisite)
+    {
+        $this->tempsvisite = $tempsvisite;
+
+        return $this;
+    }
+
+    /**
+     * Get tempsvisite
+     *
+     * @return string 
+     */
+    public function getTempsvisite()
+    {
+        return $this->tempsvisite;
+    }
+
+    /**
+     * Set commentaire
+     *
+     * @param string $commentaire
+     * @return Pdv
+     */
+    public function setCommentaire($commentaire)
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get commentaire
+     *
+     * @return string 
+     */
+    public function getCommentaire()
+    {
+        return $this->commentaire;
+    }
+
+    /**
+     * Set collabore
+     *
+     * @param string $collabore
+     * @return Pdv
+     */
+    public function setCollabore($collabore)
+    {
+        $this->collabore = $collabore;
+
+        return $this;
+    }
+
+    /**
+     * Get collabore
+     *
+     * @return string 
+     */
+    public function getCollabore()
+    {
+        return $this->collabore;
+    }
+
+    /**
+     * Set incentive
+     *
+     * @param string $incentive
+     * @return Pdv
+     */
+    public function setIncentive($incentive)
+    {
+        $this->incentive = $incentive;
+
+        return $this;
+    }
+
+    /**
+     * Get incentive
+     *
+     * @return string 
+     */
+    public function getIncentive()
+    {
+        return $this->incentive;
+    }
+
+    /**
+     * Set elimine
+     *
+     * @param boolean $elimine
+     * @return Pdv
+     */
+    public function setElimine($elimine)
+    {
+        $this->elimine = $elimine;
+
+        return $this;
+    }
+
+    /**
+     * Get elimine
+     *
+     * @return boolean 
+     */
+    public function getElimine()
+    {
+        return $this->elimine;
+    }
+
+    /**
+     * Set managerphone
+     *
+     * @param string $managerphone
+     * @return Pdv
+     */
+    public function setManagerphone($managerphone)
+    {
+        $this->managerphone = $managerphone;
+
+        return $this;
+    }
+
+    /**
+     * Get managerphone
+     *
+     * @return string 
+     */
+    public function getManagerphone()
+    {
+        return $this->managerphone;
+    }
+
+    /**
+     * Set managerfullname
+     *
+     * @param string $managerfullname
+     * @return Pdv
+     */
+    public function setManagerfullname($managerfullname)
+    {
+        $this->managerfullname = $managerfullname;
+
+        return $this;
+    }
+
+    /**
+     * Get managerfullname
+     *
+     * @return string 
+     */
+    public function getManagerfullname()
+    {
+        return $this->managerfullname;
+    }
+
+    /**
+     * Set ownerphone
+     *
+     * @param string $ownerphone
+     * @return Pdv
+     */
+    public function setOwnerphone($ownerphone)
+    {
+        $this->ownerphone = $ownerphone;
+
+        return $this;
+    }
+
+    /**
+     * Get ownerphone
+     *
+     * @return string 
+     */
+    public function getOwnerphone()
+    {
+        return $this->ownerphone;
+    }
+
+    /**
+     * Set ownerfullname
+     *
+     * @param string $ownerfullname
+     * @return Pdv
+     */
+    public function setOwnerfullname($ownerfullname)
+    {
+        $this->ownerfullname = $ownerfullname;
+
+        return $this;
+    }
+
+    /**
+     * Get ownerfullname
+     *
+     * @return string 
+     */
+    public function getOwnerfullname()
+    {
+        return $this->ownerfullname;
+    }
+
+    /**
+     * Set size
+     *
+     * @param float $size
+     * @return Pdv
+     */
+    public function setSize($size)
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    /**
+     * Get size
+     *
+     * @return float 
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * Set incentivestartweek
+     *
+     * @param string $incentivestartweek
+     * @return Pdv
+     */
+    public function setIncentivestartweek($incentivestartweek)
+    {
+        $this->incentivestartweek = $incentivestartweek;
+
+        return $this;
+    }
+
+    /**
+     * Get incentivestartweek
+     *
+     * @return string 
+     */
+    public function getIncentivestartweek()
+    {
+        return $this->incentivestartweek;
+    }
+
+    /**
+     * Set datastartweek
+     *
+     * @param string $datastartweek
+     * @return Pdv
+     */
+    public function setDatastartweek($datastartweek)
+    {
+        $this->datastartweek = $datastartweek;
+
+        return $this;
+    }
+
+    /**
+     * Get datastartweek
+     *
+     * @return string 
+     */
+    public function getDatastartweek()
+    {
+        return $this->datastartweek;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function __toString(){
+        return $this->nom ;
+    }
+
 }

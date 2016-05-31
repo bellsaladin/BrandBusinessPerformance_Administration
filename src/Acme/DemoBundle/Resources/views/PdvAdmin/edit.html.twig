@@ -74,10 +74,27 @@ file that was distributed with this source code.
                     <!--<label class=" control-label">Licence</label>
                     <div><input type="text" name="{{ form.licence.vars.full_name}}" required {% if object.licence is not null %} value="{{object.licence}}" {% endif %} class=" form-control"/></div>
                     {{ form_row(form.externe) }}-->
-                    {{ form_row(form.poi) }} 
+                    {{ form_row(form.poi) }}
+                    {{ form_row(form.outletname) }}
+                    {{ form_row(form.channel) }}
+                    {{ form_row(form.status) }}
+                    {{ form_row(form.family) }}
+                    {{ form_row(form.category) }}
+                    {{ form_row(form.sfo) }}
+                    {{ form_row(form.week) }}
+                    {{ form_row(form.jourvisite) }}
+                    {{ form_row(form.tempsvisite) }}
+                    {{ form_row(form.collabore) }}
+                    {{ form_row(form.incentive) }}
                 </div>
                 <div class="col-md-6">
                     <label class=" control-label">Localisation</label>
+                    <style>
+                      #map_canvas {
+                        width: 500px;
+                        height: 400px;
+                      }
+                    </style> 
                     <div id="map_canvas"></div>
                     <div class="row">
                         <div class="col-md-5">
@@ -87,12 +104,15 @@ file that was distributed with this source code.
                             {{ form_row(form.latitude , { 'attr':{'style':''} }) }}
                         </div>
                     </div>  
-                    <style>
-                      #map_canvas {
-                        width: 500px;
-                        height: 400px;
-                      }
-                    </style>            
+                    {{ form_row(form.elimine) }}
+                    {{ form_row(form.managerphone) }}
+                    {{ form_row(form.managerfullname) }}
+                    {{ form_row(form.ownerphone) }}
+                    {{ form_row(form.ownerfullname) }}
+                    {{ form_row(form.size) }}
+                    {{ form_row(form.incentivestartweek) }}
+                    {{ form_row(form.datastartweek) }}
+                    {{ form_row(form.commentaire) }}          
                 </div>
             </div>
             <script src="https://maps.googleapis.com/maps/api/js"></script>

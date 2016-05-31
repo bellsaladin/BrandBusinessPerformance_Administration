@@ -26,12 +26,48 @@ class PdvAdmin extends Admin
             ->add('longitude','hidden')
             ->add('latitude','hidden')
             ->add('externe')
+            ->add('poi', null,  array('label' => 'Points d\'interêt'))
+            /*->add('poi', 'sonata_type_model', array('expanded' => true, 'by_reference' => false, 'multiple' => true))*/
+            ->add('outletname')
+            ->add('channel')
+            ->add('status')
+            ->add('family')
+            ->add('category')
+            ->add('sfo')
+            ->add('week')
+            ->add('jourvisite', 'choice', array('label' => 'Temps de visite',
+                    'choices' => array(
+                        '1' => 'Lundi',
+                        '2' => 'Mardi',
+                        '3' => 'Mercredi',
+                        '4' => 'Jeudi',
+                        '5' => 'Vendredi',
+                        '6' => 'Samedi',
+                        '7' => 'Dimanche',
+                    ))
+                )
+            ->add('tempsvisite', 'choice', array('label' => 'Temps de visite',
+                    'choices' => array(
+                        'matin' => 'Matin',
+                        'apres-midi' => 'Après-midi',
+                    ))
+                )
+            ->add('collabore')
+            ->add('incentive')
+            ->add('elimine', null,  array('label' => 'Eliminé'))
+            ->add('managerphone')
+            ->add('managerfullname')
+            ->add('ownerphone')
+            ->add('ownerfullname')
+            ->add('size', null,  array('label' => 'Size (m2)'))
+            ->add('incentivestartweek')
+            ->add('datastartweek')
+            ->add('commentaire','textarea')
             //->add('userCreateur', 'entity', array('class'=>'Acme\DemoBundle\Entity\FosUserUser','property' => 'username', 'label'=>false,'value' => $user))
             //->add('rayon')            
 
             //->add('author', 'entity', array('class' => 'Acme\DemoBundle\Entity\User'))            
-            ->add('poi', null,  array('label' => 'Points d\'interêt'))
-            /*->add('poi', 'sonata_type_model', array('expanded' => true, 'by_reference' => false, 'multiple' => true))*/
+            
         ;
     }
 

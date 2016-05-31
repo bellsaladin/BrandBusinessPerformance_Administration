@@ -1,0 +1,26 @@
+
+
+
+--------------------------------------------------------------------------------------------------
+					Regenerate a single entity from the database
+--------------------------------------------------------------------------------------------------
+
+	0. Import the mapping from the database
+
+			php app/console doctrine:mapping:import --force AcmeDemoBundle xml
+
+
+	1. open the target metadata file on the editor to keep it in memory
+
+
+	2. Remove all generated metadata
+
+			rm -rfv src/Acme/DemoBundle/Resources/config/doctrine/*
+
+	3. save the file again so that 
+
+
+	4. Generate the entity file :
+
+			php app/console doctrine:mapping:convert annotation ./src --filter="Pdv" --force
+			php app/console doctrine:generate:entities AcmeDemoBundle:Pdv
