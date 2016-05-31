@@ -170,6 +170,14 @@
           <call method="setTranslationDomain">
               <argument>AcmeDemoBundle</argument>
           </call>
+          <call method="setSubClasses">
+            <argument type="collection">
+                <argument key="REF">Acme\DemoBundle\Entity\Produit\Ref</argument>
+                <argument key="WM">Acme\DemoBundle\Entity\Produit\WM</argument>
+                <argument key="CTV">Acme\DemoBundle\Entity\Produit\CTV</argument>
+                <argument key="AC">Acme\DemoBundle\Entity\Produit\AC</argument>
+            </argument>
+        </call>
       </service>
 
       <service id="sonata.admin.poi" class="Acme\DemoBundle\Admin\POIAdmin">

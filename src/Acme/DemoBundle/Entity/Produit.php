@@ -52,6 +52,107 @@ class Produit
     */
     private $categorie;
 
+    /**
+     *
+     * @ORM\Column(name="couleur", type="string", length=100, nullable=true)
+     */
+    private $couleur;
+
+    /**
+     *
+     * @ORM\Column(name="smart", type="boolean", nullable=true)
+     */
+    private $smart;
+
+    /**
+     *
+     * @ORM\Column(name="type", type="string", length=100, nullable=true)
+     */
+    private $type;
+
+    /**
+     *
+     * @ORM\Column(name="serie", type="string", length=100, nullable=true)
+     */
+    private $serie;
+
+    /**
+     *
+     * @ORM\Column(name="volume", type="float", nullable=true)
+     */
+    private $volume;
+
+    /**
+     *
+     * @ORM\Column(name="capacite", type="float", nullable=true)
+     */
+    private $capacite;
+
+    /**
+     *
+     * @ORM\Column(name="inch", type="float", nullable=true)
+     */
+    private $inch;
+
+    /**
+     *
+     * @ORM\Column(name="garantie", type="float", nullable=true)
+     */
+    private $garantie;
+
+    /**
+     *
+     * @ORM\Column(name="typeCompresseur", type="string", length=100, nullable=true)
+     */
+    private $typeCompresseur;
+
+    /**
+     *
+     * @ORM\Column(name="typeMoteur", type="string", length=100, nullable=true)
+     */
+    private $typeMoteur;
+
+    /**
+     *
+     * @ORM\Column(name="resolution", type="string", length=100, nullable=true)
+     */
+    private $resolution;
+
+    /**
+     *
+     * @ORM\Column(name="modele", type="string", length=100, nullable=true)
+     */
+    private $modele;
+
+    /**
+     *
+     * @ORM\Column(name="dimension", type="string", length=100, nullable=true)
+     */
+    private $dimension;
+
+    /**
+    * @var \marque
+    *
+    * @ORM\ManyToOne(targetEntity="Marque",cascade={"persist"})
+    * @ORM\JoinColumns({
+    *   @ORM\JoinColumn(name="marque_id", referencedColumnName="id")
+    * })
+    */
+    private $marque;
+
+    /**
+     *
+     * @ORM\Column(name="prix", type="float", nullable=true)
+     */
+    private $prix;
+
+    /**
+     *
+     * @ORM\Column(name="prixPromotionnel", type="float", nullable=true)
+     */
+    private $prixPromotionnel;
+
+
     public function __construct()
     {
         $this->enabled = 1;
@@ -160,5 +261,373 @@ class Produit
     public function __toString()
     {
         return $this->libelle;
+    }
+
+    /**
+     * Set couleur
+     *
+     * @param string $couleur
+     * @return Produit
+     */
+    public function setCouleur($couleur)
+    {
+        $this->couleur = $couleur;
+
+        return $this;
+    }
+
+    /**
+     * Get couleur
+     *
+     * @return string 
+     */
+    public function getCouleur()
+    {
+        return $this->couleur;
+    }
+
+    /**
+     * Set smart
+     *
+     * @param boolean $smart
+     * @return Produit
+     */
+    public function setSmart($smart)
+    {
+        $this->smart = $smart;
+
+        return $this;
+    }
+
+    /**
+     * Get smart
+     *
+     * @return boolean 
+     */
+    public function getSmart()
+    {
+        return $this->smart;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return Produit
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set serie
+     *
+     * @param string $serie
+     * @return Produit
+     */
+    public function setSerie($serie)
+    {
+        $this->serie = $serie;
+
+        return $this;
+    }
+
+    /**
+     * Get serie
+     *
+     * @return string 
+     */
+    public function getSerie()
+    {
+        return $this->serie;
+    }
+
+    /**
+     * Set volume
+     *
+     * @param float $volume
+     * @return Produit
+     */
+    public function setVolume($volume)
+    {
+        $this->volume = $volume;
+
+        return $this;
+    }
+
+    /**
+     * Get volume
+     *
+     * @return float 
+     */
+    public function getVolume()
+    {
+        return $this->volume;
+    }
+
+    /**
+     * Set capacite
+     *
+     * @param float $capacite
+     * @return Produit
+     */
+    public function setCapacite($capacite)
+    {
+        $this->capacite = $capacite;
+
+        return $this;
+    }
+
+    /**
+     * Get capacite
+     *
+     * @return float 
+     */
+    public function getCapacite()
+    {
+        return $this->capacite;
+    }
+
+    /**
+     * Set inch
+     *
+     * @param float $inch
+     * @return Produit
+     */
+    public function setInch($inch)
+    {
+        $this->inch = $inch;
+
+        return $this;
+    }
+
+    /**
+     * Get inch
+     *
+     * @return float 
+     */
+    public function getInch()
+    {
+        return $this->inch;
+    }
+
+    /**
+     * Set garantie
+     *
+     * @param String $garantie
+     * @return Produit
+     */
+    public function setGarantie($garantie)
+    {
+        $this->garantie = $garantie;
+
+        return $this;
+    }
+
+    /**
+     * Get garantie
+     *
+     * @return \garantie 
+     */
+    public function getGarantie()
+    {
+        return $this->garantie;
+    }
+
+    /**
+     * Set typeCompresseur
+     *
+     * @param string $typeCompresseur
+     * @return Produit
+     */
+    public function setTypeCompresseur($typeCompresseur)
+    {
+        $this->typeCompresseur = $typeCompresseur;
+
+        return $this;
+    }
+
+    /**
+     * Get typeCompresseur
+     *
+     * @return string 
+     */
+    public function getTypeCompresseur()
+    {
+        return $this->typeCompresseur;
+    }
+
+    /**
+     * Set typeMoteur
+     *
+     * @param string $typeMoteur
+     * @return Produit
+     */
+    public function setTypeMoteur($typeMoteur)
+    {
+        $this->typeMoteur = $typeMoteur;
+
+        return $this;
+    }
+
+    /**
+     * Get typeMoteur
+     *
+     * @return string 
+     */
+    public function getTypeMoteur()
+    {
+        return $this->typeMoteur;
+    }
+
+    /**
+     * Set resolution
+     *
+     * @param string $resolution
+     * @return Produit
+     */
+    public function setResolution($resolution)
+    {
+        $this->resolution = $resolution;
+
+        return $this;
+    }
+
+    /**
+     * Get resolution
+     *
+     * @return string 
+     */
+    public function getResolution()
+    {
+        return $this->resolution;
+    }
+
+    /**
+     * Set modele
+     *
+     * @param string $modele
+     * @return Produit
+     */
+    public function setModele($modele)
+    {
+        $this->modele = $modele;
+
+        return $this;
+    }
+
+    /**
+     * Get modele
+     *
+     * @return string 
+     */
+    public function getModele()
+    {
+        return $this->modele;
+    }
+
+    /**
+     * Set dimension
+     *
+     * @param string $dimension
+     * @return Produit
+     */
+    public function setDimension($dimension)
+    {
+        $this->dimension = $dimension;
+
+        return $this;
+    }
+
+    /**
+     * Get dimension
+     *
+     * @return string 
+     */
+    public function getDimension()
+    {
+        return $this->dimension;
+    }
+
+    /**
+     * Set prix
+     *
+     * @param float $prix
+     * @return Produit
+     */
+    public function setPrix($prix)
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
+    /**
+     * Get prix
+     *
+     * @return float 
+     */
+    public function getPrix()
+    {
+        return $this->prix;
+    }
+
+    /**
+     * Set prixPromotionnel
+     *
+     * @param float $prixPromotionnel
+     * @return Produit
+     */
+    public function setPrixPromotionnel($prixPromotionnel)
+    {
+        $this->prixPromotionnel = $prixPromotionnel;
+
+        return $this;
+    }
+
+    /**
+     * Get prixPromotionnel
+     *
+     * @return float 
+     */
+    public function getPrixPromotionnel()
+    {
+        return $this->prixPromotionnel;
+    }
+
+    /**
+     * Set marque
+     *
+     * @param \Acme\DemoBundle\Entity\Marque $marque
+     * @return Produit
+     */
+    public function setMarque(\Acme\DemoBundle\Entity\Marque $marque = null)
+    {
+        $this->marque = $marque;
+
+        return $this;
+    }
+
+    /**
+     * Get marque
+     *
+     * @return \Acme\DemoBundle\Entity\Marque 
+     */
+    public function getMarque()
+    {
+        return $this->marque;
     }
 }

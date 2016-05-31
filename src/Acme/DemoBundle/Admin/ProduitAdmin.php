@@ -9,6 +9,12 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
+use Acme\DemoBundle\Entity\Produit\REF;
+use Acme\DemoBundle\Entity\Produit\WM;
+use Acme\DemoBundle\Entity\Produit\CTV;
+use Acme\DemoBundle\Entity\Produit\AC;
+
+
 class ProduitAdmin extends Admin
 {
     protected $baseRoutePattern = 'produit';
@@ -16,12 +22,48 @@ class ProduitAdmin extends Admin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $subject = $this->getSubject();
+
         $formMapper
             ->add('sku', 'text', array('label' => 'SKU'))
             ->add('libelle', 'text', array('label' => 'Libéllé'))
-            ->add('categorie',null,array('label' => 'Catégorie'));
+            ->add('categorie',null,array('label' => 'Catégorie'))
+            ->add('marque',null,array('label' => 'Marque'))
+            ->add('modele',null,array('label' => 'Modèle'))
+            ->add('type',null,array('label' => 'Type'));
             //->add('author', 'entity', array('class' => 'Acme\DemoBundle\Entity\User'))
         ;
+
+        if ($subject instanceof REF) {
+            $formMapper->add('couleur', 'text');
+            $formMapper->add('volume', 'text');
+            $formMapper->add('typeCompresseur', 'text',array('label' => 'Type compresseur'));
+            $formMapper->add('dimension', 'text');
+        }
+
+        if ($subject instanceof WM) {
+            $formMapper->add('couleur', 'text');
+            $formMapper->add('capacite', 'text');
+            $formMapper->add('typeMoteur', 'text',array('label' => 'Type moteur'));
+        }
+
+        if ($subject instanceof CTV) {
+            $formMapper->add('smart');
+            $formMapper->add('inch', 'text');
+            $formMapper->add('serie', 'text');
+            $formMapper->add('resolution', 'text');
+        }
+
+        if ($subject instanceof AC) {
+            $formMapper->add('couleur', 'text');
+            $formMapper->add('capacite', 'text');
+        }
+
+        $formMapper->add('dimension', 'text');
+        $formMapper->add('garantie', 'text');
+        $formMapper->add('prix', 'text');
+        $formMapper->add('prixPromotionnel', 'text');
+
     }
 
     // Fields to be shown on filter forms
