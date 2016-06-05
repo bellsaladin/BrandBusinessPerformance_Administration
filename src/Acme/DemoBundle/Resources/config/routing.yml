@@ -1,16 +1,14 @@
-#_welcome:
-#    pattern:  /
-#    defaults: { _controller: AcmeDemoBundle:Welcome:index }
+_webservice_authentification:
+    pattern:  /webservice/authentification
+    defaults: { _controller: AcmeDemoBundle:Webservice:authentification }
 
-#_demo_secured:
-#    resource: "@AcmeDemoBundle/Controller/SecuredController.php"
-#    type:     annotation
+_webservice_getShelfShareData:
+    pattern:  /webservice/getShelfShareData
+    defaults: { _controller: AcmeDemoBundle:Webservice:getShelfShareData }
 
-#_demo:
-#    resource: "@AcmeDemoBundle/Controller/DemoController.php"
-#    type:     annotation
-#    prefix:   /demo
-
+_tableauDeBoard:
+    pattern:  /admin/app/tableauDeBoard
+    defaults: { _controller: AcmeDemoBundle:Demo:tableauDeBoard }
 
 _mapDashboard:
     pattern:  /admin/app/mapDashboard
@@ -39,11 +37,6 @@ _uploadXlsFileForClientView:
 _uploadXlsFileForClientExecute:
     pattern:  /admin/app/uploadXlsFileForClientExecute
     defaults: { _controller: AcmeDemoBundle:Demo:uploadXlsFileForClientExecute }
-
-_webservice_authentification:
-    pattern:  /webservice/authentification
-    defaults: { _controller: AcmeDemoBundle:Webservice:authentification }
-
 
 _custom_valider:
     pattern:  /admin/app/valider

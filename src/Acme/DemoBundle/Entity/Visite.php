@@ -127,4 +127,10 @@ class Visite
     {
         return $this->planning;
     }
+
+    public function __toString(){
+        $dowMap = array('Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi');
+
+        return $dowMap[$this->dayOfWeek] ." visite au PDV '" . $this->pdv . "'";
+    }
 }

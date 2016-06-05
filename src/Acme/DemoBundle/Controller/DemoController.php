@@ -20,6 +20,119 @@ use Exporter\Source\ArraySourceIterator;
 class DemoController extends Controller
 {
 
+    public function tableauDeBoardAction(Request $request){
+        $admin_pool = $this->get('sonata.admin.pool');
+        $em = $this->getDoctrine()->getManager();
+
+        /* get parameters */
+        $param_startDate = date('Y-m-d', strtotime("-7 day"));
+        $param_endDate   = date('Y-m-d');
+        $param_sfoId     = NULL;
+
+        $param_startDate = $request->request->get('startDate', $param_startDate);
+        $param_endDate   = $request->request->get('endDate', $param_endDate);
+        $param_sfoId     = $request->request->get('sfoId', $param_sfoId);
+
+        $params = array('startDate' => $param_startDate, 'endDate' => $param_endDate, 'sfoId' => $param_sfoId);
+
+        /* Get : Nombre de magasins visités */
+        $sql = "select COUNT( DISTINCT pdv_id, date(date_creation)) as 'NbrPDVVisites' FROM localisation l " .
+               "WHERE date_creation >= '" . $param_startDate . "' AND date_creation <= '" . $param_endDate ."'";
+        if($param_sfoId != NULL)
+          $sql .= " AND sfo_id = $param_sfoId "; 
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        $exportedRowArray = array();
+        while ($row = $queryResult->fetch()) {
+            $exportedRowArray[] = $row;
+        }
+        /* Get : Nombre de magasins à visiter dans le planning */
+        $sql = "select COUNT( DISTINCT pdv_id) as 'NbrVisitesPdvPlannifiees' FROM planning p, visite v ".
+                "WHERE p.id = v.planning_id AND DATE_ADD(datedebut_semaine, INTERVAL dayOfWeek - 1 DAY) >= '" . $param_startDate . "' AND DATE_ADD(datedebut_semaine, INTERVAL dayOfWeek - 1 DAY) <= '" . $param_endDate ."'";
+        if($param_sfoId != NULL)
+          $sql .= " AND sfo_id = $param_sfoId "; 
+
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        while ($row = $queryResult->fetch()) {
+            $exportedRowArray[] = $row;
+        }
+        /* Get : Nombre de lignes renseignées & temps de saisie - questionnaires disponibilite */
+        $sql = "select SUM(nbrLignesTraitees) as 'nbrLignesTraiteesRapportsDisponibilite', SUM(tempsRemplissage) as 'tempsSaisieRapportsDisponibilite' FROM questionnairedisponibilite q, localisation l ".
+                "WHERE l.id = q.localisation_id AND q.date_creation >= '" . $param_startDate . "' AND q.date_creation <= '" . $param_endDate ."'";
+        if($param_sfoId != NULL)
+          $sql .= " AND sfo_id = $param_sfoId "; 
+
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        while ($row = $queryResult->fetch()) {
+            $exportedRowArray[] = $row;
+        }
+        /* Get : Nombre de lignes renseignées & temps de saisie - questionnaires shelfshare */
+        $sql = "select SUM(nbrLignesTraitees) as 'nbrLignesTraiteesRapportsShelfShare', SUM(tempsRemplissage) as 'tempsSaisieRapportsShelfShare' FROM questionnaireshelfshare q, localisation l ".
+                "WHERE l.id = q.localisation_id AND q.date_creation >= '" . $param_startDate . "' AND q.date_creation <= '" . $param_endDate ."'";
+        if($param_sfoId != NULL)
+          $sql .= " AND sfo_id = $param_sfoId "; 
+
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        while ($row = $queryResult->fetch()) {
+            $exportedRowArray[] = $row;
+        }
+
+        /* Get : Nbr Enquêtes validées */
+        
+        $subRequest1 = "SELECT count(*) as nbrRapportsValides  FROM questionnairedisponibilite q, localisation l
+                WHERE l.id = q.localisation_id AND q.date_creation >= '" . $param_startDate . "' AND q.date_creation <= '" . $param_endDate ."' AND valide = 1";
+        if($param_sfoId != NULL)
+          $subRequest1 .= " AND sfo_id = $param_sfoId "; 
+
+        $subRequest2 = "SELECT count(*) as nbrRapportsValides  FROM questionnaireshelfshare q, localisation l
+                WHERE l.id = q.localisation_id AND q.date_creation >= '" . $param_startDate . "' AND q.date_creation <= '" . $param_endDate ."' AND valide = 1";
+        if($param_sfoId != NULL)
+          $subRequest2 .= " AND sfo_id = $param_sfoId "; 
+
+        $sql = "select s1.nbrRapportsValides + s2.nbrRapportsValides as nbrRapportsValides
+                FROM ($subRequest1) as s1, ($subRequest2) as s2";
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        while ($row = $queryResult->fetch()) {
+            $exportedRowArray[] = $row;
+        }
+
+        /* Get : Nbr Enquêtes total*/
+        
+        $subRequest1 = "SELECT count(*) as nbrRapports FROM questionnairedisponibilite q, localisation l
+                WHERE l.id = q.localisation_id AND q.date_creation >= '" . $param_startDate . "' AND q.date_creation <= '" . $param_endDate ."' ";
+        if($param_sfoId != NULL)
+          $subRequest1 .= " AND sfo_id = $param_sfoId "; 
+
+        $subRequest2 = "SELECT count(*) as nbrRapports  FROM questionnaireshelfshare q, localisation l
+                WHERE l.id = q.localisation_id AND q.date_creation >= '" . $param_startDate . "' AND q.date_creation <= '" . $param_endDate ."'";
+        if($param_sfoId != NULL)
+          $subRequest2 .= " AND sfo_id = $param_sfoId "; 
+
+        $sql = "select s1.nbrRapports + s2.nbrRapports as nbrRapports
+                FROM ($subRequest1) as s1, ($subRequest2) as s2";
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        while ($row = $queryResult->fetch()) {
+            $exportedRowArray[] = $row;
+        }
+        /* Get : Nombre de magasins rajoutés */
+        $sql = "select COUNT( *) as 'nbrMagasinsRajoutes' FROM pdv p ".
+                "WHERE date_creation >= '" . $param_startDate . "' AND date_creation <= '" . $param_endDate ."'";
+
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        while ($row = $queryResult->fetch()) {
+            $exportedRowArray[] = $row;
+        }
+        /* Get : Nombre de references rajoutées */
+        $sql = "select COUNT( *) as 'nbrReferencesRajoutees' FROM produit p ".
+                "WHERE date_creation >= '" . $param_startDate . "' AND date_creation <= '" . $param_endDate ."'";
+
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        while ($row = $queryResult->fetch()) {
+            $exportedRowArray[] = $row;
+        }
+
+        return $this->render('AcmeDemoBundle::tableauDeBord.html.twig',array('admin_pool' => $admin_pool,'exportedRowArray'=>$exportedRowArray , 'params' => $params));
+    }
+
     public function mapDashboardAction()
     {
         $admin_pool = $this->get('sonata.admin.pool');
@@ -42,6 +155,7 @@ class DemoController extends Controller
             if($localisation != null)
                 $animateursAndLastLocalisationList[] = array('animateur' => $animateur, 'localisation' => $localisation);
         }
+
 
         return $this->render('AcmeDemoBundle::map_dashboard.html.twig',array('admin_pool' => $admin_pool,'animateursAndLastLocalisationList'=>$animateursAndLastLocalisationList ,'pdvsList' => $pdvsList));
     }
@@ -474,46 +588,4 @@ class DemoController extends Controller
             return new RedirectResponse($this->generateUrl('sonata_admin_dashboard'));
     }
 
-    /**
-     * @Route("/", name="_demo")
-     * @Template()
-     */
-    public function indexAction()
-    {
-        return array();
-    }
-
-    /**
-     * @Route("/hello/{name}", name="_demo_hello")
-     * @Template()
-     */
-    public function helloAction($name)
-    {
-        return array('name' => $name);
-    }
-
-    /**
-     * @Route("/contact", name="_demo_contact")
-     * @Template()
-     */
-    public function contactAction()
-    {
-        $form = $this->get('form.factory')->create(new ContactType());
-
-        $request = $this->get('request');
-        if ($request->isMethod('POST')) {
-            $form->submit($request);
-            if ($form->isValid()) {
-                $mailer = $this->get('mailer');
-                // .. setup a message and send it
-                // http://symfony.com/doc/current/cookbook/email.html
-
-                $this->get('session')->getFlashBag()->set('notice', 'Message sent!');
-
-                return new RedirectResponse($this->generateUrl('_demo'));
-            }
-        }
-
-        return array('form' => $form->createView());
-    }
 }

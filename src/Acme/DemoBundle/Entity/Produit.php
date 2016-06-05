@@ -152,10 +152,18 @@ class Produit
      */
     private $prixPromotionnel;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_creation", type="datetime", nullable=true)
+     */
+    private $dateCreation;
+
 
     public function __construct()
     {
         $this->enabled = 1;
+        $this->date = new \DateTime();
     }
 
     /**
@@ -630,4 +638,28 @@ class Produit
     {
         return $this->marque;
     }
+
+    /**
+     * Set dateCreation
+     *
+     * @param \DateTime $dateCreation
+     * @return Rapport
+     */
+    public function setDateCreation($dateCreation)
+    {
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get dateCreation
+     *
+     * @return \DateTime 
+     */
+    public function getDateCreation()
+    {
+        return $this->dateCreation;
+    }
+
 }

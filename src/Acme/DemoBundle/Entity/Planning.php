@@ -111,12 +111,12 @@ class Planning
     /**
      * @param Visites[] $visites
      */
-    public function setInspections($visites)
+    public function setVisites($visites)
     {
         $this->visites = new ArrayCollection();
 
         foreach ($visites as $visite) {
-            $this->addInspection($visite);
+            $this->addVisite($visite);
         }
     }
 
@@ -128,7 +128,9 @@ class Planning
      */
     public function addVisite(\Acme\DemoBundle\Entity\Visite $visite)
     {
-        $this->visites[] = $visite;
+        $visite->setPlanning($this);
+
+        $this->visites->add($visite);
 
         return $this;
     }

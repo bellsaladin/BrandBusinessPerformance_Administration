@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Acme\DemoBundle\Entity\Visite;
 
 class PlanningAdmin extends Admin
 {
@@ -24,7 +25,13 @@ class PlanningAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('dateDebutSemaine','sonata_type_date_picker', array('years' => range(date('Y'), date('Y')+1),'data' => new \DateTime(date("Y-m-d",strtotime('monday next week'))), 'format' => 'dd/MM/yyyy', 'dp_days_of_week_disabled' => array(0,2,3,4,5,6),'read_only' => 'true','dp_show_today'=>'false'))
+            ->add('dateDebutSemaine','sonata_type_date_picker', array('label' => 'Semaine du : ',
+                    'years' => range(date('Y'), date('Y')+1),
+                    'data' => new \DateTime(date("Y-m-d",strtotime('monday next week'))), 
+                    'format' => 'dd/MM/yyyy', 
+                    'dp_days_of_week_disabled' => array(0,2,3,4,5,6),
+                    'read_only' => 'true',
+                    'dp_show_today'=>'false'))
             //->add('animateur','sonata_type_model_list')
             ->add('sfo'      ,'sonata_type_model_list')
             //->add('pdv')
@@ -108,4 +115,5 @@ class PlanningAdmin extends Admin
         //$collection->remove('edit');
         // $collection->remove('delete');        
     }
+
 }
