@@ -47,13 +47,13 @@ class WebserviceController extends Controller
 	    //$endDate = $request->request->get('endDate');
 
 	    /* Get : shelfshare data */
-        $sql = "SELECT pdv.nom pdv, poi.libelle poi, c.name categorieProduits, s.name segment, m.libelle marque, SUM(qte) ".
+        $sql = "SELECT pdv.nom pdv, poi.libelle poi, c.name categorieProduits, s.name segment, m.libelle marque, ville, SUM(qte) ".
         	   "FROM questionnaireshelfshare q, localisation l, questionnaireshelfshare_marque qd, " .
         	   "classification__category c, classification__category s,poi, pdv, marque m " .
                "WHERE q.localisation_id = l.id AND q.id = qd.questionnaireshelfshare_id ".
                "AND qd.categorieProduits_id = c.id AND qd.segment_id = s.id AND l.pdv_id = pdv.id ".
                "AND qd.poi_id = poi.id AND qd.marque_id = m.id ".
-               "GROUP BY 1,2,3,4,5";
+               "GROUP BY 1,2,3,4,5,6";
                //"date_creation >= '" . $param_startDate . "' AND date_creation <= '" . $param_endDate ."'";
         $queryResult = $em->getConnection()->executeQuery($sql);
         $dataArray = array();

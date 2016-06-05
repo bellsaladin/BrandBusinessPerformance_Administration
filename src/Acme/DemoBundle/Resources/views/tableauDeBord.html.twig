@@ -28,7 +28,10 @@
                     <option value="107">LAMRANI</option>
                     <option value="109">Jalouli</option>
                 </select>-->
-                <input type="submit" class="btn btn-info" value="Observer">
+                <!--<input type="submit" class="btn btn-info" value="Observer">-->
+                <button type="submit" class="btn btn-default" aria-label="Left Align">
+                  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
             </div>
 
             <script type="text/javascript">
@@ -205,6 +208,20 @@
                 }
             });
 
+            var sourceDataTable_control6 = new google.visualization.ControlWrapper({
+                'controlType': 'CategoryFilter',
+                'containerId': 'sourceDataTable_control6',
+                'options': {
+                    'filterColumnIndex': 5,
+                    'ui': {
+                        'labelStacking': 'vertical',
+                        //'label': 'Col 1',
+                        'allowTyping': true,
+                        'allowMultiple': true
+                    }
+                }
+            });
+
             var projectionDataTable_control1 = new google.visualization.ControlWrapper({
                 'controlType': 'CategoryFilter',
                 'containerId': 'projectionDataTable_control1',
@@ -249,7 +266,7 @@
             
             var arrayData = $.parseJSON(jsonData);
 
-            sourceDashboard.bind([ sourceDataTable_control1, sourceDataTable_control2, sourceDataTable_control3,sourceDataTable_control4, sourceDataTable_control5 ], [sourceTable]);
+            sourceDashboard.bind([ sourceDataTable_control1, sourceDataTable_control2, sourceDataTable_control3,sourceDataTable_control4, sourceDataTable_control5, sourceDataTable_control6 ], [sourceTable]);
             sourceDashboard.draw(sourceDataTable);
 
             projectionDataTable = google.visualization.arrayToDataTable(arrayData);
@@ -262,7 +279,7 @@
             var sortColmuns = [];
             sortColmuns.push( parseInt(projectionColumnIndex) );
             projectionDashboard.draw( google.visualization.data.group(projectionDataTable, sortColmuns,
-            [{'column': 5, 'aggregation': google.visualization.data.sum, 'type': 'number'}]) );       
+            [{'column': 6, 'aggregation': google.visualization.data.sum, 'type': 'number'}]) );       
           }
         </script>
         <div id="projectionDashboard" style="margin-top: 1em; background-color:#fff">
@@ -271,7 +288,7 @@
                     <i class="fa fa-filter" aria-hidden="true"></i>
                     Gérer les données du graphique shelfshare
                 </a>
-                <div id="chart_div" style="padding-top: 15px"><div style="height:300px;margin-top:140px; color:#999"><smal>Chargement des données</small></div></div>
+                <div id="chart_div" style="padding-top: 15px"><div style="height:300px;margin-top:140px; color:#999"><smal>Chargement des données...</small></div></div>
             </center>
             <div id="projectionTable" class="hidden" style="padding-top: 15px"></div>
                   
@@ -293,6 +310,7 @@
                             <div id="sourceDataTable_control3"></div>
                             <div id="sourceDataTable_control4"></div>
                             <div id="sourceDataTable_control5"></div>
+                            <div id="sourceDataTable_control6"></div>
                         </div>
                         <div class="col-sm-3">
                             <b>Projeter les données par :</b>
