@@ -74,6 +74,54 @@ class WebserviceController extends Controller
 	    return $response;
     }
 
+    public function getSfosPerformanceDataAction(){
+    	$em = $this->getDoctrine()->getManager();
+
+	    //$startDate = $request->request->get('startDate');
+	    //$endDate = $request->request->get('endDate');
+
+	    /* Get : SFOs performance data */
+        
+        /* Get : Nbr Enquêtes validées */
+        
+        $subRequest1 = "SELECT l.sfo_id, q.*  FROM questionnairedisponibilite q, localisation l
+                WHERE l.id = q.localisation_id'";
+
+        $subRequest2 = "SELECT l.sfo_id, q.*  FROM questionnaireshelfshare q, localisation l
+                WHERE l.id = q.localisation_id'";
+
+        $sql = "select CONCAT(sfo_t1.nom,' ',sfo_t1.prenom) as 'SFO', COUNT(distinct s1.questionnaire_id) + COUNT(distinct s2.questionnaire_id) as 'Nbr Rapports', IFNULL( AVG(s1.nbrLignesTraitees) + AVG(s2.nbrLignesTraitees), 0) as 'Moy. Nbr Lignes Traitees', IFNULL( AVG(s1.tempsremplissage) + AVG(s2.tempsremplissage), 0) as 'Moy. Temps remplissage'
+				FROM sfo sfo_t1 LEFT OUTER JOIN
+				(SELECT l.sfo_id, q.id as questionnaire_id, q.* FROM questionnairedisponibilite q, localisation l
+				WHERE l.id = q.localisation_id) s1
+				ON sfo_t1.id = s1.sfo_id LEFT OUTER JOIN 
+				(SELECT l.sfo_id, q.id as questionnaire_id, q.* FROM questionnaireShelfShare q, localisation l
+				WHERE l.id = q.localisation_id) s2 ON sfo_t1.id = s2.sfo_id  
+				GROUP BY 1";
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        while ($row = $queryResult->fetch()) {
+            $exportedRowArray[] = $row;
+        }
+        //"date_creation >= '" . $param_startDate . "' AND date_creation <= '" . $param_endDate ."'";
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        $dataArray = array();
+        $gotColumnsNames = false;
+        while ($row = $queryResult->fetch()) {
+        	if(!$gotColumnsNames){
+        		$dataArray[] = array_keys($row);
+        		$gotColumnsNames = true;
+        	}
+            $dataArray[] = array_values($row);// remove keys, keeping only values
+            //$dataArray[] = $row;
+        }
+
+	    $jsonContent = json_encode($dataArray, JSON_NUMERIC_CHECK);
+
+	    $response = new Response($jsonContent);
+		$response->headers->set('Content-Type', 'application/json');
+	    return $response;
+    }
+
     public function getReferencementDataAction(Request $request){
     	$em = $this->getDoctrine()->getManager();
 
