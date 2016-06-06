@@ -34,27 +34,27 @@ class ProduitAdmin extends Admin
             //->add('author', 'entity', array('class' => 'Acme\DemoBundle\Entity\User'))
         ;
 
-        if ($subject instanceof REF) {
+        if ($subject instanceof REF || $subject->getEntityType() == 'REF') {
             $formMapper->add('couleur', 'text');
             $formMapper->add('volume', 'text');
             $formMapper->add('typeCompresseur', 'text',array('label' => 'Type compresseur'));
             $formMapper->add('dimension', 'text');
         }
 
-        if ($subject instanceof WM) {
+        if ($subject instanceof WM || $subject->getEntityType() == 'WM') {
             $formMapper->add('couleur', 'text');
             $formMapper->add('capacite', 'text');
             $formMapper->add('typeMoteur', 'text',array('label' => 'Type moteur'));
         }
 
-        if ($subject instanceof CTV) {
+        if ($subject instanceof CTV || $subject->getEntityType() == 'CTV') {
             $formMapper->add('smart');
             $formMapper->add('inch', 'text');
             $formMapper->add('serie', 'text');
             $formMapper->add('resolution', 'text');
         }
 
-        if ($subject instanceof AC) {
+        if ($subject instanceof AC || $subject->getEntityType() == 'AC'){
             $formMapper->add('couleur', 'text');
             $formMapper->add('capacite', 'text');
         }
@@ -62,8 +62,11 @@ class ProduitAdmin extends Admin
         $formMapper->add('dimension', 'text');
         $formMapper->add('garantie', 'text');
         $formMapper->add('prix', 'text');
-        $formMapper->add('prixPromotionnel', 'text');
-
+        $formMapper->add('prixPromotionnel', 'text',array('label' => 'Prix promotionnel'));
+        $formMapper->add('attribut1', 'text',array('label' => 'Attribut extra 1'));
+        $formMapper->add('attribut2', 'text',array('label' => 'Attribut extra 2'));
+        $formMapper->add('attribut3', 'text',array('label' => 'Attribut extra 3'));
+        $formMapper->add('attribut4', 'text',array('label' => 'Attribut extra 4'));
     }
 
     // Fields to be shown on filter forms

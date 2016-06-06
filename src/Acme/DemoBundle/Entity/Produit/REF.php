@@ -20,6 +20,12 @@ class REF extends Produit
      */
     private $id;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setEntityType('REF');
+    }
+
     /**
      * @return integer
      */

@@ -24,6 +24,13 @@ class Produit
     /**
      * @var string
      *
+     * @ORM\Column(name="entityType", type="string", length=100, nullable=true)
+     */
+    private $entityType;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="sku", type="string", length=100, nullable=true)
      */
     private $sku;
@@ -159,11 +166,35 @@ class Produit
      */
     private $dateCreation;
 
+    /**
+     *
+     * @ORM\Column(name="attribut_1", type="string", length=100, nullable=true)
+     */
+    private $attribut1;
+
+    /**
+     *
+     * @ORM\Column(name="attribut_2", type="string", length=100, nullable=true)
+     */
+    private $attribut2;
+
+    /**
+     *
+     * @ORM\Column(name="attribut_3", type="string", length=100, nullable=true)
+     */
+    private $attribut3;
+
+    /**
+     *
+     * @ORM\Column(name="attribut_4", type="string", length=100, nullable=true)
+     */
+    private $attribut4;
+
 
     public function __construct()
     {
         $this->enabled = 1;
-        $this->date = new \DateTime();
+        $this->dateCreation = new \DateTime();
     }
 
     /**
@@ -174,6 +205,17 @@ class Produit
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setEntityType($val)
+    {
+        $this->entityType = $val;
+        return $this;
+    }
+    
+    public function getEntityType()
+    {
+        return $this->entityType;
     }
 
     /**
@@ -660,6 +702,50 @@ class Produit
     public function getDateCreation()
     {
         return $this->dateCreation;
+    }
+
+    public function setAttribut1($val)
+    {
+        $this->attribut1 = $val;
+        return $this;
+    }
+    
+    public function getAttribut1()
+    {
+        return $this->attribut1;
+    }
+
+    public function setAttribut2($val)
+    {
+        $this->attribut2 = $val;
+        return $this;
+    }
+    
+    public function getAttribut2()
+    {
+        return $this->attribut2;
+    }
+
+    public function setAttribut3($val)
+    {
+        $this->attribut3 = $val;
+        return $this;
+    }
+    
+    public function getAttribut3()
+    {
+        return $this->attribut3;
+    }
+
+    public function setAttribut4($val)
+    {
+        $this->attribut4 = $val;
+        return $this;
+    }
+    
+    public function getAttribut4()
+    {
+        return $this->attribut4;
     }
 
 }

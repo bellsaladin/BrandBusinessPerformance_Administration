@@ -20,6 +20,12 @@ class WM extends Produit
      */
     private $id;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setEntityType('WM');
+    }
+
     /**
      * @return integer
      */
