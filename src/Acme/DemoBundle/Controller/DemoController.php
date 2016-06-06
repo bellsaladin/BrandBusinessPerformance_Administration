@@ -133,6 +133,27 @@ class DemoController extends Controller
         return $this->render('AcmeDemoBundle::tableauDeBord.html.twig',array('admin_pool' => $admin_pool,'exportedRowArray'=>$exportedRowArray , 'params' => $params));
     }
 
+
+    public function referencementAction(Request $request){
+      $admin_pool = $this->get('sonata.admin.pool');
+      $em = $this->getDoctrine()->getManager();
+      $data = array();
+      // get : Produit List
+      $sql = "select id, sku FROM produit";
+      $queryResult = $em->getConnection()->executeQuery($sql);
+      while ($row = $queryResult->fetch()) {
+            $data['produitList'][] = $row;
+      }
+      // get : PDV List
+      $sql = "select id, nom FROM pdv";
+      $queryResult = $em->getConnection()->executeQuery($sql);
+      while ($row = $queryResult->fetch()) {
+            $data['pdvList'][] = $row;
+      }
+      //$data['produits'] = $this->getDoctrine()->getRepository('AcmeDemoBundle:Produit')->findAll();
+      return $this->render('AcmeDemoBundle::referencement.html.twig',array('admin_pool' => $admin_pool,'data'=>$data));
+    }
+
     public function mapDashboardAction()
     {
         $admin_pool = $this->get('sonata.admin.pool');

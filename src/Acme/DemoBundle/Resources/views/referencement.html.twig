@@ -1,0 +1,168 @@
+{% extends 'AcmeDemoBundle::app_layout.html.twig' %}
+
+{% block title %}{{ 'title_dashboard'|trans({}, 'SonataAdminBundle') }}{% endblock%}
+{% block breadcrumb %}{% endblock %}
+{% block content %}
+
+    {{ sonata_block_render_event('sonata.admin.dashboard.top', { 'admin_pool': admin_pool }) }}
+    <form action="" method="post">
+    </form>
+    <div class="row" style="margin:5px">
+		<div class="col-md-12 hidden">
+        {% if app.security.token and (is_granted('ROLE_ANALYST') or is_granted('ROLE_ADMIN') )%}
+            <div>
+            {# dump(data['produitList']) #}
+            <br/><br/>
+            {# dump(data['pdvList']) #}
+            </div>
+    	{% endif %}
+	   </div>
+        <div class="input-group">
+            <select class="select" style="width:300px; margin-left:2px" id="select_pdv" name="pdv">
+                <option value="">Choisissez un PDV</option>
+                {% for pdv in data['pdvList'] %}
+                <option value="{{ pdv.id}}">{{ pdv.nom}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br/>
+        <div class="input-group">
+            <span class="input-group-addon">Filtrer</span>
+            <input id="filter" type="text" class="form-control" placeholder="SKU...">
+        </div>
+        <script>
+            var pdvId = null;
+
+            $(document).ready(function () {
+                $('select').select2();
+
+                (function ($) {
+                    $('#filter').keyup(function () {
+
+                        var rex = new RegExp($(this).val(), 'i');
+                        $('.searchable tr').hide();
+                        $('.searchable tr').filter(function () {
+                            return rex.test($(this).text());
+                        }).show();
+                    })
+                }(jQuery));
+
+                $('#select_pdv').on("change", function (e) { 
+                    //alert("change : " + $(this).val() ); 
+                    pdvId = $(this).val();
+                    $('#hiddenInput_pdvId').val(pdvId);
+                    //alert($('#hiddenInput_pdvId').val());
+                    $.ajax({
+                      url: "{{ path('_webservice_getRefencementProduits' ) }}",
+                      data: {'pdvId': pdvId},
+                      method: 'post',
+                      dataType: "json",
+                      success: function(resultData) {
+                        var produitsReferences = resultData;
+                        
+                        $.each($('input.checkbox-referencement'), function() {
+                            $(this).iCheck('uncheck');
+                            //alert($(this).val());
+                            for (var index = 0; index < produitsReferences.length; ++index) {
+                                //alert(produitsReferences[index]);
+                                if(produitsReferences[index] == $(this).val() ){
+                                    $(this).iCheck('check');
+                                }
+                            }
+                        });  
+
+                        updateSummary();     
+                      },
+                      error: function(resultData) {
+                       alert("error");
+                      },
+                    });
+
+                    updateSummary();
+                });
+                $('.checkbox-referencement').on('ifChanged', function(event){
+                    if(pdvId == null){
+                        alert("Vous devez d'abord choisir un PDV !");
+                        return;
+                    }
+                    //alert(event.type + ' callback');
+                    updateSummary();
+                });
+
+            });
+
+            function updateSummary(){
+                var msg = "";
+                var produitsReferencesCount = 0;
+                $.each($("input[name='produit[]']:checked"), function() {
+                  //alert(" produit referencé : " +$(this).val());
+                  produitsReferencesCount++;
+                });
+                msg = produitsReferencesCount + " Produit(s) référencé(s)"
+                $('#summary').html(msg)
+            }
+        </script>
+        <form id="form">
+            <input type="hidden" name="pdvId" id="hiddenInput_pdvId" />
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Disponible</th>
+                    </tr>
+                </thead>
+                <tbody class="searchable">
+                    {% for produit in data['produitList'] %}
+                    <tr>
+                        <td style="width:90%">{{ produit.sku}}</td>
+                        <td style="width:10%">
+                            <input type="checkbox" name="produit[]" value="{{ produit.id}}" class="checkbox-referencement"/>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div id="summary" style="font-size:11px; color:#777">
+            </div>
+            <div id="saveMsg" style="font-size:11px;font-weight:bold">
+            </div>
+
+        </form>
+        <div>
+            <center><button type="button" id="btnSave" class="btn btn-info" style="width:200px">Enregistrer</button></center>
+            <script>
+                $(document).ready(function () {
+                    $('#btnSave').click(function () {
+                        // construct referenced products stringified arrray
+                        var produitsReferencesArrayStr = "";
+                        $.each($("input[name='produit[]']:checked"), function() {
+                          produitsReferencesArrayStr += (produitsReferencesArrayStr=="")?$(this).val():","+$(this).val();
+                        });
+                        //alert(produitsReferencesArrayStr);
+                        if(produitsReferencesArrayStr == "" || pdvId == null){
+                            alert('Vous devez selectionner un PDV et un ou plusieurs SKU');
+                        }
+
+                        // send request
+                        $.ajax({
+                          url: "{{ path('_webservice_saveRefencementProduits' ) }}",
+                          data: {'pdvId': pdvId, 'produitsReferencesArrayStr' : produitsReferencesArrayStr},
+                          method: 'post',
+                          success: function(resultData) {
+                           $('#saveMsg').html('Modifications enregistrées !');
+                           //alert("Save Complete");
+                          },
+                          error: function(resultData) {
+                            alert("error");
+                            console.log(resultData);
+                          },
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+
+    {{ sonata_block_render_event('sonata.admin.dashboard.bottom', { 'admin_pool': admin_pool }) }}
+
+{% endblock %}

@@ -73,6 +73,51 @@ class WebserviceController extends Controller
 		$response->headers->set('Content-Type', 'application/json');
 	    return $response;
     }
+
+    public function getReferencementDataAction(Request $request){
+    	$em = $this->getDoctrine()->getManager();
+
+	    $pdvId = $request->request->get('pdvId');
+
+	    /* Get : shelfshare data */
+        $sql = "SELECT produit_id FROM referencementproduit WHERE pdv_id = $pdvId";
+               //"date_creation >= '" . $param_startDate . "' AND date_creation <= '" . $param_endDate ."'";
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        $dataArray = array();
+        $gotColumnsNames = false;
+        while ($row = $queryResult->fetch()) {
+            $dataArray[] = array_values($row);// remove keys, keeping only values
+            //$dataArray[] = $row;
+        }
+
+	    $jsonContent = json_encode($dataArray, JSON_NUMERIC_CHECK);
+
+	    $response = new Response($jsonContent);
+		$response->headers->set('Content-Type', 'application/json');
+	    return $response;
+    }
+
+    public function saveReferencementDataAction(Request $request){
+    	$em = $this->getDoctrine()->getManager();
+
+	    $pdvId 				   = $request->request->get('pdvId');
+	    $produitsReferencesArrayStr = $request->request->get('produitsReferencesArrayStr');
+	    $produitsReferencesArray = explode(',', $produitsReferencesArrayStr);
+	    /* Delete old references */
+	    $sql = "DELETE FROM referencementproduit WHERE pdv_id = $pdvId";
+	    $queryResult = $em->getConnection()->executeQuery($sql);
+
+	    $sqlInsertSequence = "";
+	    foreach($produitsReferencesArray as $produitId){
+	    	$insertExpression  = "($produitId, $pdvId)";
+	    	$sqlInsertSequence .= ($sqlInsertSequence == "")?$insertExpression:",".$insertExpression;
+	    }
+	    /* Insert new references */
+        $sql = "INSERT INTO referencementproduit VALUES ". $sqlInsertSequence;
+ 
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        return new Response('Done');
+    }
 }
 
 

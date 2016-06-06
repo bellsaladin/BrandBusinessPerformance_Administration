@@ -6,9 +6,21 @@ _webservice_getShelfShareData:
     pattern:  /webservice/getShelfShareData
     defaults: { _controller: AcmeDemoBundle:Webservice:getShelfShareData }
 
+_webservice_getRefencementProduits:
+    pattern:  /webservice/getReferencementData
+    defaults: { _controller: AcmeDemoBundle:Webservice:getReferencementData }
+
+_webservice_saveRefencementProduits:
+    pattern:  /webservice/saveReferencementData
+    defaults: { _controller: AcmeDemoBundle:Webservice:saveReferencementData }
+
 _tableauDeBoard:
     pattern:  /admin/app/tableauDeBoard
     defaults: { _controller: AcmeDemoBundle:Demo:tableauDeBoard }
+
+_referencement:
+    pattern:  /admin/app/referecement
+    defaults: { _controller: AcmeDemoBundle:Demo:referencement }
 
 _mapDashboard:
     pattern:  /admin/app/mapDashboard

@@ -238,6 +238,14 @@ file that was distributed with this source code.
                                                     </i>
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a href="{{ path('_referencement') }}" >
+                                                    <i class="fa fa-cubes"></i>
+                                                    <span>Référencement</span>
+                                                    <i class="fa pull-right">
+                                                    </i>
+                                                </a>
+                                            </li>
                                 {% endif %}        
                                             {% for group in admin_pool.dashboardgroups %}
                                                 {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
