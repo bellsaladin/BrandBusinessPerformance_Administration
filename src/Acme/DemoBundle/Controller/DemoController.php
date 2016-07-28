@@ -39,7 +39,7 @@ class DemoController extends Controller
         $sql = "select COUNT( DISTINCT pdv_id, date(date_creation)) as 'NbrPDVVisites' FROM localisation l " .
                "WHERE date_creation >= '" . $param_startDate . "' AND date_creation <= '" . $param_endDate ."'";
         if($param_sfoId != NULL)
-          $sql .= " AND sfo_id = $param_sfoId "; 
+          $sql .= " AND sfo_id = $param_sfoId ";
         $queryResult = $em->getConnection()->executeQuery($sql);
         $exportedRowArray = array();
         while ($row = $queryResult->fetch()) {
@@ -49,7 +49,7 @@ class DemoController extends Controller
         $sql = "select COUNT( DISTINCT pdv_id) as 'NbrVisitesPdvPlannifiees' FROM planning p, visite v ".
                 "WHERE p.id = v.planning_id AND DATE_ADD(datedebut_semaine, INTERVAL dayOfWeek - 1 DAY) >= '" . $param_startDate . "' AND DATE_ADD(datedebut_semaine, INTERVAL dayOfWeek - 1 DAY) <= '" . $param_endDate ."'";
         if($param_sfoId != NULL)
-          $sql .= " AND sfo_id = $param_sfoId "; 
+          $sql .= " AND sfo_id = $param_sfoId ";
 
         $queryResult = $em->getConnection()->executeQuery($sql);
         while ($row = $queryResult->fetch()) {
@@ -59,7 +59,7 @@ class DemoController extends Controller
         $sql = "select SUM(nbrLignesTraitees) as 'nbrLignesTraiteesRapportsDisponibilite', SUM(tempsRemplissage) as 'tempsSaisieRapportsDisponibilite' FROM questionnairedisponibilite q, localisation l ".
                 "WHERE l.id = q.localisation_id AND q.date_creation >= '" . $param_startDate . "' AND q.date_creation <= '" . $param_endDate ."'";
         if($param_sfoId != NULL)
-          $sql .= " AND sfo_id = $param_sfoId "; 
+          $sql .= " AND sfo_id = $param_sfoId ";
 
         $queryResult = $em->getConnection()->executeQuery($sql);
         while ($row = $queryResult->fetch()) {
@@ -69,7 +69,7 @@ class DemoController extends Controller
         $sql = "select SUM(nbrLignesTraitees) as 'nbrLignesTraiteesRapportsShelfShare', SUM(tempsRemplissage) as 'tempsSaisieRapportsShelfShare' FROM questionnaireshelfshare q, localisation l ".
                 "WHERE l.id = q.localisation_id AND q.date_creation >= '" . $param_startDate . "' AND q.date_creation <= '" . $param_endDate ."'";
         if($param_sfoId != NULL)
-          $sql .= " AND sfo_id = $param_sfoId "; 
+          $sql .= " AND sfo_id = $param_sfoId ";
 
         $queryResult = $em->getConnection()->executeQuery($sql);
         while ($row = $queryResult->fetch()) {
@@ -77,16 +77,16 @@ class DemoController extends Controller
         }
 
         /* Get : Nbr Enquêtes validées */
-        
+
         $subRequest1 = "SELECT count(*) as nbrRapportsValides  FROM questionnairedisponibilite q, localisation l
                 WHERE l.id = q.localisation_id AND q.date_creation >= '" . $param_startDate . "' AND q.date_creation <= '" . $param_endDate ."' AND valide = 1";
         if($param_sfoId != NULL)
-          $subRequest1 .= " AND sfo_id = $param_sfoId "; 
+          $subRequest1 .= " AND sfo_id = $param_sfoId ";
 
         $subRequest2 = "SELECT count(*) as nbrRapportsValides  FROM questionnaireshelfshare q, localisation l
                 WHERE l.id = q.localisation_id AND q.date_creation >= '" . $param_startDate . "' AND q.date_creation <= '" . $param_endDate ."' AND valide = 1";
         if($param_sfoId != NULL)
-          $subRequest2 .= " AND sfo_id = $param_sfoId "; 
+          $subRequest2 .= " AND sfo_id = $param_sfoId ";
 
         $sql = "select s1.nbrRapportsValides + s2.nbrRapportsValides as nbrRapportsValides
                 FROM ($subRequest1) as s1, ($subRequest2) as s2";
@@ -96,16 +96,16 @@ class DemoController extends Controller
         }
 
         /* Get : Nbr Enquêtes total*/
-        
+
         $subRequest1 = "SELECT count(*) as nbrRapports FROM questionnairedisponibilite q, localisation l
                 WHERE l.id = q.localisation_id AND q.date_creation >= '" . $param_startDate . "' AND q.date_creation <= '" . $param_endDate ."' ";
         if($param_sfoId != NULL)
-          $subRequest1 .= " AND sfo_id = $param_sfoId "; 
+          $subRequest1 .= " AND sfo_id = $param_sfoId ";
 
         $subRequest2 = "SELECT count(*) as nbrRapports  FROM questionnaireshelfshare q, localisation l
                 WHERE l.id = q.localisation_id AND q.date_creation >= '" . $param_startDate . "' AND q.date_creation <= '" . $param_endDate ."'";
         if($param_sfoId != NULL)
-          $subRequest2 .= " AND sfo_id = $param_sfoId "; 
+          $subRequest2 .= " AND sfo_id = $param_sfoId ";
 
         $sql = "select s1.nbrRapports + s2.nbrRapports as nbrRapports
                 FROM ($subRequest1) as s1, ($subRequest2) as s2";
@@ -166,7 +166,7 @@ class DemoController extends Controller
         $animateursAndLastLocalisationList = array();
         foreach($animateursList as $animateur){
 
-            $sql = "select l.* 
+            $sql = "select l.*
                     FROM localisation l
                     WHERE animateur_id = ".$animateur->getId()."
                     AND l.date_creation >= '".date('Y-m-d 0:0:0')."' AND l.date_creation <= '".date('Y-m-d 23:59:59')."'
@@ -272,7 +272,7 @@ class DemoController extends Controller
     {
       $em = $this->getDoctrine()->getManager();
       $sql = "SELECT `value` FROM `parameters` WHERE `key` = 'PARAM_TOMBOLA_ENABLED'";
-      $queryResult = $em->getConnection()->executeQuery($sql);      
+      $queryResult = $em->getConnection()->executeQuery($sql);
       $row = $queryResult->fetch();
       $tombolaActive = $row['value'];
 
@@ -280,7 +280,7 @@ class DemoController extends Controller
         $tombolaActive = '1';
       }
       else{
-        $tombolaActive = '0'; 
+        $tombolaActive = '0';
       }
 
       $sql = "UPDATE `parameters` SET `value` = '$tombolaActive' WHERE `key` = 'PARAM_TOMBOLA_ENABLED'";
@@ -292,7 +292,7 @@ class DemoController extends Controller
     {
       $em = $this->getDoctrine()->getManager();
       $sql = "SELECT `value` FROM `parameters` WHERE `key` = 'PARAM_TOMBOLA_ENABLED'";
-      $queryResult = $em->getConnection()->executeQuery($sql);      
+      $queryResult = $em->getConnection()->executeQuery($sql);
       $row = $queryResult->fetch();
       $tombolaActive = $row['value'];
       $admin_pool = $this->get('sonata.admin.pool');
@@ -325,63 +325,20 @@ class DemoController extends Controller
       $em = $this->getDoctrine()->getManager();
       $dateDebut = \DateTime::createFromFormat('d/m/Y', $request->request->get('date_debut'))->format('Y-m-d');
       $dateFin = \DateTime::createFromFormat('d/m/Y', $request->request->get('date_fin'))->format('Y-m-d');
-        
-      if($request->get('export_bdd') != null){
-        $sql = "select r.id as rapportId, '' as 'N° animation', DATE_FORMAT(r.date_creation,'%Y-%m-%d') as 'Date', DATE_FORMAT(r.date_creation,'%H:%i') as 'Heure',
-                p.ville, p.licence as 'Code PDV', dcl.licence as 'Code PDV Remplacé', p.nom as 'Enseigne', p.secteur as 'Secteur',
-                t.libelle as 'Age', r.sexe as 'Sexe', mh.libelle as 'Marque habituelle', r.marquehabituelle_qte as 'Qte habituelle',
-                ma.libelle as 'Marque achetée', r.marqueachetee_qte as 'Qte achetée', CONCAT(s.nom,' ', s.prenom) as 'Superviseur', CONCAT(a.nom,' ', a.prenom) as 'Animateur',CASE r.tombola
-                WHEN 1 THEN 'Oui'
-                ELSE 'Non'
-                END as 'Tombola', r.commentaire as 'Commentaire'
-                FROM rapport r, localisation l LEFT OUTER JOIN demandechangementlicence dcl ON dcl.localisation_id = l.id, pdv p, animateur a, trancheage t, marque mh, marque ma, superviseur s
-                WHERE r.localisation_id = l.id AND l.pdv_id = p.id AND l.animateur_id = a.id AND a.superviseur_id = s.id AND r.trancheage_id = t.id AND
-                r.marquehabituelle_id = mh.id AND r.marqueachetee_id = ma.id
-                AND r.date_creation >= '$dateDebut' AND r.date_creation <= '$dateFin'
-                ORDER BY date, a.id, p.licence, heure";
+
+      if($request->get('export_data1') != null){
+        $sql = "SELECT q.date_creation 'Date', p.nom 'PDV', sfo.nom 'SFO', q.valide 'Validé', m.libelle 'Marque', cat.name 'Catégorie', seg.name 'Segment', poi.libelle 'POI', qte 'Quantité'
+                FROM questionnaireshelfshare q, questionnaireshelfshare_marque qm, localisation l, pdv p, sfo, marque m, poi,
+                     classification__category cat, classification__category seg
+                WHERE q.localisation_id = l.id AND l.pdv_id = p.id AND l.sfo_id = sfo.id AND
+                 qm.questionnaireshelfshare_id = q.id AND qm.categorieProduits_id = cat.id AND
+                 qm.segment_id = seg.id AND qm.poi_id = poi.id
+                AND q.date_creation >= '$dateDebut' AND q.date_creation <= '$dateFin'
+                ORDER BY q.date_creation";
         $queryResult = $em->getConnection()->executeQuery($sql);
         $exportedRowArray = array();
         while ($row = $queryResult->fetch()) {
           $exportedRowArray[] = $row;
-        }
-
-        // process and fill 'N° animation' column
-        $lastPdvLicence = null;
-        $lastPdvLicenceRemplace = null; 
-        foreach($exportedRowArray as &$rapport){
-          if($lastPdvLicence != $rapport['Code PDV'] || $lastPdvLicenceRemplace != $rapport['Code PDV Remplacé']){
-            $rapport['N° animation'] = 1;
-            $lastPdvLicence = $rapport['Code PDV'];
-            $lastPdvLicenceRemplace = $rapport['Code PDV Remplacé'];
-          }
-        }
-
-        // select cadeaux 
-        $sql = "select r.id as rapportId, c.libelle
-                FROM rapport r, rapport_cadeau rc, cadeau c
-                WHERE r.id = rc.rapport_id AND  rc.cadeau_id = c.id
-                AND r.date_creation >= '$dateDebut' AND r.date_creation <= '$dateFin'";
-        $queryResult = $em->getConnection()->executeQuery($sql);
-        $cadeauxRapportArray = array();
-        while ($row = $queryResult->fetch()) {
-          $cadeauxRapportArray[] = $row;
-        }
-
-        // get distinct cadeaux
-        $distinctCadeaux = array();
-        foreach($cadeauxRapportArray as $cadeauRapport){
-          if(!in_array($cadeauRapport['libelle'], $distinctCadeaux))
-            $distinctCadeaux[] = $cadeauRapport['libelle'];
-        }
-        foreach($exportedRowArray as &$rapport){
-          foreach($distinctCadeaux as $cadeau){
-            $rapport[$cadeau] = '';
-            foreach($cadeauxRapportArray as $cadeauRapport){
-              if($rapport['rapportId'] == $cadeauRapport['rapportId'] && $cadeau == $cadeauRapport['libelle']){
-                $rapport[$cadeau] = 1;
-              }
-            }
-          }
         }
 
         if(count($exportedRowArray) == 0){
@@ -392,24 +349,28 @@ class DemoController extends Controller
         $filename = sprintf( 'export_global_%s.xls', date('Y_m_d_H_i_s', strtotime('now')) );
         return $this->get('sonata.admin.exporter')->getResponse('xls', $filename, $sourceIterator);
       }
-      if($request->get('export_animations_report') != null){
-        $sql = "select p.licence as 'PDV', CONCAT(a.nom,' ',a.prenom) as 'Animateur', count(distinct r.localisation_id) as 'Nbr Animations' 
-                FROM rapport r, localisation l, animateur a, pdv p
-                Where r.localisation_id = l.id ANd l.animateur_id = a.id AND l.pdv_id = p.id
-                AND r.date_creation >= '$dateDebut' AND r.date_creation <= '$dateFin'
-                GROUP BY PDV,Animateur
-                ORDER BY 1 ASC";
+
+      if($request->get('export_data2') != null){
+        $sql = "SELECT q.date_creation 'Date', p.nom 'PDV', sfo.nom 'SFO', q.valide 'Validé', produit.sku 'SKU', cat.name 'Catégorie', poi.libelle 'POI', qte 'Quantité'
+                FROM questionnairedisponibilite q, questionnairedisponibilite_produit qm, localisation l, pdv p, sfo, produit, poi,
+                     classification__category cat
+                WHERE q.localisation_id = l.id AND l.pdv_id = p.id AND l.sfo_id = sfo.id AND
+                 qm.questionnairedisponibilite_id = q.id AND qm.categorieProduits_id = cat.id AND
+                 qm.poi_id = poi.id AND produit.id = qm.produit_id AND
+                 q.date_creation >= '$dateDebut' AND q.date_creation <= '$dateFin'
+                ORDER BY q.date_creation";
         $queryResult = $em->getConnection()->executeQuery($sql);
         $exportedRowArray = array();
         while ($row = $queryResult->fetch()) {
           $exportedRowArray[] = $row;
         }
 
-        if(count($exportedRowArray) == 1 && $exportedRowArray[0]['PDV'] == null){
+        if(count($exportedRowArray) == 0){
           $exportedRowArray[0] = array('Info' =>'Aucune donnée trouvée pour l\'interval spécifié');
         }
+
         $sourceIterator = new ArraySourceIterator($exportedRowArray);
-        $filename = sprintf( 'export_animations_%s.xls', date('Y_m_d_H_i_s', strtotime('now')) );
+        $filename = sprintf( 'export_global_%s.xls', date('Y_m_d_H_i_s', strtotime('now')) );
         return $this->get('sonata.admin.exporter')->getResponse('xls', $filename, $sourceIterator);
       }
     }

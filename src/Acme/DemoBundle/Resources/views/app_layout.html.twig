@@ -212,7 +212,7 @@ file that was distributed with this source code.
                                     </form>
                                 {% endif %}
                             {% endblock sonata_sidebar_search %}
-                                
+
                                 <ul class="sidebar-menu">
 
                                 {% block side_bar_before_nav %} {% endblock %}
@@ -246,7 +246,15 @@ file that was distributed with this source code.
                                                     </i>
                                                 </a>
                                             </li>
-                                {% endif %}        
+                                            <li>
+                                                <a href="{{ path('_generateXlsFileView') }}" >
+                                                    <i class="fa  fa-file-excel-o"></i>
+                                                    <span>Exportation des données</span>
+                                                    <i class="fa pull-right">
+                                                    </i>
+                                                </a>
+                                            </li>
+                                {% endif %}
                                             {% for group in admin_pool.dashboardgroups %}
                                                 {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
                                                 {% for role in group.roles if not display %}

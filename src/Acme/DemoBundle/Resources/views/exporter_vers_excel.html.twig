@@ -7,15 +7,18 @@
     <div style="margin:50px">
 
     {% if app.security.token and (is_granted('ROLE_ADMIN') )%}
-    <h3>Exportation des données vers Excel :</h3><br/>
+    <h3>Exportation des données collectées vers Excel :</h3>
+    <br/><br/>
     <form method="post" action="{{ path('_generateXlsFileExecute') }}" enctype="multipart/form-data">
+    <p><b>Période :</b></p>
     <div style="margin:20px 0">
       Du :
       <input type="text" name="date_debut" id="date_debut" class="sonata-medium-date" data-date-format="DD/MM/YYYY" value="{{ "now"|date("d/m/Y") }}">
       Au : <input type="text" name="date_fin" id="date_fin" class="sonata-medium-date" data-date-format="DD/MM/YYYY"value="{{ "tomorrow"|date("d/m/Y") }}">
     </div>
-    <input type="submit" name="export_bdd" class="btn btn-danger" value="Exporter la BDD vers Excel"/>
-    <input type="submit" name="export_animations_report" class="btn btn-danger" value="Exporter le rapport des animations vers Excel"/>
+    <br/><br/>
+    <input type="submit" name="export_data1" class="btn btn-danger" value="Exporter les données shelfshare"/>
+    <input type="submit" name="export_data2" class="btn btn-danger" value="Exporter les données de disponiblité"/>
     </form>
     <script type="text/javascript">
         jQuery(function ($) {
@@ -25,22 +28,9 @@
     </script>
     <br/><br/>
     <br/><br/>
-    <h3>Upload du fichier pour le client :</h3><br/>
-    <a href="{{ path('_uploadXlsFileForClientView') }}" class="btn btn-info">Upload du fichier</a>
 
-    {% elseif app.security.token and (is_granted('ROLE_CLIENT')) %}
-    <div>
-    <a href="{{ asset('bundles/acmedemo/fichierClient/fichier.xls') }}" class="btn btn-danger">Exporter les données vers Excel</a>
-    </div>
     {% endif %}
 
-    <h3>Tombola :</h3><br/>    
-    <div>
-    {% if tombolaActive %}
-    <a href="{{ path('_toggleActivateTombola') }}" class="btn btn-danger">Désactiver</a>    
-    {% else %}  
-    <a href="{{ path('_toggleActivateTombola') }}" class="btn btn-success">Activer</a>    
-    {% endif %}
     </div>
     </div>
     {{ sonata_block_render_event('sonata.admin.dashboard.bottom', { 'admin_pool': admin_pool }) }}
