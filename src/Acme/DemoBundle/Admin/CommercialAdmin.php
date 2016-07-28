@@ -35,12 +35,16 @@ class CommercialAdmin extends Admin
               ))
           ;
           */
-        ->add('user.email', 'text')
-        ->add('user.username', 'text');
-      if(!$this->getRoot()->getSubject()->getId())
+        ->add('user.email', 'text');
+
+      if(!$this->getRoot()->getSubject()->getId()){
+          $formMapper->add('user.username', 'text');
           $formMapper->add('user.plainPassword', 'text', array('label'=>'Mot de passe'));
-      else
+      }
+      else{
+          $formMapper->add('user.username', 'text' , array( 'read_only' => true, 'disabled'  => true));
           $formMapper->add('user.plainPassword', 'text', array('label'=>'Mot de passe ( Mettre une valeur si vous voulez changer le mot de passe)','required'=>false));
+      }
     }
 
     // Fields to be shown on filter forms
@@ -117,14 +121,27 @@ class CommercialAdmin extends Admin
     public function validate(ErrorElement $errorElement, $object)
     {
       $em = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getManager();
-      $user = $em->getRepository('AppBundle:User\User')->findBy(array('username' => $object->getUser()->getUsername()));
-      if($user){
+      //$userExists = $em->getRepository('AppBundle:User\User')->findOneBy(array('username' => ));;
+      $userManager = $this->getConfigurationPool()->getContainer()->get('fos_user.user_manager');
 
-        $errorElement
-            ->with('user.username')
-                ->addViolation("Le nom d'utilisateur choisi est déjà utilisé !")
-            ->end()
-        ;
+      //echo $object->getUser()->getUsername(); die();
+      $userExists = $userManager->FindUserByUsername($object->getUser()->getUsername());
+
+      //$originalObject = $em->getRepository('AcmeDemoBundle:SFO')->findOneBy(array('id' => $object->getId()));
+      //var_dump($originalObject->getUser()->getId() . ' - ' .  $userExists->getUsername());die(1);
+      //var_dump($originalObject->getUser()->getId() . ' - ' .  $originalObject->getUser()->getUsername());die(1);
+
+      //$oldUsername = $originalObjectOldUser->getUsername();
+
+      if($userExists){
+        // On prend on compte le test de l'existance de l'utilisateur que lors de la création ou le changement de nom d'uitlisateur
+        if(!$object->getUser()->getId()
+            /*|| ($object->getUser()->getUsername() != $oldUsername)*/){
+            $errorElement
+              ->with('user.username')
+                  ->addViolation("Le nom d'utilisateur choisi est déjà utilisé !")
+              ->end();
+        }
       }
     }
 }
