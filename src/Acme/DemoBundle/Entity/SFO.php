@@ -39,7 +39,7 @@ class SFO
     /**
      * @var \TeamLeader
      *
-     * @ORM\ManyToOne(targetEntity="teamleader")
+     * @ORM\ManyToOne(targetEntity="TeamLeader")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="teamLeader_id", referencedColumnName="id")
      * })

@@ -149,7 +149,7 @@ class Pdv
     /**
      * @var \Sfo
      *
-     * @ORM\ManyToOne(targetEntity="\Acme\DemoBundle\Entity\Sfo",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="\Acme\DemoBundle\Entity\SFO",cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="sfo_id", referencedColumnName="id")
      * })

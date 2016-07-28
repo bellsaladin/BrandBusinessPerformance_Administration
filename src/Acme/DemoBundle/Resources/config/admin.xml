@@ -44,6 +44,10 @@
             <argument />
             <argument>Acme\DemoBundle\Entity\Planning</argument>
             <argument />
+            <call method="setTemplate">
+              <argument>edit</argument>
+              <argument>AcmeDemoBundle:PlanningAdmin:edit.html.twig</argument>
+            </call>
             <call method="setTranslationDomain">
                 <argument>AcmeDemoBundle</argument>
             </call>
@@ -172,7 +176,7 @@
           </call>
           <call method="setSubClasses">
             <argument type="collection">
-                <argument key="REF">Acme\DemoBundle\Entity\Produit\Ref</argument>
+                <argument key="REF">Acme\DemoBundle\Entity\Produit\REF</argument>
                 <argument key="WM">Acme\DemoBundle\Entity\Produit\WM</argument>
                 <argument key="CTV">Acme\DemoBundle\Entity\Produit\CTV</argument>
                 <argument key="AC">Acme\DemoBundle\Entity\Produit\AC</argument>

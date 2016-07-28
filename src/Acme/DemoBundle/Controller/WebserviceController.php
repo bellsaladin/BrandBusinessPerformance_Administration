@@ -95,7 +95,7 @@ class WebserviceController extends Controller
 				(SELECT l.sfo_id, q.id as questionnaire_id, q.* FROM questionnairedisponibilite q, localisation l
 				WHERE l.id = q.localisation_id) s1
 				ON sfo_t1.id = s1.sfo_id LEFT OUTER JOIN 
-				(SELECT l.sfo_id, q.id as questionnaire_id, q.* FROM questionnaireShelfShare q, localisation l
+				(SELECT l.sfo_id, q.id as questionnaire_id, q.* FROM questionnaireshelfshare q, localisation l
 				WHERE l.id = q.localisation_id) s2 ON sfo_t1.id = s2.sfo_id  
 				GROUP BY 1";
         $queryResult = $em->getConnection()->executeQuery($sql);
