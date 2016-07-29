@@ -103,11 +103,19 @@ class QuestionnaireShelfShareAdmin extends Admin
 
       // check user permissions
       if($this->isGranted('EDIT') && $this->isGranted('DELETE')){
-          $actions['validate']=[
+          $originalActions = $actions; // on copie les actions et les réinitialise pour mettre les actiosn 'valider' & 'dévalider' en premier
+          $actions = array(); // on réinitilaise le tableau
+          $actions['valider']=[
               'label'            => 'Valider',
               'ask_confirmation' => true // If true, a confirmation will be asked before performing the action
           ];
 
+          $actions['devalider']=[
+              'label'            => 'Dévalider',
+              'ask_confirmation' => true // If true, a confirmation will be asked before performing the action
+          ];
+
+          $actions = array_merge($actions, $originalActions); 
       }
 
       return $actions;

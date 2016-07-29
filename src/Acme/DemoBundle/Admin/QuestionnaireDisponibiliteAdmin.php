@@ -19,7 +19,7 @@ class QuestionnaireDisponibiliteAdmin extends Admin
         '_sort_by' => 'dateCreation'  // name of the ordered field
                                  // (default = the model's id field, if any)
         );
-    
+
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -43,7 +43,7 @@ class QuestionnaireDisponibiliteAdmin extends Admin
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper            
+        $listMapper
             ->addIdentifier('dateCreation', null, array(
                  'route' => array(
                      'name' => 'show'
@@ -92,7 +92,34 @@ class QuestionnaireDisponibiliteAdmin extends Admin
         // to remove a single route
         $collection->remove('create');
         $collection->remove('edit');
-        // $collection->remove('delete');  
-        $collection->add('valider', $this->getRouterIdParameter().'/valider'); 
+        // $collection->remove('delete');
+        $collection->add('valider', $this->getRouterIdParameter().'/valider');
+    }
+
+    public function getBatchActions()
+    {
+      // retrieve the default (currently only the delete action) actions
+      $actions = parent::getBatchActions();
+
+      // PS : https://sonata-project.org/bundles/admin/2-0/doc/reference/batch_actions.html
+
+      // check user permissions
+      if($this->isGranted('EDIT') && $this->isGranted('DELETE')){
+          $originalActions = $actions; // on copie les actions et les réinitialise pour mettre les actiosn 'valider' & 'dévalider' en premier
+          $actions = array(); // on réinitilaise le tableau
+          $actions['valider']=[
+              'label'            => 'Valider',
+              'ask_confirmation' => true // If true, a confirmation will be asked before performing the action
+          ];
+
+          $actions['devalider']=[
+              'label'            => 'Dévalider',
+              'ask_confirmation' => true // If true, a confirmation will be asked before performing the action
+          ];
+
+          $actions = array_merge($actions, $originalActions);
+      }
+
+      return $actions;
     }
 }
