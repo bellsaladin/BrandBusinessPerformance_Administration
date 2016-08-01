@@ -26,7 +26,7 @@
           </call>
       </service>
       <service id="sonata.admin.questionnairedisponibilite" class="Acme\DemoBundle\Admin\QuestionnaireDisponibiliteAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Données collectées" label="Questionnaires de Disponibilité"/>
+            <tag name="sonata.admin" manager_type="orm" group="Données collectées" label="Questionnaires Disponibilité"/>
             <argument />
             <argument>Acme\DemoBundle\Entity\QuestionnaireDisponibilite</argument>
             <argument />

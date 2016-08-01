@@ -10,10 +10,11 @@
 
 _front:
     resource: routing_front.yml
-
+    # IMPORANT : prefix for frontoffice pages to 'neverFindPrefix' so that they dont confuse the other admin pages
+    prefix:   /neverFindPrefix
 _admin:
     resource: routing_admin.yml
-    prefix:   /admin
+    prefix:   /
 
 _api:
     resource: routing_api.yml
@@ -22,3 +23,40 @@ _api:
 _acme_demo:
     resource: "@AcmeDemoBundle/Resources/config/routing.yml"
 
+
+
+# REMOVE LATER : redirecting old paths to new paths
+root_fix_1:
+    path: /admin
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /
+        permanent: true
+root_fix_2:
+    path: /admin/login
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /
+        permanent: true
+
+
+root_fix_3:
+    path: /admin/profile
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /
+        permanent: true
+root_fix_4:
+    path: /profile/
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /
+        permanent: true
+
+sonata_admin_dashboard:
+    pattern:  /dashboard
+    defaults: { _controller: AcmeDemoBundle:Demo:tableauDeBoard }
+
+sonata_user_profile_show:
+    pattern:  /profile
+    defaults: { _controller: SonataUserBundle:ProfileFOSUser1:show }

@@ -319,7 +319,6 @@ class DemoController extends Controller
                         array('admin_pool' => $admin_pool, 'uploadDone' => $uploadDone ));
     }
 
-
     public function generateXlsFileExecuteAction(Request $request)
     {
       $em = $this->getDoctrine()->getManager();
@@ -346,7 +345,7 @@ class DemoController extends Controller
         }
 
         $sourceIterator = new ArraySourceIterator($exportedRowArray);
-        $filename = sprintf( 'export_global_%s.xls', date('Y_m_d_H_i_s', strtotime('now')) );
+        $filename = sprintf( 'export_shelfshare_%s.xls', date('Y_m_d_H_i_s', strtotime('now')) );
         return $this->get('sonata.admin.exporter')->getResponse('xls', $filename, $sourceIterator);
       }
 
@@ -370,170 +369,9 @@ class DemoController extends Controller
         }
 
         $sourceIterator = new ArraySourceIterator($exportedRowArray);
-        $filename = sprintf( 'export_global_%s.xls', date('Y_m_d_H_i_s', strtotime('now')) );
+        $filename = sprintf( 'export_availability_%s.xls', date('Y_m_d_H_i_s', strtotime('now')) );
         return $this->get('sonata.admin.exporter')->getResponse('xls', $filename, $sourceIterator);
       }
-    }
-
-    public function generateXlsFileExecute2Action()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $sql = "select p.licence, p.ville, p.secteur, animationsByPDV.nbrAnimations as 'Nbr. Animations', count(*) as 'Nbr. Contacts' FROM pdv p, localisation l, rapport r , (select p.id, count(*) nbrAnimations FROM pdv p, localisation l WHERE p.id = l.pdv_id group by 1) animationsByPDV  WHERE l.pdv_id = p.id AND r.localisation_id = l.id AND animationsByPDV.id = p.id GROUP BY p.licence, p.ville, p.secteur ORDER by ville, secteur";
-        $queryResult = $em->getConnection()->executeQuery($sql);
-        $exportedRowArray = array();
-        while ($row = $queryResult->fetch()) {
-            $exportedRowArray[] = $row;
-        }
-
-        //################# atteints par trancheage par pdv
-        $sql = "select licence, libelle, count(*) as atteints from trancheage ta, rapport r, localisation l, pdv p WHERE ta.id = r.trancheage_id AND r.localisation_id = l.id AND l.pdv_id = p.id AND r.achete = 1 GROUP BY 1,2";
-        $queryResult = $em->getConnection()->executeQuery($sql);
-        $atteintsParTrancheAgeParPdv = array();
-        while ($row = $queryResult->fetch()) {
-            $atteintsParTrancheAgeParPdv[] = $row;
-        }
-
-        $sql = "select libelle from trancheage";
-        $queryResult = $em->getConnection()->executeQuery($sql);
-        while ($row = $queryResult->fetch()) {
-            $trancheAgeLibelle = $row['libelle'];
-            $trancheAgeColumnTitle = $trancheAgeLibelle . ' (part)';
-            for($i=0; $i < count($exportedRowArray);$i++){
-                $trancheAgeColumn_rowValue = '0';
-                foreach($atteintsParTrancheAgeParPdv as $atteintsParTrancheAge){
-                    if($atteintsParTrancheAge['licence'] == $exportedRowArray[$i]['licence'] && $atteintsParTrancheAge['libelle'] == $trancheAgeLibelle){
-                        $trancheAgeColumn_rowValue = $atteintsParTrancheAge['atteints'];
-                    }
-                }
-                $exportedRowArray[$i][$trancheAgeColumnTitle] = $trancheAgeColumn_rowValue;
-            }
-        }
-
-        //################# atteints par sexe par pdv
-        $sql = "select licence, sexe, count(*) as atteints from rapport r, localisation l, pdv p WHERE r.localisation_id = l.id AND l.pdv_id = p.id AND r.achete = 1 GROUP BY 1,2";
-        $queryResult = $em->getConnection()->executeQuery($sql);
-        $atteintsParSexeParPdv = array();
-        while ($row = $queryResult->fetch()) {
-            $atteintsParSexeParPdv[] = $row;
-        }
-
-        $sexeDataList = array('M','F');
-        foreach($sexeDataList as $sexe) {
-            $sexeLibelle = $sexe;
-            $columnTitle = $sexeLibelle . ' (part)';
-            for($i=0; $i < count($exportedRowArray);$i++){
-                $column_rowValue = '0';
-                foreach($atteintsParSexeParPdv as $atteintsParSexe){
-                    if($atteintsParSexe['licence'] == $exportedRowArray[$i]['licence'] && $atteintsParSexe['sexe'] == $sexeLibelle){
-                        $column_rowValue = $atteintsParSexe['atteints'];
-                    }
-                }
-                $exportedRowArray[$i][$columnTitle] = $column_rowValue;
-            }
-        }
-
-        //################# atteints par raisonachat par pdv
-        $sql = "select licence, libelle, count(*) as atteints from rapport r, localisation l, raisonachat ra, pdv p WHERE r.raisonAchat_id = ra.id AND r.localisation_id = l.id AND l.pdv_id = p.id AND r.achete = 1 GROUP BY 1,2";
-        $queryResult = $em->getConnection()->executeQuery($sql);
-        $atteintsParRaisonAchatParPdv = array();
-        while ($row = $queryResult->fetch()) {
-            $atteintsParRaisonAchatParPdv[] = $row;
-        }
-
-        $sql = "select libelle from raisonachat";
-        $queryResult = $em->getConnection()->executeQuery($sql);
-        while ($row = $queryResult->fetch()) {
-            $raisonAchatLibelle = $row['libelle'];
-            $columnTitle = $raisonAchatLibelle . ' (part)';
-            for($i=0; $i < count($exportedRowArray);$i++){
-                $column_rowValue = '0';
-                foreach($atteintsParRaisonAchatParPdv as $atteintsParRaisonAchat){
-                    if($atteintsParRaisonAchat['licence'] == $exportedRowArray[$i]['licence'] && $atteintsParRaisonAchat['libelle'] == $raisonAchatLibelle){
-                        $column_rowValue = $atteintsParRaisonAchat['atteints'];
-                    }
-                }
-                $exportedRowArray[$i][$columnTitle] = $column_rowValue;
-            }
-        }
-
-        //################# atteints par marque achetee - total par pdv
-        $sql = "select licence, m.libelle, count(*) as atteints from rapport r, localisation l, marque m, pdv p WHERE r.marqueachetee_id = m.id AND r.localisation_id = l.id AND l.pdv_id = p.id AND r.achete = 1 GROUP BY 1,2";
-        $queryResult = $em->getConnection()->executeQuery($sql);
-        $participationsParMarqueParPdv = array();
-        while ($row = $queryResult->fetch()) {
-            $participationsParMarqueParPdv[] = $row;
-        }
-
-        $sql = "select libelle from marque";
-        $queryResult = $em->getConnection()->executeQuery($sql);
-        while ($row = $queryResult->fetch()) {
-            $marqueLibelle = $row['libelle'];
-            $columnTitle = 'p.'.$marqueLibelle;
-            for($i=0; $i < count($exportedRowArray);$i++){
-                $column_rowValue = '0';
-                foreach($participationsParMarqueParPdv as $atteintsParMarque){
-                    if($atteintsParMarque['licence'] == $exportedRowArray[$i]['licence'] && $atteintsParMarque['libelle'] == $marqueLibelle){
-                        $column_rowValue = $atteintsParMarque['atteints'];
-                    }
-                }
-                $exportedRowArray[$i][$columnTitle] = $column_rowValue;
-            }
-        }
-
-        //################# refus par marque achetee  par pdv
-        $sql = "select licence, m.libelle, count(*) as atteints from rapport r, localisation l, marque m, pdv p WHERE r.marquehabituelle_id = m.id AND r.localisation_id = l.id AND l.pdv_id = p.id AND r.achete = 0 GROUP BY 1,2";
-        $queryResult = $em->getConnection()->executeQuery($sql);
-        $refusParMarqueParPdv = array();
-        while ($row = $queryResult->fetch()) {
-            $refusParMarqueParPdv[] = $row;
-        }
-
-        $sql = "select libelle from marque";
-        $queryResult = $em->getConnection()->executeQuery($sql);
-        while ($row = $queryResult->fetch()) {
-            $marqueLibelle = $row['libelle'];
-            $columnTitle = 'r.'.$marqueLibelle;
-            for($i=0; $i < count($exportedRowArray);$i++){
-                $column_rowValue = '0';
-                foreach($refusParMarqueParPdv as $atteintsParMarque){
-                    if($atteintsParMarque['licence'] == $exportedRowArray[$i]['licence'] && $atteintsParMarque['libelle'] == $marqueLibelle){
-                        $column_rowValue = $atteintsParMarque['atteints'];
-                    }
-                }
-                $exportedRowArray[$i][$columnTitle] = $column_rowValue;
-            }
-        }
-
-        //  total
-
-        $sql = "select libelle from marque";
-        $queryResult = $em->getConnection()->executeQuery($sql);
-        while ($row = $queryResult->fetch()) {
-            $marqueLibelle = $row['libelle'];
-            $columnTitle = $marqueLibelle;
-            for($i=0; $i < count($exportedRowArray);$i++){
-                $column_rowValue = '0';
-                $j = 0;
-                foreach($participationsParMarqueParPdv as $atteintsParMarque){
-                    if($atteintsParMarque['licence'] == $exportedRowArray[$i]['licence'] && $atteintsParMarque['libelle'] == $marqueLibelle){
-                        if(count($participationsParMarqueParPdv) > $j)
-                          $column_rowValue = $participationsParMarqueParPdv[$j]['atteints'];
-                        if(count($refusParMarqueParPdv) > $j)
-                          $column_rowValue += $refusParMarqueParPdv[$j]['atteints'];
-                    }
-                    $j++;
-                }
-                $exportedRowArray[$i][$columnTitle] = $column_rowValue;
-            }
-        }
-
-
-        $sourceIterator = new ArraySourceIterator($exportedRowArray);
-        $filename = sprintf( 'export_global_%s.xls', date('Y_m_d_H_i_s', strtotime('now')) );
-        /*
-        $fields = array('ville');
-        $sourceIterator = new DoctrineORMQuerySourceIterator($query, $fields);*/
-        return $this->get('sonata.admin.exporter')->getResponse('xls', $filename, $sourceIterator);
     }
 
     public function checkIfAccessAllowedAction(){
@@ -549,7 +387,7 @@ class DemoController extends Controller
                 if(!$client->getEnabled()){
                     return new Response('<div style="position:absolute;text-align:center;top:50%; width:99%">Les données sont en cours de traitement...<br/> Reéssayer plus tard !'.$user->getId().'</div>');
                 }else{
-                    return new RedirectResponse($this->generateUrl('sonata_admin_dashboard'));
+                    return new RedirectResponse($this->generateUrl('_tableauDeBoard'));
                 }
             }
         }
@@ -562,12 +400,12 @@ class DemoController extends Controller
 
              //echo $entity->getId();
             if ($superviseur) {
-                return new RedirectResponse($this->generateUrl('sonata_admin_dashboard'));
+                return new RedirectResponse($this->generateUrl('_tableauDeBoard'));
             }
         }
 
         if ($this->get('security.context')->isGranted('ROLE_ADMIN') == true)
-            return new RedirectResponse($this->generateUrl('sonata_admin_dashboard'));
+            return new RedirectResponse($this->generateUrl('_tableauDeBoard'));
     }
 
 }

@@ -36,7 +36,7 @@
 
             <script type="text/javascript">
                 $(".form_datetime").datetimepicker();
-            </script> 
+            </script>
         </div>
     </form>
     <hr style="border-top:1px solid #888"/>
@@ -44,8 +44,8 @@
 		<div class="col-md-6 hidden">
         {% if app.security.token and (is_granted('ROLE_ANALYST') or is_granted('ROLE_ADMIN') )%}
             <div>
-            {{ dump(exportedRowArray) }}
-            {{ dump(params) }}
+            {# dump(exportedRowArray) #}
+            {# dump(params) #}
             </div>
     	{% endif %}
 	   </div>
@@ -82,7 +82,7 @@
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript">
             google.charts.load('current', {'packages':['corechart', 'table', 'controls']});
-        </script> 
+        </script>
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
             <li class="active"><a data-target="#sfosPerformance" data-toggle="tab">SFOs Performance</a></li>
             <li><a data-target="#shelfShare" data-toggle="tab">ShelfShare</a></li>

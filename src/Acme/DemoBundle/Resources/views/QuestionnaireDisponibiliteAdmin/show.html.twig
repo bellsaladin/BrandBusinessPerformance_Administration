@@ -63,11 +63,11 @@ file that was distributed with this source code.
             {% set previousCategorieProduits = null %}
             {% for quantity in object.quantities %}
                 {% if quantity.categorieProduits != previousCategorieProduits %}
-                
+
                   <li {% if loop.first %}class="active"{% endif %}>
                     <a data-target="#{{quantity.categorieProduits.name}}" data-toggle="tab">{{quantity.categorieProduits.name}}</a>
                    </li>
-                
+
                 {% endif %}
                 {% set previousCategorieProduits = quantity.categorieProduits %}
             {% endfor %}
@@ -77,41 +77,41 @@ file that was distributed with this source code.
             {% for quantity in object.quantities %}
                 {% if quantity.categorieProduits != previousCategorieProduits %}
                   <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{quantity.categorieProduits.name}}">
-                    <table class="table">  
-                    {% set tableHeaderWritten = false %} 
+                    <table class="table">
+                    {% set tableHeaderWritten = false %}
                     {% set processedProduitPoiCouples = [] %}
                     {% for quantityCopy1 in object.quantities %}
-                        {% if quantityCopy1.categorieProduits == quantity.categorieProduits and processedProduitPoiCouples[(quantityCopy1.produit ~ quantityCopy1.poi)] is not defined %}
-                        
+                        {% if quantityCopy1.categorieProduits == quantity.categorieProduits and processedProduitPoiCouples[(quantityCopy1.produit.id ~ quantityCopy1.poi.id)] is not defined %}
+
                             {% if not tableHeaderWritten %}
                                 <tr>
                                 <td>SKU</td>
                                 <td>Qté</td>
                                 </tr>
-                                {% set tableHeaderWritten = true %} 
+                                {% set tableHeaderWritten = true %}
                             {% endif %}
                             <tr>
                                 <td><b>{{quantityCopy1.produit.libelle}} -- {{quantityCopy1.poi.libelle}}</b></td>
                                 <td>{{quantityCopy1.qte}}</td>
                             </tr>
-                            {% set processedProduitPoiCouples = processedProduitPoiCouples|merge({ (quantityCopy1.produit ~ quantityCopy1.poi) : quantityCopy1}) %}
+                            {% set processedProduitPoiCouples = processedProduitPoiCouples|merge({ (quantityCopy1.produit.id ~ quantityCopy1.poi.id) : quantityCopy1}) %}
                         {% endif %}
                     {% endfor %}
                     {# dump(processedProduitPoiCouples) #}
                     </table>
                   </div>
-                {% endif %} 
+                {% endif %}
                 {% set previousCategorieProduits = quantity.categorieProduits %}
             {% endfor %}
         </div>
         {#object.quantities.count()#}
-       
+
         {% if not object.valide %}
             <a href="{{ path('_custom_valider', {'id': object.id, '_sonata_admin' : 'sonata.admin.questionnairedisponibilite'}) }}" class="btn btn-sm btn-success">Valider</a>
-        {% else %}        
+        {% else %}
             <a href="{{ path('_custom_devalider', {'id': object.id, '_sonata_admin' : 'sonata.admin.questionnairedisponibilite'}) }}" class="btn btn-sm btn-danger">Dévalider</a>
         {% endif %}
-        
+
         {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
 
     </div>

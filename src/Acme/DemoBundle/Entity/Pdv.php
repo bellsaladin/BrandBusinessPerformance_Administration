@@ -63,7 +63,7 @@ class Pdv
      */
     private $licence;
 
-    
+
     /**
      * @var string
      *
@@ -96,7 +96,7 @@ class Pdv
     /**
      * @var \POI
      *
-     * @ORM\ManyToMany(targetEntity="POI")     
+     * @ORM\ManyToMany(targetEntity="POI")
      */
     private $poi;
 
@@ -285,7 +285,7 @@ class Pdv
     /**
      * Get nom
      *
-     * @return string 
+     * @return string
      */
     public function getNom()
     {
@@ -308,7 +308,7 @@ class Pdv
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -331,7 +331,7 @@ class Pdv
     /**
      * Get longitude
      *
-     * @return float 
+     * @return float
      */
     public function getLongitude()
     {
@@ -354,7 +354,7 @@ class Pdv
     /**
      * Get latitude
      *
-     * @return float 
+     * @return float
      */
     public function getLatitude()
     {
@@ -377,7 +377,7 @@ class Pdv
     /**
      * Get rayon
      *
-     * @return float 
+     * @return float
      */
     public function getRayon()
     {
@@ -400,7 +400,7 @@ class Pdv
     /**
      * Get licence
      *
-     * @return integer 
+     * @return integer
      */
     public function getLicence()
     {
@@ -423,7 +423,7 @@ class Pdv
     /**
      * Get ville
      *
-     * @return string 
+     * @return string
      */
     public function getVille()
     {
@@ -446,7 +446,7 @@ class Pdv
     /**
      * Get secteur
      *
-     * @return string 
+     * @return string
      */
     public function getSecteur()
     {
@@ -469,7 +469,7 @@ class Pdv
     /**
      * Get adresse
      *
-     * @return string 
+     * @return string
      */
     public function getAdresse()
     {
@@ -492,7 +492,7 @@ class Pdv
     /**
      * Get externe
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getExterne()
     {
@@ -524,7 +524,7 @@ class Pdv
     /**
      * Get poi
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPoi()
     {
@@ -547,7 +547,7 @@ class Pdv
     /**
      * Get userCreateurId
      *
-     * @return integer 
+     * @return integer
      */
     public function getUserCreateurId()
     {
@@ -570,7 +570,7 @@ class Pdv
     /**
      * Get outletname
      *
-     * @return string 
+     * @return string
      */
     public function getOutletname()
     {
@@ -593,7 +593,7 @@ class Pdv
     /**
      * Get channel
      *
-     * @return string 
+     * @return string
      */
     public function getChannel()
     {
@@ -616,7 +616,7 @@ class Pdv
     /**
      * Get status
      *
-     * @return string 
+     * @return string
      */
     public function getStatus()
     {
@@ -639,7 +639,7 @@ class Pdv
     /**
      * Get family
      *
-     * @return string 
+     * @return string
      */
     public function getFamily()
     {
@@ -662,7 +662,7 @@ class Pdv
     /**
      * Get category
      *
-     * @return string 
+     * @return string
      */
     public function getCategory()
     {
@@ -685,7 +685,7 @@ class Pdv
     /**
      * Get sfo
      *
-     * @return integer 
+     * @return integer
      */
     public function getSfo()
     {
@@ -708,7 +708,7 @@ class Pdv
     /**
      * Get week
      *
-     * @return string 
+     * @return string
      */
     public function getWeek()
     {
@@ -731,7 +731,7 @@ class Pdv
     /**
      * Get jourvisite
      *
-     * @return string 
+     * @return string
      */
     public function getJourvisite()
     {
@@ -754,7 +754,7 @@ class Pdv
     /**
      * Get tempsvisite
      *
-     * @return string 
+     * @return string
      */
     public function getTempsvisite()
     {
@@ -777,7 +777,7 @@ class Pdv
     /**
      * Get commentaire
      *
-     * @return string 
+     * @return string
      */
     public function getCommentaire()
     {
@@ -800,7 +800,7 @@ class Pdv
     /**
      * Get collabore
      *
-     * @return string 
+     * @return string
      */
     public function getCollabore()
     {
@@ -823,7 +823,7 @@ class Pdv
     /**
      * Get incentive
      *
-     * @return string 
+     * @return string
      */
     public function getIncentive()
     {
@@ -846,7 +846,7 @@ class Pdv
     /**
      * Get elimine
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getElimine()
     {
@@ -869,7 +869,7 @@ class Pdv
     /**
      * Get managerphone
      *
-     * @return string 
+     * @return string
      */
     public function getManagerphone()
     {
@@ -892,7 +892,7 @@ class Pdv
     /**
      * Get managerfullname
      *
-     * @return string 
+     * @return string
      */
     public function getManagerfullname()
     {
@@ -915,7 +915,7 @@ class Pdv
     /**
      * Get ownerphone
      *
-     * @return string 
+     * @return string
      */
     public function getOwnerphone()
     {
@@ -938,7 +938,7 @@ class Pdv
     /**
      * Get ownerfullname
      *
-     * @return string 
+     * @return string
      */
     public function getOwnerfullname()
     {
@@ -961,7 +961,7 @@ class Pdv
     /**
      * Get size
      *
-     * @return float 
+     * @return float
      */
     public function getSize()
     {
@@ -984,7 +984,7 @@ class Pdv
     /**
      * Get incentivestartweek
      *
-     * @return string 
+     * @return string
      */
     public function getIncentivestartweek()
     {
@@ -1007,7 +1007,7 @@ class Pdv
     /**
      * Get datastartweek
      *
-     * @return string 
+     * @return string
      */
     public function getDatastartweek()
     {
@@ -1017,7 +1017,7 @@ class Pdv
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -1034,23 +1034,21 @@ class Pdv
     public function setDateCreation($dateCreation)
     {
         $this->dateCreation = $dateCreation;
-
         return $this;
     }
 
     /**
      * Get dateCreation
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateCreation()
     {
         return $this->dateCreation;
     }
 
-
     public function __toString(){
-        return $this->nom ;
+        return $this->nom;
     }
 
 }

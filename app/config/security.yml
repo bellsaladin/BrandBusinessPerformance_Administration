@@ -16,7 +16,7 @@ security:
         ROLE_SONATA_PDV_CREATOR:
             - ROLE_SONATA_ADMIN_PDV_LIST
             - ROLE_SONATA_ADMIN_PDV_CREATE
-            - ROLE_SONATA_ADMIN_PDV_VIEW        
+            - ROLE_SONATA_ADMIN_PDV_VIEW
         ROLE_ANALYST : [ROLE_ADMIN, ROLE_USER, ROLE_SONATA_ADMIN_QUESTIONNAIRESHELFSHARE_LIST, ROLE_SONATA_ADMIN_QUESTIONNAIRESHELFSHARE_VIEW, ROLE_SONATA_ADMIN_QUESTIONNAIREDISPONIBILITE_LIST, ROLE_SONATA_ADMIN_QUESTIONNAIREDISPONIBILITE_VIEW]
         ROLE_TEAMLEADER : [ROLE_ADMIN, ROLE_USER, ROLE_SONATA_PDV_CREATOR, ROLE_SONATA_ADMIN_PLANNING_LIST, ROLE_SONATA_ADMIN_PLANNING_VIEW, ROLE_SONATA_ADMIN_PLANNING_CREATE, ROLE_SONATA_ADMIN_PLANNING_EDIT]
         ROLE_COMMERCIAL : [ROLE_ADMIN, ROLE_USER, ROLE_SONATA_ADMIN_QUESTIONNAIRESHELFSHARE_LIST, ROLE_SONATA_ADMIN_QUESTIONNAIRESHELFSHARE_VIEW, ROLE_SONATA_ADMIN_QUESTIONNAIREDISPONIBILITE_LIST, ROLE_SONATA_ADMIN_QUESTIONNAIREDISPONIBILITE_VIEW]
@@ -46,19 +46,19 @@ security:
         # This firewall is used to handle the admin login area
         # This part is handled by the Sonata User Bundle
         admin:
-            pattern:            /admin(.*)
+            pattern:            /(.*)
             context:            user
             form_login:
                 provider:       fos_userbundle
-                login_path:     /admin/login
+                login_path:     /login
                 use_forward:    false
-                check_path:     /admin/login_check
+                check_path:     /login_check
                 failure_path:   null
                 always_use_default_target_path: true
-                default_target_path: /admin/app/tableauDeBoard
+                default_target_path: /tableauDeBoard
             logout:
-                path:           /admin/logout
-                target:         /admin/login
+                path:           /logout
+                target:         /login
             anonymous:    true
 
         api:
@@ -91,19 +91,20 @@ security:
     access_control:
         # URL of FOSUserBundle which need to be available to anonymous users
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/webservice/, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
         # Admin login page needs to be access without credential
-        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
         # Secured part of the site
         # This config requires being logged for the whole site and having the admin role for the admin part.
         # It also secures the shop checkout process
         # Change these rules to adapt them to your needs
-        - { path: ^/admin/, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN] }
+        - { path: ^/, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN] }
         - { path: ^/profile/, role: IS_AUTHENTICATED_FULLY }
         - { path: ^/shop/basket/step/, role: IS_AUTHENTICATED_FULLY }
         - { path: ^/shop/user/, role: IS_AUTHENTICATED_FULLY }

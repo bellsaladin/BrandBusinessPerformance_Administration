@@ -107,15 +107,15 @@ class QuestionnaireDisponibiliteAdmin extends Admin
       if($this->isGranted('EDIT') && $this->isGranted('DELETE')){
           $originalActions = $actions; // on copie les actions et les réinitialise pour mettre les actiosn 'valider' & 'dévalider' en premier
           $actions = array(); // on réinitilaise le tableau
-          $actions['valider']=[
+          $actions['valider']=array(
               'label'            => 'Valider',
               'ask_confirmation' => true // If true, a confirmation will be asked before performing the action
-          ];
+          );
 
-          $actions['devalider']=[
+          $actions['devalider']=array(
               'label'            => 'Dévalider',
               'ask_confirmation' => true // If true, a confirmation will be asked before performing the action
-          ];
+          );
 
           $actions = array_merge($actions, $originalActions);
       }

@@ -15,49 +15,49 @@ _webservice_getRefencementProduits:
     defaults: { _controller: AcmeDemoBundle:Webservice:getReferencementData }
 
 _webservice_saveRefencementProduits:
-    pattern:  /webservice/saveReferencementData
+    pattern:  /saveReferencementData
     defaults: { _controller: AcmeDemoBundle:Webservice:saveReferencementData }
 
 _tableauDeBoard:
-    pattern:  /admin/app/tableauDeBoard
+    pattern:  /tableauDeBoard
     defaults: { _controller: AcmeDemoBundle:Demo:tableauDeBoard }
 
 _referencement:
-    pattern:  /admin/app/referecement
+    pattern:  /referecement
     defaults: { _controller: AcmeDemoBundle:Demo:referencement }
 
 _mapDashboard:
-    pattern:  /admin/app/mapDashboard
+    pattern:  /mapDashboard
     defaults: { _controller: AcmeDemoBundle:Demo:mapDashboard }
 
 _statistics:
-    pattern:  /admin/app/statistics
+    pattern:  /statistics
     defaults: { _controller: AcmeDemoBundle:Demo:statistics }
 
 _toggleActivateTombola:
-    pattern:  /admin/app/toggleActivateTombola
+    pattern:  /toggleActivateTombola
     defaults: { _controller: AcmeDemoBundle:Demo:toggleActivateTombola }
 
 _generateXlsFileView:
-    pattern:  /admin/app/generateXlsFileView
+    pattern:  /generateXlsFileView
     defaults: { _controller: AcmeDemoBundle:Demo:generateXlsFileView }
 
 _generateXlsFileExecute:
-    pattern:  /admin/app/generateXlsFileExecute
+    pattern:  /generateXlsFileExecute
     defaults: { _controller: AcmeDemoBundle:Demo:generateXlsFileExecute }
 
 _uploadXlsFileForClientView:
-    pattern:  /admin/app/uploadXlsFileForClientView
+    pattern:  /uploadXlsFileForClientView
     defaults: { _controller: AcmeDemoBundle:Demo:uploadXlsFileForClientView }
 
 _uploadXlsFileForClientExecute:
-    pattern:  /admin/app/uploadXlsFileForClientExecute
+    pattern:  /uploadXlsFileForClientExecute
     defaults: { _controller: AcmeDemoBundle:Demo:uploadXlsFileForClientExecute }
 
 _custom_valider:
-    pattern:  /admin/app/valider
+    pattern:  /valider
     defaults: { _controller: AcmeDemoBundle:CRUD:valider }
 
 _custom_devalider:
-    pattern:  /admin/app/devalider
+    pattern:  /devalider
     defaults: { _controller: AcmeDemoBundle:CRUD:devalider }

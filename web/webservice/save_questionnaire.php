@@ -1,7 +1,7 @@
 <?php
 
     include('_params.php');
-    
+
     $typeQuestionnaire          = $_REQUEST['type'];
     $localisationId             = $_REQUEST['localisationId'];
     $nbrLignesTraitees          = $_REQUEST['nbrLignesTraitees'];
@@ -9,7 +9,7 @@
 
     $quantitiesData             = $_REQUEST['quantitiesData'];
     $dateCreation               = utf8_decode($_REQUEST['dateCreation']);
-    
+
     $con = mysql_connect($host,$uname,$pwd) or die("connection failed");
     mysql_select_db($db,$con) or die("db selection failed");
 
@@ -46,11 +46,29 @@
         // insert of cadeaux
         $quantitiesArray = explode('||',$quantitiesData);
         foreach($quantitiesArray as $quantity){
-            $quantityArray = explode(';',$quantity);
-            $poiId = $quantityArray[0];
-            $categorieProduitsId = $quantityArray[1];
-            $produitId = $quantityArray[2];
-            $qte = $quantityArray[3];
+            $quantityArray = explode(';', $quantity);
+            $newProduit = $quantityArray[0];
+            $type = $quantityArray[1];
+            $poiId = $quantityArray[2];
+            $categorieProduitsId = $quantityArray[3];
+            $produitId = $quantityArray[4];
+            $qte = $quantityArray[5];
+
+            if($newProduit == 1){
+                $produit = null;
+                $sku = $produitId;
+                $result  = mysql_query("SELECT * FROM produit WHERE sku = '$sku'",$con);
+                $produit = mysql_fetch_array($result);
+                if(!$produit){
+                  $request = "insert into produit (entityType, sku, libelle) values('$type','$sku', '$sku')";
+                  mysql_query($request, $con);
+                  $produitId = mysql_insert_id();
+                }else{
+                  $produitId = $produit['sku'];
+                }
+
+            }
+            // check if the product exists
             $request = "insert into questionnairedisponibilite_produit values($questionnaireId, $categorieProduitsId, $produitId, $poiId, $qte)";
             mysql_query($request, $con);
         }
