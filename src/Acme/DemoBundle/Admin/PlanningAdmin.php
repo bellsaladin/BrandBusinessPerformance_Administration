@@ -20,15 +20,15 @@ class PlanningAdmin extends Admin
         '_sort_by' => 'dateDebutSemaine'  // name of the ordered field
                                  // (default = the model's id field, if any)
         );
-    
+
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->add('dateDebutSemaine','sonata_type_date_picker', array('label' => 'Semaine du : ',
                     'years' => range(date('Y'), date('Y')+1),
-                    'data' => new \DateTime(date("Y-m-d",strtotime('monday next week'))), 
-                    'format' => 'dd/MM/yyyy', 
+                    'data' => new \DateTime(date("Y-m-d",strtotime('monday next week'))),
+                    'format' => 'dd/MM/yyyy',
                     'dp_days_of_week_disabled' => array(0,2,3,4,5,6),
                     'read_only' => 'true',
                     'dp_show_today'=>'false'))
@@ -65,16 +65,16 @@ class PlanningAdmin extends Admin
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper            
+        $listMapper
             ->addIdentifier('dateDebutSemaine', null, array(
                 'label' => 'Semaine du ',
                 'route' => array(
                     'name' => 'show'
                 )
-             ))            
+             ))
             ->add('sfo')
             ->add('visites')
-            
+
             //->add('slug')
             //->add('author')
             ->add('_action', 'actions', array(
@@ -94,7 +94,7 @@ class PlanningAdmin extends Admin
         $showMapper
             ->add('dateDebutSemaine', 'date', array('label' => 'Semaine du : '))
             ->add('sfo', 'entity', array('class' => 'Acme\DemoBundle\Entity\SFO'))
-            ->add('visites')   
+            ->add('visites')
         ;
     }
 
@@ -113,7 +113,7 @@ class PlanningAdmin extends Admin
         // to remove a single route
         //$collection->remove('create');
         //$collection->remove('edit');
-        // $collection->remove('delete');        
+        // $collection->remove('delete');
     }
 
 }

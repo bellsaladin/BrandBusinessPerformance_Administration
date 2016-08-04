@@ -14,7 +14,7 @@ use KnpMenuItemInterface as MenuItemInterface;
 class SFOAdmin extends Admin
 {
     protected $translationDomain = 'AcmeDemoBundle'; // default is 'messages'
-
+    public $deleteMessageWarning = "ATTENTION : En supprimant un SFO toutes les données (Localisations, rapports, plannings...etc) basées sur cet enregistrement seront également supprimées";
     protected $baseRoutePattern = 'sfo';
 
     // Fields to be shown on create/edit forms

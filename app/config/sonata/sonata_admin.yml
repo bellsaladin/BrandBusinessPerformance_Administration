@@ -35,7 +35,9 @@ sonata_admin:
         list:    SonataAdminBundle:CRUD:list.html.twig
         show:    SonataAdminBundle:CRUD:show.html.twig
         edit:    SonataAdminBundle:CRUD:edit.html.twig
-        
+        delete:  AcmeDemoBundle:CRUD:delete.html.twig
+        batch_confirmation:  AcmeDemoBundle:CRUD:batch_confirmation.html.twig
+
     dashboard:
         blocks:
 #            - { position: left, type: sonata.admin.block.admin_list }
@@ -180,7 +182,7 @@ sonata_admin:
                     - sonata.admin.commercial
             #        - sonata.user.admin.group
             #        - sonata.page.admin.site
-            #        - sonata.notification.admin.message        
+            #        - sonata.notification.admin.message
 
     assets:
         stylesheets:
@@ -252,4 +254,3 @@ sonata_admin:
 
             # Page assets
 #            - bundles/sonatapage/sonata-page.back.js
-

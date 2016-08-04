@@ -18,7 +18,7 @@ use Acme\DemoBundle\Entity\Produit\AC;
 class ProduitAdmin extends Admin
 {
     protected $baseRoutePattern = 'produit';
-
+    public $deleteMessageWarning = "ATTENTION : En supprimant un produit toutes les données (Détails de rapports, référencement... etc) basées sur cet enregistrement seront également supprimées";
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -81,7 +81,7 @@ class ProduitAdmin extends Admin
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper            
+        $listMapper
             ->addIdentifier('sku','text',array('label' => 'SKU'))
             ->addIdentifier('libelle','text',array('label' => 'Libéllé'))
             ->add('enabled', null, array('editable' => true,'label' => 'Activé'))

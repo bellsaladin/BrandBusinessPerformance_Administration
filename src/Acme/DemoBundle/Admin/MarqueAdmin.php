@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 class MarqueAdmin extends Admin
 {
     protected $baseRoutePattern = 'marque';
+    public $deleteMessageWarning = "ATTENTION : En supprimant une marque toutes les données (Détails de rapports shelfshare) basées sur cet enregistrement seront également supprimées";
 
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
@@ -51,7 +52,7 @@ class MarqueAdmin extends Admin
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper            
+        $listMapper
             ->addIdentifier('libelle','text',array('label' => 'Nom'))
             ->add('enabled', null, array('editable' => true,'label' => 'Activé'))
             ->add('categoriesProduits')

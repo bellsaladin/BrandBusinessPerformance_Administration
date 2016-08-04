@@ -12,12 +12,12 @@ use Sonata\AdminBundle\Form\FormMapper;
 class POIAdmin extends Admin
 {
     protected $baseRoutePattern = 'poi';
-
+    public $deleteMessageWarning = "ATTENTION : En supprimant un POI toutes les données (Détails de rapports) basées sur cet enregistrement seront également supprimées";
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('libelle', 'text', array('label' => 'Libellé'))            
+            ->add('libelle', 'text', array('label' => 'Libellé'))
             //->add('author', 'entity', array('class' => 'Acme\DemoBundle\Entity\User'))
         ;
     }
@@ -34,7 +34,7 @@ class POIAdmin extends Admin
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper            
+        $listMapper
             ->addIdentifier('libelle')
             ->add('enabled', null, array('editable' => true,'label' => 'Activé'))
             //->add('slug')

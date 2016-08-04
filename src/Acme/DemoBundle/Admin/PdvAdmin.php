@@ -13,6 +13,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 class PdvAdmin extends Admin
 {
     protected $baseRoutePattern = 'Pdv';
+    public $deleteMessageWarning = "ATTENTION : En supprimant un PDV toutes les données  (Données de planning, détails de rapports, données de référencement... etc) basées sur cet enregistrement seront également supprimées";
 
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
@@ -64,10 +65,10 @@ class PdvAdmin extends Admin
             ->add('datastartweek')
             ->add('commentaire','textarea')
             //->add('userCreateur', 'entity', array('class'=>'Acme\DemoBundle\Entity\FosUserUser','property' => 'username', 'label'=>false,'value' => $user))
-            //->add('rayon')            
+            //->add('rayon')
 
-            //->add('author', 'entity', array('class' => 'Acme\DemoBundle\Entity\User'))            
-            
+            //->add('author', 'entity', array('class' => 'Acme\DemoBundle\Entity\User'))
+
         ;
     }
 
@@ -86,7 +87,7 @@ class PdvAdmin extends Admin
             $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
 
             $query = parent::createQuery($context);
-            $query->andWhere( 
+            $query->andWhere(
                 $query->expr()->eq($query->getRootAlias().'.userCreateur', ':id')
             );
             $query->setParameter('id', $user->getId());
@@ -108,7 +109,7 @@ class PdvAdmin extends Admin
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper            
+        $listMapper
             ->addIdentifier('nom')
             ->add('ville')
             ->add('secteur')
@@ -156,6 +157,6 @@ class PdvAdmin extends Admin
             //$collection->remove('create');
             //$collection->remove('edit');
             //$collection->remove('delete');
-        //}        
+        //}
     }
 }

@@ -544,6 +544,13 @@ class Pdv
         return $this;
     }
 
+    public function setUserCreateur($userCreateur)
+    {
+        $this->userCreateur = $userCreateur;
+
+        return $this;
+    }
+
     /**
      * Get userCreateurId
      *
@@ -552,6 +559,11 @@ class Pdv
     public function getUserCreateurId()
     {
         return $this->userCreateurId;
+    }
+
+    public function getUserCreateur()
+    {
+        return $this->userCreateur;
     }
 
     /**

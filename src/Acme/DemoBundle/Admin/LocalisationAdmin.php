@@ -13,6 +13,8 @@ use Sonata\AdminBundle\Route\RouteCollection;
 class LocalisationAdmin extends Admin
 {
     protected $baseRoutePattern = 'localisation';
+    public $deleteMessageWarning = "ATTENTION : En supprimant une localisation toutes les données (Rapports...etc) basées sur cet enregistrement seront également supprimées";
+
     protected $datagridValues = array(
         '_page' => 1,            // display the first page (default = 1)
         '_sort_order' => 'DESC', // reverse order (default = 'ASC')
