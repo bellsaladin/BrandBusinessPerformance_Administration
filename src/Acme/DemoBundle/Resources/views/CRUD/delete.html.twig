@@ -15,6 +15,28 @@
             <div class="box-header">
                 <h3 class="box-title">{{ 'title_delete'|trans({}, 'SonataAdminBundle') }}</h3>
             </div>
+            {# ------------------ BEGIN : disable remove of required categories ---------- #}
+            {# traitement spécial pour les #}
+            {% if admin.baseRoutePattern == '/app/classification-category' and admin.subject.parent is null %}
+                <div class="box-body">
+                <b style="color:red;">Cette catégorie de niveau supérieur est requise, il n'est pas possible de la supprimer !</b>
+                </div>
+                <div class="box-footer clearfix">
+                    <form method="POST" action="{{ admin.generateObjectUrl('delete', object) }}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
+                        {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object) %}
+                            <a class="btn btn-success" href="{{ admin.generateObjectUrl('edit', object) }}">
+                                <i class="glyphicon glyphicon-edit"></i>
+                                Retour</a>
+                        {% endif %}
+                    </form>
+                </div>
+
+            {% else %}
+
+            {# ------------------ END : disable remove of required categories ---------- #}
+
             <div class="box-body">
                 {# ------ BEGIN : DELETE WARNING MESSAGE--------#}
                 {% if admin.deleteMessageWarning is defined %}
@@ -40,6 +62,8 @@
                     {% endif %}
                 </form>
             </div>
+
+            {% endif %}
         </div>
     </div>
 {% endblock %}
