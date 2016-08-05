@@ -23,7 +23,6 @@ sonata_admin:
     options:
         html5_validate: false # does not use html5 validation
         pager_links: 5        # pager max links to display
-
     templates:
         # default global templates
         # the layout template include javascript/stylesheet to the formatter bundle,
