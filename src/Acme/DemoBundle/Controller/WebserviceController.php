@@ -118,7 +118,44 @@ class WebserviceController extends Controller
 	    $jsonContent = json_encode($dataArray, JSON_NUMERIC_CHECK);
 
 	    $response = new Response($jsonContent);
-		$response->headers->set('Content-Type', 'application/json');
+		  $response->headers->set('Content-Type', 'application/json');
+	    return $response;
+    }
+
+    public function getOutOfStockDataAction(){
+    	$em = $this->getDoctrine()->getManager();
+
+	    //$startDate = $request->request->get('startDate');
+	    //$endDate = $request->request->get('endDate');
+
+	    /* Get : SFOs performance data */
+
+        /* Get : Nbr Enquêtes validées */
+
+        $sql  = "SELECT DISTINCT pdv.ville, pdv.nom as 'PDV', p.sku, p.libelle FROM produit p, referencementproduit r, pdv, questionnairedisponibilite q, localisation l, questionnairedisponibilite_produit qd
+                WHERE p.id = r.produit_id AND r.pdv_id = pdv.id AND qd.produit_id = p.id AND qd.questionnairedisponibilite_id = q.id AND l.id = q.localisation_id AND l.pdv_id = pdv.id AND qd.qte = 0";
+        // $sql .=" q.date_creation >= '" . $startDate . "' AND q.date_creation <= '" . $endDate ."'";
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        while ($row = $queryResult->fetch()) {
+            $exportedRowArray[] = $row;
+        }
+        //"date_creation >= '" . $param_startDate . "' AND date_creation <= '" . $param_endDate ."'";
+        $queryResult = $em->getConnection()->executeQuery($sql);
+        $dataArray = array();
+        $gotColumnsNames = false;
+        while ($row = $queryResult->fetch()) {
+        	if(!$gotColumnsNames){
+        		$dataArray[] = array_keys($row);
+        		$gotColumnsNames = true;
+        	}
+            $dataArray[] = array_values($row);// remove keys, keeping only values
+            //$dataArray[] = $row;
+        }
+
+	    $jsonContent = json_encode($dataArray, JSON_NUMERIC_CHECK);
+
+	    $response = new Response($jsonContent);
+		  $response->headers->set('Content-Type', 'application/json');
 	    return $response;
     }
 

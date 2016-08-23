@@ -1,0 +1,126 @@
+<div id="googleCharts">
+  <script type="text/javascript">
+    var projectionDashboard_3 = null;
+    var sourceDashboard_3 = null;
+    var projectionDataTable_3 = null;
+    var sourceDataTable_3 = null;
+    var projectionColumnIndex_3 = 4;
+
+    google.charts.setOnLoadCallback(drawProjectionDashboard_3);
+
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawProjectionDashboard_3() {
+      projectionDashboard_3 =  new google.visualization.Dashboard(
+          document.getElementById('projectionDashboard_3'));
+
+
+      var projectionTable = new google.visualization.ChartWrapper({
+        'chartType': 'Table',
+        'containerId': 'projectionTable_3',
+        'options': {
+        }
+      });
+
+      var projectionDataTable_control1 = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
+          'containerId': 'dashboard_3_projectionDataTable_control1',
+          'options': {
+              'filterColumnIndex': 0,
+              'ui': {
+                  'labelStacking': 'vertical',
+                  //'label': 'Col 1',
+                  'allowTyping': true,
+                  'allowMultiple': true
+              }
+          }
+      });
+
+      /*var projectionDataTable_control2 = new google.visualization.ControlWrapper({
+        'controlType': 'NumberRangeFilter',
+        'containerId': 'dashboard_3_projectionDataTable_control2',
+        'options': {
+          'filterColumnIndex': 1,
+          'ui': {
+            'labelStacking': 'vertical',
+          }
+        }
+      });
+
+      var projectionDataTable_control3 = new google.visualization.ControlWrapper({
+        'controlType': 'NumberRangeFilter',
+        'containerId': 'dashboard_3_projectionDataTable_control3',
+        'options': {
+          'filterColumnIndex': 2,
+          'ui': {
+            'labelStacking': 'vertical',
+          }
+        }
+      });
+
+      var projectionDataTable_control4 = new google.visualization.ControlWrapper({
+        'controlType': 'NumberRangeFilter',
+        'containerId': 'dashboard_3_projectionDataTable_control4',
+        'options': {
+          'filterColumnIndex': 3,
+          'ui': {
+            'labelStacking': 'vertical',
+          }
+        }
+      });*/
+
+      var jsonData = $.ajax({
+        url: "{{ path('_webservice_getOutOfStockData') }}",
+        dataType: "json",
+        async: false
+        }).responseText;
+
+      var arrayData = $.parseJSON(jsonData);
+      projectionDataTable = google.visualization.arrayToDataTable(arrayData);
+      projectionDashboard_3.bind([projectionDataTable_control1], [projectionTable]);
+      projectionDashboard_3.draw(projectionDataTable);
+    }
+
+  </script>
+
+
+  <div id="projectionDashboard_3" style="margin-top: 1em; background-color:#fff">
+      <center>
+          <!--<a class="btn btn-small" data-toggle="modal" data-target="#modal_filtre_dashboard_3">
+              <i class="fa fa-filter" aria-hidden="true"></i>
+              Filtrer les données
+          </a>-->
+          <div id="projectionTable_3" style="padding-top: 15px">
+            <div style="height:300px;margin-top:140px; color:#999"><smal>Chargement des données...</small></div>
+          </div>
+          <br/><br/>
+      </center>
+
+      <div class="modal fade" id="modal_filtre_dashboard_3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" style="width:80%;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Filtre - SFOs Performance</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                  <div class="col-sm-8">
+                      <b>Filtrer les données projectées :</b>
+                      <hr/>
+                      <div id="dashboard_3_projectionDataTable_control1"></div>
+                      <div id="dashboard_3_projectionDataTable_control2"></div>
+                      <div id="dashboard_3_projectionDataTable_control3"></div>
+                      <div id="dashboard_3_projectionDataTable_control4"></div>
+                  </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

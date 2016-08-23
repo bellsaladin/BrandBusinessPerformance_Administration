@@ -86,7 +86,7 @@
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
             <li class="active"><a data-target="#sfosPerformance" data-toggle="tab">SFOs Performance</a></li>
             <li><a data-target="#shelfShare" data-toggle="tab">ShelfShare</a></li>
-            <!--<li><a data-target="#outOfStock" data-toggle="tab">Out of Stock</a></li>-->
+            <li><a data-target="#outOfStock" data-toggle="tab">Out of Stock</a></li>
         </ul>
         <div class="tab-content">
             <div id="sfosPerformance" class="tab-pane active">
@@ -98,6 +98,9 @@
                 </div>
             </div>
             <div id="outOfStock" class="tab-pane">
+              <div class="tab-pane active" id="red">
+              {% include "AcmeDemoBundle:tableauDeBoard:panel_outOfStock.html.twig" %}
+              </div>
             </div>
         </div>
     </div>

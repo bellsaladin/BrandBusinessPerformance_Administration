@@ -10,6 +10,10 @@ _webservice_getSfosPerformanceData:
     pattern:  /webservice/getSfosPerformanceData
     defaults: { _controller: AcmeDemoBundle:Webservice:getSfosPerformanceData }
 
+_webservice_getOutOfStockData:
+    pattern:  /webservice/getOutOfStockData
+    defaults: { _controller: AcmeDemoBundle:Webservice:getOutOfStockData }
+
 _webservice_getRefencementProduits:
     pattern:  /webservice/getReferencementData
     defaults: { _controller: AcmeDemoBundle:Webservice:getReferencementData }
