@@ -79,13 +79,11 @@ class MarqueAdmin extends Admin
 
     }
 
-     /**
-     * {@inheritdoc}
-     */
     public function getExportFormats()
     {
         return array(
             //'json', 'xml', 'csv', 'xls'
+            'xls'
         );
     }
 }

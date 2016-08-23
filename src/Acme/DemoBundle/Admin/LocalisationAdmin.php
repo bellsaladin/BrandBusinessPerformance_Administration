@@ -83,13 +83,19 @@ class LocalisationAdmin extends Admin
         ;
     }
 
-     /**
-     * {@inheritdoc}
-     */
+    public function getExportFields()
+    {
+       $exportFields = parent::getExportFields(); //It's not working in case of *-to many relation, so remove it, but it's ok for small customisation
+       $exportFields["SFO"] = 'sfo';
+       $exportFields["PDV"] = 'pdv';
+       return $exportFields;
+    }
+
     public function getExportFormats()
     {
         return array(
             //'json', 'xml', 'csv', 'xls'
+            'xls'
         );
     }
 

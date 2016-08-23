@@ -108,13 +108,20 @@ class CommercialAdmin extends Admin
           ->add('pdv','');
     }
 
-     /**
-     * {@inheritdoc}
-     */
+    public function getExportFields()
+    {
+       $exportFields = parent::getExportFields(); //It's not working in case of *-to many relation, so remove it, but it's ok for small customisation
+       $exportFields["Username"] = 'user.username';
+       $exportFields["Email"] = 'user.email';
+       //$exportFields["Pdv"] = 'pdvs';
+       return $exportFields;
+    }
+
     public function getExportFormats()
     {
         return array(
             //'json', 'xml', 'csv', 'xls'
+            'xls'
         );
     }
 

@@ -97,13 +97,19 @@ class AnalystAdmin extends Admin
           ->add('user.email',   'entity', array('class' => '\AppBundle\Entity\User\User', 'label' => 'Email'));
     }
 
-     /**
-     * {@inheritdoc}
-     */
+    public function getExportFields()
+    {
+       $exportFields = parent::getExportFields(); //It's not working in case of *-to many relation, so remove it, but it's ok for small customisation
+       $exportFields["Username"] = 'user.username';
+       $exportFields["email"] = 'user.email';
+       return $exportFields;
+    }
+
     public function getExportFormats()
     {
         return array(
             //'json', 'xml', 'csv', 'xls'
+            'xls'
         );
     }
 
