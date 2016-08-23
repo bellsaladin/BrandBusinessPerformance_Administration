@@ -12,7 +12,7 @@ class WebserviceController extends Controller
 {
     public function authentificationAction(Request $request)
     {
-        $sfoId = 0; //not found by default
+      $sfoId = 0; //not found by default
 
 	    $userName = $request->request->get('username');
 	    $password = $request->request->get('password');
@@ -27,16 +27,16 @@ class WebserviceController extends Controller
 
 		    	$em = $this->getDoctrine()->getManager();
 
-		    	// get FosUserUser entity using the found user's id		    	
+		    	// get FosUserUser entity using the found user's id
 		        $sfo = $em->getRepository('AcmeDemoBundle:SFO')->findOneBy(array('user' => $user->getId()));
 
 		         //echo $entity->getId();
 		        if ($sfo) {
 		            $sfoId = $sfo->getId();
-		        }						    	
+		        }
 		    }
 	    }
-	    
+
 	    return new Response($sfoId);
     }
 
@@ -81,9 +81,9 @@ class WebserviceController extends Controller
 	    //$endDate = $request->request->get('endDate');
 
 	    /* Get : SFOs performance data */
-        
+
         /* Get : Nbr Enquêtes validées */
-        
+
         $subRequest1 = "SELECT l.sfo_id, q.*  FROM questionnairedisponibilite q, localisation l
                 WHERE l.id = q.localisation_id'";
 
@@ -94,9 +94,9 @@ class WebserviceController extends Controller
 				FROM sfo sfo_t1 LEFT OUTER JOIN
 				(SELECT l.sfo_id, q.id as questionnaire_id, q.* FROM questionnairedisponibilite q, localisation l
 				WHERE l.id = q.localisation_id) s1
-				ON sfo_t1.id = s1.sfo_id LEFT OUTER JOIN 
+				ON sfo_t1.id = s1.sfo_id LEFT OUTER JOIN
 				(SELECT l.sfo_id, q.id as questionnaire_id, q.* FROM questionnaireshelfshare q, localisation l
-				WHERE l.id = q.localisation_id) s2 ON sfo_t1.id = s2.sfo_id  
+				WHERE l.id = q.localisation_id) s2 ON sfo_t1.id = s2.sfo_id
 				GROUP BY 1";
         $queryResult = $em->getConnection()->executeQuery($sql);
         while ($row = $queryResult->fetch()) {
@@ -162,11 +162,8 @@ class WebserviceController extends Controller
 	    }
 	    /* Insert new references */
         $sql = "INSERT INTO referencementproduit VALUES ". $sqlInsertSequence;
- 
+
         $queryResult = $em->getConnection()->executeQuery($sql);
         return new Response('Done');
     }
 }
-
-
-

@@ -76,12 +76,39 @@
         dataType: "json",
         async: false
         }).responseText;
-      
+
       var arrayData = $.parseJSON(jsonData);
 
       projectionDataTable = google.visualization.arrayToDataTable(arrayData);
+      for(var row = 0; row < arrayData.length - 1;row++){
+        var val = projectionDataTable.getValue(row, 3 );
+        projectionDataTable.setFormattedValue(row, 3, secondsToTime(val) );
+      }
       projectionDashboard_1.bind([projectionDataTable_control1, projectionDataTable_control2, projectionDataTable_control3, projectionDataTable_control4], [projectionTable]);
       projectionDashboard_1.draw(projectionDataTable);
+    }
+
+    function secondsToTime(secs)
+    {
+        secs = Math.round(secs);
+        var hours = Math.floor(secs / (60 * 60));
+
+        var divisor_for_minutes = secs % (60 * 60);
+        var minutes = Math.floor(divisor_for_minutes / 60);
+
+        var divisor_for_seconds = divisor_for_minutes % 60;
+        var seconds = Math.ceil(divisor_for_seconds);
+
+        /*var obj = {
+            "h": hours,
+            "m": minutes,
+            "s": seconds
+        };*/
+
+        var result = (hours >0)? hours+ ' h':'';
+        result    += (minutes >0)? ' ' + minutes+ ' m':'';
+        result    += (seconds >0)? ' ' +  seconds+ ' s':' 0 s';
+        return result ;
     }
 
   </script>
@@ -98,7 +125,7 @@
           </div>
           <br/><br/>
       </center>
-            
+
       <div class="modal fade" id="modal_filtre_dashboard_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" style="width:80%;">
           <div class="modal-content">

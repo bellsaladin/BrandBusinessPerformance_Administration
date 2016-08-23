@@ -326,7 +326,7 @@ class DemoController extends Controller
       $dateFin = \DateTime::createFromFormat('d/m/Y', $request->request->get('date_fin'))->format('Y-m-d');
 
       if($request->get('export_data1') != null){
-        $sql = "SELECT q.date_creation 'Date', p.nom 'PDV', sfo.nom 'SFO', q.valide 'Validé', m.libelle 'Marque', cat.name 'Catégorie', seg.name 'Segment', poi.libelle 'POI', qte 'Quantité'
+        $sql = "SELECT q.date_creation 'Date Début', q.tempsRemplissage as 'Temps de remplissage', p.nom 'PDV', sfo.nom 'SFO', CASE WHEN q.valide = 1 THEN 'Oui' ELSE 'Non' END 'Validé', m.libelle 'Marque', cat.name 'Catégorie', seg.name 'Segment', poi.libelle 'POI', qte 'Quantité'
                 FROM questionnaireshelfshare q, questionnaireshelfshare_marque qm, localisation l, pdv p, sfo, marque m, poi,
                      classification__category cat, classification__category seg
                 WHERE q.localisation_id = l.id AND l.pdv_id = p.id AND l.sfo_id = sfo.id AND
@@ -337,6 +337,7 @@ class DemoController extends Controller
         $queryResult = $em->getConnection()->executeQuery($sql);
         $exportedRowArray = array();
         while ($row = $queryResult->fetch()) {
+          $row['Temps de remplissage'] = $this->secondsToTime($row['Temps de remplissage']);
           $exportedRowArray[] = $row;
         }
 
@@ -350,7 +351,7 @@ class DemoController extends Controller
       }
 
       if($request->get('export_data2') != null){
-        $sql = "SELECT q.date_creation 'Date', p.nom 'PDV', sfo.nom 'SFO', q.valide 'Validé', produit.sku 'SKU', cat.name 'Catégorie', poi.libelle 'POI', qte 'Quantité'
+        $sql = "SELECT q.date_creation 'Date Début', q.tempsRemplissage as 'Temps de remplissage', p.nom 'PDV', sfo.nom 'SFO', CASE WHEN q.valide = 1 THEN 'Oui' ELSE 'Non' END 'Validé', produit.sku 'SKU', cat.name 'Catégorie', poi.libelle 'POI', qte 'Quantité'
                 FROM questionnairedisponibilite q, questionnairedisponibilite_produit qm, localisation l, pdv p, sfo, produit, poi,
                      classification__category cat
                 WHERE q.localisation_id = l.id AND l.pdv_id = p.id AND l.sfo_id = sfo.id AND
@@ -361,6 +362,7 @@ class DemoController extends Controller
         $queryResult = $em->getConnection()->executeQuery($sql);
         $exportedRowArray = array();
         while ($row = $queryResult->fetch()) {
+          $row['Temps de remplissage'] =  $this->secondsToTime($row['Temps de remplissage']);
           $exportedRowArray[] = $row;
         }
 
@@ -372,6 +374,24 @@ class DemoController extends Controller
         $filename = sprintf( 'export_availability_%s.xls', date('Y_m_d_H_i_s', strtotime('now')) );
         return $this->get('sonata.admin.exporter')->getResponse('xls', $filename, $sourceIterator);
       }
+    }
+
+    private function secondsToTime($secs)
+    {
+        $secs = round($secs);
+        $hours = floor($secs / (60 * 60));
+
+        $divisor_for_minutes = $secs % (60 * 60);
+        $minutes = floor($divisor_for_minutes / 60);
+
+        $divisor_for_seconds = $divisor_for_minutes % 60;
+        $seconds = ceil($divisor_for_seconds);
+
+
+        $result = ($hours >0)? $hours. ' h':'';
+        $result    .= ($minutes >0)? ' ' .$minutes. ' m':'';
+        $result    .= ($seconds >0)? ' ' .$seconds. ' s':' 0 s';
+        return $result ;
     }
 
     public function checkIfAccessAllowedAction(){
