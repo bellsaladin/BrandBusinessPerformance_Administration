@@ -11,6 +11,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Acme\DemoBundle\Entity\Visite;
 
+use Acme\DemoBundle\Common\Utils;
+use Acme\DemoBundle\Form\DateTimeToWeekTransformer;
+
 class PlanningAdmin extends Admin
 {
     protected $baseRoutePattern = 'planning';
@@ -24,16 +27,20 @@ class PlanningAdmin extends Admin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $transformer = new DateTimeToWeekTransformer();
+
         $formMapper
-            ->add('dateDebutSemaine','sonata_type_date_picker', array('label' => 'Semaine du : ',
+            /*->add('dateDebutSemaine','sonata_type_date_picker', array('label' => 'Semaine du : ',
                     'years' => range(date('Y'), date('Y')+1),
                     'data' => new \DateTime(date("Y-m-d",strtotime('monday next week'))),
                     'format' => 'dd/MM/yyyy',
                     'dp_days_of_week_disabled' => array(0,2,3,4,5,6),
                     'read_only' => 'true',
-                    'dp_show_today'=>'false'))
+                    'dp_show_today'=>'false'))*/
+
+            ->add('dateDebutSemaine', 'choice', array('label' => 'Week : ', 'choices' => Utils::getWeeksList(), 'mapped' => true))->get('dateDebutSemaine')->addModelTransformer($transformer);
             //->add('animateur','sonata_type_model_list')
-            ->add('sfo'      ,'sonata_type_model_list')
+        $formMapper->add('sfo'      ,'sonata_type_model_list')
             //->add('pdv')
             /*->add('pdv', 'sonata_type_collection', array(
                 'required' => true
@@ -67,7 +74,7 @@ class PlanningAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('dateDebutSemaine', null, array(
-                'label' => 'Semaine du ',
+                'label' => 'Week ',
                 'route' => array(
                     'name' => 'show'
                 )
@@ -92,7 +99,7 @@ class PlanningAdmin extends Admin
     {
         // Here we set the fields of the ShowMapper variable, $showMapper (but this can be called anything)
         $showMapper
-            ->add('dateDebutSemaine', 'date', array('label' => 'Semaine du : '))
+            ->add('dateDebutSemaine', 'date', array('label' => 'Week : '))
             ->add('sfo', 'entity', array('class' => 'Acme\DemoBundle\Entity\SFO'))
             ->add('visites')
         ;
