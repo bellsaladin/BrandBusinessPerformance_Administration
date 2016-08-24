@@ -145,7 +145,7 @@ sonata_admin:
             #         - sonata.page.admin.site
 
             sonata.admin.group.planning:
-                label:           Planning
+                label:           Plannings
                 label_catalogue: SonataAdminBundle
                 icon:            '<i class="fa fa-calendar"></i>'
                 items:
