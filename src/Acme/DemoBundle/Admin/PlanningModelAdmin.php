@@ -58,16 +58,16 @@ class PlanningModelAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('sfo')
-            ->add('visites')
+            ->addIdentifier('sfo')
+            //->add('visites')
 
             //->add('slug')
             //->add('author')
             ->add('_action', 'actions', array(
             'actions' => array(
                 'show' => array(),
-                //'edit' => array(),
-                //'delete' => array(),
+                'edit' => array(),
+                'delete' => array(),
             )
         ))
         ;

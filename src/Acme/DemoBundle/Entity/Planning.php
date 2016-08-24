@@ -4,7 +4,7 @@ namespace Acme\DemoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Acme\DemoBundle\Common\Utils;
 /**
  * Planning
  *
@@ -50,7 +50,7 @@ class Planning
     public function __construct()
     {
         $this->visites = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->visites->add(new Visite()); // !important  : never remove or planning visites (rows) loading after sfo selection won't work
+        //$this->visites->add(new Visite()); // !important  : never remove or planning visites (rows) loading after sfo selection won't work
 
     }
 
@@ -100,6 +100,16 @@ class Planning
         return $this;
     }
 
+
+    public function getDateDebutSemaineToWeek(){
+      $weeksList = Utils::getWeeksList();
+      foreach ($weeksList as $dateDebutWeek => $weekLabel) {
+        $dateDebutSemaineStr = $this->dateDebutSemaine->format('Y-m-d');
+        if( $dateDebutSemaineStr == $dateDebutWeek)
+        return $weekLabel;
+      }
+      return 'Unknown week';
+    }
     /**
      * Get dateDebutSemaine
      *

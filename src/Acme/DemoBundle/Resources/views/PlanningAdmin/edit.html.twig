@@ -27,64 +27,88 @@
 
 {% block form %}
     {{ block('parentForm') }}
-
-    <p>http://localhost/symfony/Richoxygen/BrandBusinessPerformance_Administration/web/app_dev.php/admin/acme/demo/visite/create?uniqid=" + uniqId + "&code=sonata.admin.visite&pcode=sonata.admin.planning&puniqid={{ admin.uniqid }}</p>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
         $(document).ready(function(){
+            var base_url = "{{ app.request.baseUrl }}";
 
-            function createFields(){
-              var base_url = "http://localhost/symfony/Richoxygen/BrandBusinessPerformance_Administration/web/app_dev.php";
+            // on sfo field value change
+            $('#{{ admin.uniqid }}_sfo').change(function(){
+              var selectSfoId =  $(this).val();
+              createVisitesFieldsBasedOnPlanningModel(selectSfoId);
+            });
+
+            function createVisitesFieldsBasedOnPlanningModel(sfoId){
+              $("#field_container_{{ admin.uniqid }}_visites").find("tr:gt(0)").remove(); // remove rows and let the first only
+              //var planningModel = [ [1, 419], [4, 420], [6, 421]];
+              var planningModel = null;
+              var ws_sfoPlanningModelTemplate = '{{ path('_webservice_getSfoPlanningModel', {'sfoId': '__SfoId__'}) }}';
+
+              planningModel = $.ajax({
+                  type: "GET",
+                  url: ws_sfoPlanningModelTemplate.replace(/__SfoId__/g, sfoId),
+                  async: false
+              }).responseText;
+
+              planningModel = $.parseJSON(planningModel);
+              console.log('planningModel');
+              console.log(planningModel);
+
+              if(planningModel.length == 0) {
+                setPlanningModelLoadingMsg("Aucun modèle de planning n'a été trouvé pour le SFO choisi !");
+                return; // just stop here, no reason to go further
+              }
+
               var remote_url = base_url + "/core/append-form-field-element?code=sonata.admin.planning&elementId={{ admin.uniqid }}_visites&uniqid={{ admin.uniqid }}";
-              var data = "";
-              data = $.ajax({
+              var widgetModel = "";
+              widgetModel = $.ajax({
                   type: "GET",
                   url: remote_url,
                   async: false
               }).responseText;
-              var row_visite_copy_model = '<tr>' + $(data).find('tbody tr:first').html() + '</tr>';
-              alert(row_visite_copy_model);
-              for(var i =1; i <= 4; i++){
+
+              console.log($(widgetModel));
+              console.log('$(widgetModel)');
+              var row_visite_copy_model = '<tr>' + $(widgetModel).find('tbody tr:first').html() + '</tr>';
+
+              // add table from widgetModel to the 'field_widget_visites' if it has none
+              if($('#field_widget_{{ admin.uniqid }}_visites').has('table').length == 0){
+                // remove the exisingactions widget before adding
+                $('#field_actions_{{ admin.uniqid }}_visites').remove();
+                $('#field_widget_{{ admin.uniqid }}_visites').append($(widgetModel).html());
+              }
+              for(var i =1; i < planningModel.length ; i++){
                   var row_visite_copy = row_visite_copy_model;
                   row_visite_copy = row_visite_copy.replace(/{{ admin.uniqid }}_visites_0/g, "{{ admin.uniqid }}_visites_" + i);
                   row_visite_copy = row_visite_copy.replace(/{{ admin.uniqid }}\[visites]\[0]/g, "{{ admin.uniqid }}[visites][" + i + "]");
-                  alert(row_visite_copy_model);
                   $('#field_container_{{ admin.uniqid }}_visites').find('tbody').append(row_visite_copy);
+              }
+              // set rows field values based on 'planningModel'
+              for(var i =0; i < planningModel.length ; i++){
+                $("#{{ admin.uniqid }}_visites_" + i + "_dayOfWeek").val(planningModel[i][0]);
+                $("#{{ admin.uniqid }}_visites_" + i + "_pdv").val(planningModel[i][1]);
               }
 
               $('select').select2({ width: '100%' });
               $('input').iCheck('destroy');
               //$('input').iCheck('update');
               //$('input').iCheck();
-
-              // delete old visite rows
-              //$('#field_container_{{ admin.uniqid }}_visites tr').remove();
-              // append new visite rows
-              /*for(var i = 0; i < 4; i++){
-                  var uniqId = i*10000;
-                  var href= base_url + "/acme/demo/visite/create?uniqid=" + uniqId + "&code=sonata.admin.visite&pcode=sonata.admin.planning&puniqid={{ admin.uniqid }}";
-                  //var link = $('<a>',{    href: href});
-                  var link = document.createElement("a");
-                  link.href = href;
-                  return start_field_retrieve_{{ admin.uniqid }}_visites(link);
-                  //alert(i);
-              }*/
-
-              //$("#field_actions_{{ admin.uniqid }}_visites a")[0].click()
+              setPlanningModelLoadingMsg("Le modèle de planning a été chargé !");
 
             }
 
-            //alert($('#{{ admin.uniqid }}_sfo').val());
-
-            // on sfo field value change
-            $('#{{ admin.uniqid }}_sfo').change(function(){
-              var newVal =  $(this).val();
-              alert('sfo : ' + newVal);
-              createFields();
-            });
+            function setPlanningModelLoadingMsg(msg){
+              alert(msg);
+              var containerId =  'sonata-ba-field-container-{{ admin.uniqid }}_sfo';
+              var planningModelLoadingMsgElementId = 'planningModelLoadingMsg';
+              if($('#'+containerId).has(planningModelLoadingMsgElementId).length == 0){
+                $('#'+containerId).append('<small id="'+planningModelLoadingMsgElementId +'"></small>');
+              }
+              $('#'+planningModelLoadingMsgElementId).html(msg);
+            }
         });
     </script>
 {% endblock %}

@@ -73,22 +73,23 @@ class PlanningAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('dateDebutSemaine', null, array(
+            ->addIdentifier('dateDebutSemaineToWeek', null, array(
                 'label' => 'Week ',
                 'route' => array(
                     'name' => 'show'
                 )
-             ))
+             ));
+             $listMapper
             ->add('sfo')
-            ->add('visites')
+            //->add('visites')
 
             //->add('slug')
             //->add('author')
             ->add('_action', 'actions', array(
             'actions' => array(
                 'show' => array(),
-                //'edit' => array(),
-                //'delete' => array(),
+                'edit' => array(),
+                'delete' => array(),
             )
         ))
         ;

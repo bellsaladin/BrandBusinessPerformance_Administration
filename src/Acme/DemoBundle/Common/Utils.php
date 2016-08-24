@@ -13,7 +13,11 @@ use Acme\DemoBundle\Entity\Visite;
 
 class Utils
 {
+    private static $weeksList = null;
+
     public static function getWeeksList() {
+      if(self::$weeksList) return self::$weeksList;
+      else
       $weeksList = array();
       $currentYear = date('Y');
       $nextYear = date('Y') + 1;
@@ -26,7 +30,7 @@ class Utils
           $nextWeekMonday = date("Y-m-d", strtotime( $nextWeekMonday . " +1 week"));
           $weekNum++;
       }
-
+      self::$weeksList = $weeksList;
       return $weeksList;
     }
 

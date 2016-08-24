@@ -159,6 +159,36 @@ class WebserviceController extends Controller
 	    return $response;
     }
 
+    public function getSfoPlanningModelAction($sfoId){
+    	$em = $this->getDoctrine()->getManager();
+
+      $sql = "SELECT dayOfWeek, pdv_id FROM planningmodel pm, planningmodel_visite pmv
+              WHERE pm.id = pmv.planningmodel_id AND sfo_id = " . $sfoId;
+
+      $queryResult = $em->getConnection()->executeQuery($sql);
+      while ($row = $queryResult->fetch()) {
+          $exportedRowArray[] = $row;
+      }
+      //"date_creation >= '" . $param_startDate . "' AND date_creation <= '" . $param_endDate ."'";
+      $queryResult = $em->getConnection()->executeQuery($sql);
+      $dataArray = array();
+      $gotColumnsNames = false;
+      while ($row = $queryResult->fetch()) {
+      	/*if(!$gotColumnsNames){
+      		$dataArray[] = array_keys($row);
+      		$gotColumnsNames = true;
+      	}*/
+        $dataArray[] = array_values($row);// remove keys, keeping only values
+        //$dataArray[] = $row;
+      }
+
+	    $jsonContent = json_encode($dataArray, JSON_NUMERIC_CHECK);
+
+	    $response = new Response($jsonContent);
+		  $response->headers->set('Content-Type', 'application/json');
+	    return $response;
+    }
+
     public function getReferencementDataAction(Request $request){
     	$em = $this->getDoctrine()->getManager();
 

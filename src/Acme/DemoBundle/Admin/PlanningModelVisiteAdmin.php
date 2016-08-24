@@ -18,7 +18,7 @@ class PlanningModelVisiteAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         if (!$this->hasParentFieldDescription()) {
-            $formMapper->add('planning', null, array('constraints' => new Assert\NotNull()));
+            $formMapper->add('planningmodel', null, array('constraints' => new Assert\NotNull()));
         }
 
         $choices = array(
