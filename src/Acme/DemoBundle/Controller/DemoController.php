@@ -288,42 +288,48 @@ class DemoController extends Controller
       return new RedirectResponse($this->generateUrl('_generateXlsFileView'));
     }
 
-    public function generateXlsFileViewAction()
+    public function generateXlsFileViewAction(Request $request)
     {
-      $em = $this->getDoctrine()->getManager();
+      /*$em = $this->getDoctrine()->getManager();
       $sql = "SELECT `value` FROM `parameters` WHERE `key` = 'PARAM_TOMBOLA_ENABLED'";
       $queryResult = $em->getConnection()->executeQuery($sql);
       $row = $queryResult->fetch();
-      $tombolaActive = $row['value'];
-      $admin_pool = $this->get('sonata.admin.pool');
-      return $this->render('AcmeDemoBundle::exporter_vers_excel.html.twig', array('admin_pool' => $admin_pool, 'tombolaActive' => $tombolaActive));
-    }
+      $tombolaActive = $row['value'];*/
 
-    public function uploadXlsFileForClientViewAction()
-    {
-      $admin_pool = $this->get('sonata.admin.pool');
-      return $this->render('AcmeDemoBundle::uploadXlsFileForClient.html.twig', array('admin_pool' => $admin_pool));
-    }
+      $currentWeek = $request->request->get('week');
+      if($currentWeek)
+        $_SESSION['currentWeek'] = $currentWeek;
+      if(isset($_SESSION['currentWeek'])) $currentWeek = $_SESSION['currentWeek'];
+      $currentWeek = (!$currentWeek)?date("Y-m-d",strtotime('monday this week')):$currentWeek;
 
-    public function uploadXlsFileForClientExecuteAction(Request $request)
-    {
-      $directory = dirname(__FILE__).'/../../../../web/bundles/acmedemo/fichierClient';
-      $uploadDone = false;
-      $fichier = $request->files->get('fichier');
-      if(isset($fichier)){
-        $request->files->get('fichier')->move($directory, 'fichier.xls');
-        $uploadDone = true;
+      $admin_pool = $this->get('sonata.admin.pool');
+
+      $weeksList = array();
+      $currentYear = date('Y');
+      $nextYear = date('Y') + 1;
+      $firstMondayOfCurrentYear = date("Y-m-d", strtotime("first monday". $currentYear."-1"));
+      $firstMondayOfNextYear = date("Y-m-d", strtotime("first monday ".$nextYear."-1"));
+      $weekNum = 1;
+      $nextWeekMonday = $firstMondayOfCurrentYear;
+      while ($nextWeekMonday < $firstMondayOfNextYear){
+          $weeksList[$nextWeekMonday] = 'Week '. $weekNum;
+          $nextWeekMonday = date("Y-m-d", strtotime( $nextWeekMonday . " +1 week"));
+          $weekNum++;
       }
-      $admin_pool = $this->get('sonata.admin.pool');
-      return $this->render('AcmeDemoBundle::uploadXlsFileForClient.html.twig',
-                        array('admin_pool' => $admin_pool, 'uploadDone' => $uploadDone ));
+
+      return $this->render('AcmeDemoBundle::exporter_vers_excel.html.twig', array('admin_pool' => $admin_pool, 'weeksList' => $weeksList, 'currentWeek' => $currentWeek));
     }
 
     public function generateXlsFileExecuteAction(Request $request)
     {
       $em = $this->getDoctrine()->getManager();
-      $dateDebut = \DateTime::createFromFormat('d/m/Y', $request->request->get('date_debut'))->format('Y-m-d');
-      $dateFin = \DateTime::createFromFormat('d/m/Y', $request->request->get('date_fin'))->format('Y-m-d');
+
+      $selectedWeek = $request->request->get('week');
+      //$dateDebut = \DateTime::createFromFormat('d/m/Y', $request->request->get('date_debut'))->format('Y-m-d');
+      //$dateFin = \DateTime::createFromFormat('d/m/Y', $request->request->get('date_fin'))->format('Y-m-d');
+
+      $dateDebut = $selectedWeek;
+      $dateFin   = date("Y-m-d", strtotime( $selectedWeek . " +1 week"));
 
       if($request->get('export_data1') != null){
         $sql = "SELECT q.date_creation 'Date Début', q.tempsRemplissage as 'Temps de remplissage', p.nom 'PDV', sfo.nom 'SFO', CASE WHEN q.valide = 1 THEN 'Oui' ELSE 'Non' END 'Validé', m.libelle 'Marque', cat.name 'Catégorie', seg.name 'Segment', poi.libelle 'POI', qte 'Quantité'
@@ -374,6 +380,26 @@ class DemoController extends Controller
         $filename = sprintf( 'export_availability_%s.xls', date('Y_m_d_H_i_s', strtotime('now')) );
         return $this->get('sonata.admin.exporter')->getResponse('xls', $filename, $sourceIterator);
       }
+    }
+
+    public function uploadXlsFileForClientViewAction()
+    {
+      $admin_pool = $this->get('sonata.admin.pool');
+      return $this->render('AcmeDemoBundle::uploadXlsFileForClient.html.twig', array('admin_pool' => $admin_pool));
+    }
+
+    public function uploadXlsFileForClientExecuteAction(Request $request)
+    {
+      $directory = dirname(__FILE__).'/../../../../web/bundles/acmedemo/fichierClient';
+      $uploadDone = false;
+      $fichier = $request->files->get('fichier');
+      if(isset($fichier)){
+        $request->files->get('fichier')->move($directory, 'fichier.xls');
+        $uploadDone = true;
+      }
+      $admin_pool = $this->get('sonata.admin.pool');
+      return $this->render('AcmeDemoBundle::uploadXlsFileForClient.html.twig',
+                        array('admin_pool' => $admin_pool, 'uploadDone' => $uploadDone ));
     }
 
     private function secondsToTime($secs)

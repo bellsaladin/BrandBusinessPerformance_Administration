@@ -10,11 +10,15 @@
     <h3>Exportation des données collectées vers Excel :</h3>
     <br/><br/>
     <form method="post" action="{{ path('_generateXlsFileExecute') }}" enctype="multipart/form-data">
-    <p><b>Période :</b></p>
+    <p><b>Week :</b></p>
     <div style="margin:20px 0">
-      Du :
-      <input type="text" name="date_debut" id="date_debut" class="sonata-medium-date" data-date-format="DD/MM/YYYY" value="{{ "now"|date("d/m/Y") }}">
-      Au : <input type="text" name="date_fin" id="date_fin" class="sonata-medium-date" data-date-format="DD/MM/YYYY"value="{{ "tomorrow"|date("d/m/Y") }}">
+      <select name="week">
+        {% for date, libelle in weeksList %}
+          <option value="{{ date }}" {{ (date == currentWeek ? ' selected ' : '') }}>{{ libelle }}</option>
+        {% endfor %}
+      </select>
+      <!-- Du :<input type="text" name="date_debut" id="date_debut" class="sonata-medium-date" data-date-format="DD/MM/YYYY" value="{{ "now"|date("d/m/Y") }}">
+      Au : <input type="text" name="date_fin" id="date_fin" class="sonata-medium-date" data-date-format="DD/MM/YYYY"value="{{ "tomorrow"|date("d/m/Y") }}">-->
     </div>
     <br/><br/>
     <input type="submit" name="export_data1" class="btn btn-danger" value="Exporter les données shelfshare"/>
