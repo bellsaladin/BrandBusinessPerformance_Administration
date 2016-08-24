@@ -27,42 +27,64 @@
 
 {% block form %}
     {{ block('parentForm') }}
+
+    <p>http://localhost/symfony/Richoxygen/BrandBusinessPerformance_Administration/web/app_dev.php/admin/acme/demo/visite/create?uniqid=" + uniqId + "&code=sonata.admin.visite&pcode=sonata.admin.planning&puniqid={{ admin.uniqid }}</p>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <!--<script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function(){
-            var remote_url = "http://localhost//symfony/Richoxygen/BrandBusinessPerformance_Administration/web/app_dev.php/admin/core/append-form-field-element?code=sonata.admin.planning&elementId={{ admin.uniqid }}_visites&uniqid={{ admin.uniqid }}";
-            var data = "";
-            data = $.ajax({
-                type: "GET",
-                url: remote_url,
-                async: false
-            }).responseText;
-            //alert(data);
-            var row_visite_copy_model = $(data).find('tbody').html();
-            //alert(row_visite_copy_model);
-            //alert(row_visite_copy);
-            for(var i =1; i <= 4; i++){
-                var row_visite_copy = row_visite_copy_model;
-                row_visite_copy = row_visite_copy.replace(/{{ admin.uniqid }}_visites_0/g, "{{ admin.uniqid }}_visites_" + i);
-                row_visite_copy = row_visite_copy.replace(/{{ admin.uniqid }}\[visites]\[0]/g, "{{ admin.uniqid }}[visites][" + i + "]");
-                $('#field_container_{{ admin.uniqid }}_visites').find('tbody').append(row_visite_copy);
+
+            function createFields(){
+              var base_url = "http://localhost/symfony/Richoxygen/BrandBusinessPerformance_Administration/web/app_dev.php";
+              var remote_url = base_url + "/core/append-form-field-element?code=sonata.admin.planning&elementId={{ admin.uniqid }}_visites&uniqid={{ admin.uniqid }}";
+              var data = "";
+              data = $.ajax({
+                  type: "GET",
+                  url: remote_url,
+                  async: false
+              }).responseText;
+              var row_visite_copy_model = '<tr>' + $(data).find('tbody tr:first').html() + '</tr>';
+              alert(row_visite_copy_model);
+              for(var i =1; i <= 4; i++){
+                  var row_visite_copy = row_visite_copy_model;
+                  row_visite_copy = row_visite_copy.replace(/{{ admin.uniqid }}_visites_0/g, "{{ admin.uniqid }}_visites_" + i);
+                  row_visite_copy = row_visite_copy.replace(/{{ admin.uniqid }}\[visites]\[0]/g, "{{ admin.uniqid }}[visites][" + i + "]");
+                  alert(row_visite_copy_model);
+                  $('#field_container_{{ admin.uniqid }}_visites').find('tbody').append(row_visite_copy);
+              }
+
+              $('select').select2({ width: '100%' });
+              $('input').iCheck('destroy');
+              //$('input').iCheck('update');
+              //$('input').iCheck();
+
+              // delete old visite rows
+              //$('#field_container_{{ admin.uniqid }}_visites tr').remove();
+              // append new visite rows
+              /*for(var i = 0; i < 4; i++){
+                  var uniqId = i*10000;
+                  var href= base_url + "/acme/demo/visite/create?uniqid=" + uniqId + "&code=sonata.admin.visite&pcode=sonata.admin.planning&puniqid={{ admin.uniqid }}";
+                  //var link = $('<a>',{    href: href});
+                  var link = document.createElement("a");
+                  link.href = href;
+                  return start_field_retrieve_{{ admin.uniqid }}_visites(link);
+                  //alert(i);
+              }*/
+
+              //$("#field_actions_{{ admin.uniqid }}_visites a")[0].click()
+
             }
 
-            $('select').select2({ width: '100%' });
-            $('input').iCheck('destroy');
-            //$('input').iCheck('update');
-            //$('input').iCheck();
+            //alert($('#{{ admin.uniqid }}_sfo').val());
 
-            /*for(var i = 0; i < 4; i++){
-                var uniqId = i*10000;
-                var href= "http://localhost/symfony/Richoxygen/BrandBusinessPerformance_Administration/web/app_dev.php/admin/acme/demo/visite/create?uniqid=" + uniqId + "&code=sonata.admin.visite&pcode=sonata.admin.planning&puniqid={{ admin.uniqid }}";
-                var link = $('<a>',{    href: href});
-                start_field_retrieve_{{ admin.uniqid }}_visites(link);
-                alert(i);
-            }*/
+            // on sfo field value change
+            $('#{{ admin.uniqid }}_sfo').change(function(){
+              var newVal =  $(this).val();
+              alert('sfo : ' + newVal);
+              createFields();
+            });
         });
-    </script>-->
+    </script>
 {% endblock %}

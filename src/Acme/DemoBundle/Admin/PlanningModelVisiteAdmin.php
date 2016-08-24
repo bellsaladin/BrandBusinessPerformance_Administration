@@ -12,7 +12,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-class VisiteAdmin extends Admin
+class PlanningModelVisiteAdmin extends Admin
 {
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)

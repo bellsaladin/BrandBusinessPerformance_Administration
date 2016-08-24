@@ -150,6 +150,7 @@ sonata_admin:
                 icon:            '<i class="fa fa-calendar"></i>'
                 items:
                     - sonata.admin.planning
+                    - sonata.admin.planningmodel
 
             #sonata.admin.group.demo:
             #    label: Demo

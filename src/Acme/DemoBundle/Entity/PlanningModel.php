@@ -8,10 +8,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Planning
  *
- * @ORM\Table(name="planning", indexes={@ORM\Index(name="fk_planning_animateur_idx", columns={"animateur_id"})})
+ * @ORM\Table(name="planningmodel" )})
  * @ORM\Entity
  */
-class Planning
+class PlanningModel
 {
     /**
      * @var integer
@@ -21,13 +21,6 @@ class Planning
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var \Date
-     *
-     * @ORM\Column(name="datedebut_semaine", type="date", nullable=true)
-     */
-    private $dateDebutSemaine;
 
      /**
      * @var \SFO
@@ -39,9 +32,8 @@ class Planning
      */
     private $sfo;
 
-
     /**
-     * @ORM\OneToMany(targetEntity="Visite", cascade={"persist", "remove"}, orphanRemoval=True, mappedBy="planning")
+     * @ORM\OneToMany(targetEntity="PlanningModelVisite", cascade={"persist", "remove"}, orphanRemoval=True, mappedBy="planningmodel")
      * @Assert\Valid
      */
     private $visites;
@@ -50,8 +42,7 @@ class Planning
     public function __construct()
     {
         $this->visites = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->visites->add(new Visite()); // !important  : never remove or planning visites (rows) loading after sfo selection won't work
-
+        //$this->visites->add(new Visite()); // !important  : never remove or planning visites (rows) loading after sfo selection won't work
     }
 
     /**
@@ -88,29 +79,6 @@ class Planning
     }
 
     /**
-     * Set dateDebutSemaine
-     *
-     * @param \Date $dateDebutSemaine
-     * @return Planning
-     */
-    public function setDateDebutSemaine($dateDebutSemaine)
-    {
-        $this->dateDebutSemaine = $dateDebutSemaine;
-
-        return $this;
-    }
-
-    /**
-     * Get dateDebutSemaine
-     *
-     * @return \Date
-     */
-    public function getDateDebutSemaine()
-    {
-        return $this->dateDebutSemaine;
-    }
-
-    /**
      * @param Visites[] $visites
      */
     public function setVisites($visites)
@@ -125,12 +93,12 @@ class Planning
     /**
      * Add visite
      *
-     * @param \Acme\DemoBundle\Entity\Visite $visite
+     * @param \Acme\DemoBundle\Entity\PlanningModelVisite $visite
      * @return Planning
      */
-    public function addVisite(\Acme\DemoBundle\Entity\Visite $visite)
+    public function addVisite(\Acme\DemoBundle\Entity\PlanningModelVisite $visite)
     {
-        $visite->setPlanning($this);
+        $visite->setPlanningmodel($this);
 
         $this->visites->add($visite);
 
@@ -140,9 +108,9 @@ class Planning
     /**
      * Remove visite
      *
-     * @param \Acme\DemoBundle\Entity\Visite $visites
+     * @param \Acme\DemoBundle\Entity\PlanningModelVisite $visites
      */
-    public function removeVisite(\Acme\DemoBundle\Entity\Visite $visite)
+    public function removeVisite(\Acme\DemoBundle\Entity\PlanningModelVisite $visite)
     {
         $this->visites->removeElement($visite);
     }
@@ -159,6 +127,6 @@ class Planning
 
     public function __toString()
     {
-        return 'planning';
+        return 'modèle de planning';
     }
 }

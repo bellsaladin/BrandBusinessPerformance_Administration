@@ -40,7 +40,7 @@
           </call>
       </service>
       <service id="sonata.admin.planning" class="Acme\DemoBundle\Admin\PlanningAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Planning" label="Plannings" audit="false"/>
+            <tag name="sonata.admin" manager_type="orm" group="Planning" label="Route plan" audit="false"/>
             <argument />
             <argument>Acme\DemoBundle\Entity\Planning</argument>
             <argument />
@@ -52,10 +52,28 @@
                 <argument>AcmeDemoBundle</argument>
             </call>
       </service>
+      <service id="sonata.admin.planningmodel" class="Acme\DemoBundle\Admin\PlanningModelAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Planning" label="Modèle de Planning" audit="false"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\PlanningModel</argument>
+            <argument />
+            <call method="setTranslationDomain">
+                <argument>AcmeDemoBundle</argument>
+            </call>
+      </service>
       <service id="sonata.admin.visite" class="Acme\DemoBundle\Admin\VisiteAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Visite" label="Visites" audit="false"/>
             <argument />
             <argument>Acme\DemoBundle\Entity\Visite</argument>
+            <argument />
+            <call method="setTranslationDomain">
+                <argument>AcmeDemoBundle</argument>
+            </call>
+      </service>
+      <service id="sonata.admin.planningmodelvisite" class="Acme\DemoBundle\Admin\PlanningModelVisiteAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Visite" label="Visites" audit="false"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\PlanningModelVisite</argument>
             <argument />
             <call method="setTranslationDomain">
                 <argument>AcmeDemoBundle</argument>
