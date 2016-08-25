@@ -10,7 +10,8 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Acme\DemoBundle\Common\Utils;
+use Acme\DemoBundle\Form\DateTimeToWeekTransformer;
 
 class VisiteAdmin extends Admin
 {
@@ -39,7 +40,7 @@ class VisiteAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            //->add('nom')
+            ->add('planning.dateDebutSemaine', null, array('label' => 'Week'), 'choice', array('choices' => Utils::getWeeksList()))
             //->add('author')
         ;
     }
@@ -47,11 +48,56 @@ class VisiteAdmin extends Admin
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper)
     {
-        $list
-            ->addIdentifier('planning')
-            ->add('dayOfWeek')
+        $listMapper
+            //->addIdentifier('planning')
+            ->add('planning.dateDebutSemaineToWeek', null, array(
+                'label' => 'Week ',
+                'route' => array(
+                    'name' => 'show'
+                )
+             ))
             ->add('pdv')
+            ->add('planning.sfo')
+
+            ->add('_action', 'actions', array(
+            'actions' => array(
+                'commenter' => array(),
+                'edit' => array()
+            )))
         ;
 
+    }
+
+    public function createQuery($context = 'list')
+    {
+        // $em = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getManager();
+        // /*$query = $em->createQuery('
+        //   SELECT v FROM AcmeDemoBundle:Visite v, AcmeDemoBundle:Planning p
+        //   WHERE v.planning = p.id  AND p.id = :p1'
+        //               )->setParameter('p1', 30);*/
+        // return $query;
+        if($context == 'list'){
+          $query = parent::createQuery($context);
+          //var_dump($query);
+          //$fields = array($query->getRootAlias().'', 'DATE_DIFF(CURRENT_DATE(), p.dateDebutSemaine) as dateDiff');
+          //$query->select($fields);
+          $query->innerJoin('AcmeDemoBundle:Planning', 'p', 'WITH', $query->getRootAlias().'.planning = p.id');//->where($query->getRootAlias().'.planning = p.id');
+          //$query->innerJoin('AcmeDemoBundle:Localisation', 'l',  'WITH', $query->getRootAlias().'.pdv != l.pdv');
+          //$query->where('p.pdv != l.pdv');
+          //$query->where($query->getRootAlias().'.planning = p.id');
+          //$query->andWhere('DATE_DIFF(CURRENT_TIME(), p.dateDebutSemaine)');
+          /*$query->andWhere(
+              $query->expr()->eq('p.dateDebutSemaine', ':date')
+          );
+          $query->setParameter('date', '2016-01-04');*/
+          $query->andWhere(
+              $query->expr()->gte('DATE_DIFF(CURRENT_DATE(), p.dateDebutSemaine)', ':p2')
+          );
+          $query->andWhere(
+              $query->expr()->eq($query->getRootAlias().'.done', '0')
+          );
+          $query->setParameter('p2', 7);
+          return $query;
+        }
     }
 }

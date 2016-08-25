@@ -45,6 +45,19 @@ class Visite
      */
     private $planning;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="done", type="boolean", nullable=true)
+     */
+    private $done;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="commentaire", type="string", nullable=true)
+     */
+    private $comentaire;
 
     public function __construct()
     {
@@ -53,7 +66,7 @@ class Visite
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -75,7 +88,7 @@ class Visite
     /**
      * Get dayOfWeek
      *
-     * @return integer 
+     * @return integer
      */
     public function getDayOfWeek()
     {
@@ -126,6 +139,53 @@ class Visite
     public function getPlanning()
     {
         return $this->planning;
+    }
+
+    /**
+     * Set done
+     *
+     * @param boolean $done
+     * @return Marque
+     */
+    public function setDone($done)
+    {
+        $this->done = $done;
+
+        return $this;
+    }
+
+    /**
+     * Get done
+     *
+     * @return boolean
+     */
+    public function getDone()
+    {
+        return $this->done;
+    }
+
+
+    /**
+     * Set commentaire
+     *
+     * @param string $commentaire
+     * @return Visite
+     */
+    public function setCommentaire($commentaire)
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get commentaire
+     *
+     * @return string
+     */
+    public function getCommentaire()
+    {
+        return $this->commentaire;
     }
 
     public function __toString(){

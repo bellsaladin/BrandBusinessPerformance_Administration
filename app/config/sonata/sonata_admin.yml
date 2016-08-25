@@ -151,6 +151,7 @@ sonata_admin:
                 items:
                     - sonata.admin.planning
                     - sonata.admin.planningmodel
+                    - sonata.admin.visite
 
             #sonata.admin.group.demo:
             #    label: Demo
