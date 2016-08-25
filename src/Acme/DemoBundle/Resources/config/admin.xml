@@ -70,6 +70,16 @@
                 <argument>AcmeDemoBundle</argument>
             </call>
       </service>
+
+      <service id="sonata.admin.visite_non_effectuees" class="Acme\DemoBundle\Admin\VisiteNonEffectueesAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Visite Non Effectuees" label="Visites non effectuées" audit="false"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\Visite</argument>
+            <argument />
+            <call method="setTranslationDomain">
+                <argument>AcmeDemoBundle</argument>
+            </call>
+      </service>
       <service id="sonata.admin.planningmodelvisite" class="Acme\DemoBundle\Admin\PlanningModelVisiteAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Visite" label="Visites" audit="false"/>
             <argument />

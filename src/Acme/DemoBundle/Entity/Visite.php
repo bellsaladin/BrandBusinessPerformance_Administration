@@ -57,7 +57,7 @@ class Visite
      *
      * @ORM\Column(name="commentaire", type="string", nullable=true)
      */
-    private $comentaire;
+    private $commentaire;
 
     public function __construct()
     {

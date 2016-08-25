@@ -55,7 +55,8 @@ class PlanningAdmin extends Admin
                     'cascade_validation' => true,
                 ), array(
                     'edit' => 'inline',
-                    'inline' => 'table'
+                    'inline' => 'table',
+                    'admin_code' => 'sonata.admin.visite'
                 ))
         ;
     }
@@ -102,7 +103,11 @@ class PlanningAdmin extends Admin
         $showMapper
             ->add('dateDebutSemaine', 'date', array('label' => 'Week : '))
             ->add('sfo', 'entity', array('class' => 'Acme\DemoBundle\Entity\SFO'))
-            ->add('visites')
+            ->add('visites', 'sonata_type_collection',  array(
+                            'by_reference' => false, 'admin_code' => 'sonata.admin.visite'
+                        ), array('edit' => 'inline',
+                            'inline' => 'table',
+                            ))
         ;
     }
 
