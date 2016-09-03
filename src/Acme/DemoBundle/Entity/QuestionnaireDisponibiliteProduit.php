@@ -6,37 +6,30 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * QuestionnaireDisponibliteProduit
- * 
- * @ORM\Table(name="questionnairedisponibilite_produit") 
+ *
+ * @ORM\Table(name="questionnairedisponibilite_produit")
  * @ORM\Entity
  */
 class QuestionnaireDisponibiliteProduit
 {
-    /** 
+    /**
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="QuestionnaireDisponibilite") 
-     * @ORM\JoinColumn(name="questionnairedisponibilite_id", referencedColumnName="id", nullable=false) 
+     * @ORM\ManyToOne(targetEntity="QuestionnaireDisponibilite")
+     * @ORM\JoinColumn(name="questionnairedisponibilite_id", referencedColumnName="id", nullable=false)
      */
     private $questionnaireDisponibilite;
 
-    /** 
+    /**
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Classification\Category") 
-     * @ORM\JoinColumn(name="categorieProduits_id", referencedColumnName="id", nullable=false) 
-     */
-    private $categorieProduits;
-
-    /** 
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="POI") 
-     * @ORM\JoinColumn(name="poi_id", referencedColumnName="id", nullable=false) 
+     * @ORM\ManyToOne(targetEntity="POI")
+     * @ORM\JoinColumn(name="poi_id", referencedColumnName="id", nullable=false)
      */
     private $poi;
 
-    /** 
+    /**
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="Produit") 
-     * @ORM\JoinColumn(name="produit_id", referencedColumnName="id", nullable=false) 
+     * @ORM\ManyToOne(targetEntity="Produit")
+     * @ORM\JoinColumn(name="produit_id", referencedColumnName="id", nullable=false)
      */
     private $produit;
 
@@ -60,17 +53,13 @@ class QuestionnaireDisponibiliteProduit
         return $this->produit;
     }
 
-    public function getCategorieProduits(){
-        return $this->categorieProduits;
-    }
-
     public function getQte(){
         return $this->qte;
     }
 
     public function __toString()
     {
-        return 'QuestionnaireDisponibliteProduit (' . $this->questionnaireDisponibilite->getId() .','.$this->produit->getLibelle().','.$this->categorie->getName().')';
+        return 'QuestionnaireDisponibliteProduit (' . $this->questionnaireDisponibilite->getId() .','.$this->produit->getLibelle().',)';
     }
 
 }

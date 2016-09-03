@@ -50,9 +50,9 @@
             $newProduit = $quantityArray[0];
             $type = $quantityArray[1];
             $poiId = $quantityArray[2];
-            $categorieProduitsId = $quantityArray[3];
-            $produitId = $quantityArray[4];
-            $qte = $quantityArray[5];
+            //$categorieProduitsId = $quantityArray[3];
+            $produitId = $quantityArray[3];
+            $qte = $quantityArray[4];
 
             if($newProduit == 1){
                 $produit = null;
@@ -66,10 +66,9 @@
                 }else{
                   $produitId = $produit['sku'];
                 }
-
             }
             // check if the product exists
-            $request = "insert into questionnairedisponibilite_produit values($questionnaireId, $categorieProduitsId, $produitId, $poiId, $qte)";
+            $request = "insert into questionnairedisponibilite_produit values($questionnaireId, $produitId, $poiId, $qte)";
             mysql_query($request, $con);
         }
     }

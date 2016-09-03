@@ -113,7 +113,7 @@
     $produits = array();
     while($row=mysql_fetch_array($r))
     {
-        $produits[] = array('id'=>$row['id'], 'sku'=> utf8_encode($row['sku']), 'libelle'=> utf8_encode($row['libelle']), 'nom'=> $row['categorie_id']);
+        $produits[] = array('id'=>$row['id'], 'sku'=> utf8_encode($row['sku']), 'libelle'=> utf8_encode($row['libelle']), 'categorie_id'=> $row['categorie_id']);
     }
 
     // ****************************************************************************************************
@@ -165,9 +165,9 @@
     // ****************************************************************************************************
     //                                      CREATING THE RESPONSE
     // ****************************************************************************************************
-    
-    $response = array('marques' => $marques, 'raisonsAchat' => $raisonsAchat , 'raisonsRefus' => $raisonsRefus, 
-        'tranchesAge'=> $tranchesAge, 'pdvs' => $pdvs, 'cadeaux' => $cadeaux, 'superviseurs' => $superviseurs, 
+
+    $response = array('marques' => $marques, 'raisonsAchat' => $raisonsAchat , 'raisonsRefus' => $raisonsRefus,
+        'tranchesAge'=> $tranchesAge, 'pdvs' => $pdvs, 'cadeaux' => $cadeaux, 'superviseurs' => $superviseurs,
         'parameters' => $parameters, 'categories' => $categories, 'produits' => $produits,'marques_categories' =>$marquesCategories, 'pois' => $pois, 'pdvs_pois' =>$pdvsPois);
 
     print(json_encode($response));

@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * QuestionnaireDisponibilite
- * 
- * @ORM\Table(name="questionnairedisponibilite") 
+ *
+ * @ORM\Table(name="questionnairedisponibilite")
  * @ORM\Entity
  */
 class QuestionnaireDisponibilite
@@ -59,9 +59,9 @@ class QuestionnaireDisponibilite
      */
     private $tempsRemplissage;
 
-    /** 
-     * @ORM\OneToMany(targetEntity="QuestionnaireDisponibiliteProduit", mappedBy="questionnaireDisponibilite") 
-     * @ORM\OrderBy({"categorieProduits" = "ASC", "produit" = "ASC", "poi" = "ASC"})
+    /**
+     * @ORM\OneToMany(targetEntity="QuestionnaireDisponibiliteProduit", mappedBy="questionnaireDisponibilite")
+     * @ORM\OrderBy({"poi" = "ASC", "produit" = "ASC"})
      */
     private $quantities;
 
@@ -73,7 +73,7 @@ class QuestionnaireDisponibilite
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -96,7 +96,7 @@ class QuestionnaireDisponibilite
     /**
      * Get dateCreation
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateCreation()
     {
@@ -119,7 +119,7 @@ class QuestionnaireDisponibilite
     /**
      * Get localisation
      *
-     * @return \Acme\DemoBundle\Entity\Localisation 
+     * @return \Acme\DemoBundle\Entity\Localisation
      */
     public function getLocalisation()
     {
@@ -142,7 +142,7 @@ class QuestionnaireDisponibilite
     /**
      * Get valide
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getValide()
     {

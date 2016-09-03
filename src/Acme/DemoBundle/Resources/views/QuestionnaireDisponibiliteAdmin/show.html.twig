@@ -60,28 +60,28 @@ file that was distributed with this source code.
 
         <div class="sonata-ba-view-container" style="margin:20px">
             <ul class="nav nav-tabs" id="myTab">
-            {% set previousCategorieProduits = null %}
+            {% set previousPOI = null %}
             {% for quantity in object.quantities %}
-                {% if quantity.categorieProduits != previousCategorieProduits %}
+                {% if quantity.poi != previousPOI %}
 
                   <li {% if loop.first %}class="active"{% endif %}>
-                    <a data-target="#{{quantity.categorieProduits.name}}" data-toggle="tab">{{quantity.categorieProduits.name}}</a>
+                    <a data-target="#{{quantity.poi.id}}" data-toggle="tab">{{quantity.poi.libelle}}</a>
                    </li>
 
                 {% endif %}
-                {% set previousCategorieProduits = quantity.categorieProduits %}
+                {% set previousPOI = quantity.poi %}
             {% endfor %}
             </ul>
             <div class="tab-content">
-            {% set previousCategorieProduits = null %}
+            {% set previousPOI = null %}
             {% for quantity in object.quantities %}
-                {% if quantity.categorieProduits != previousCategorieProduits %}
-                  <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{quantity.categorieProduits.name}}">
+                {% if quantity.poi != previousPOI %}
+                  <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{quantity.poi.id}}">
                     <table class="table">
                     {% set tableHeaderWritten = false %}
                     {% set processedProduitPoiCouples = [] %}
                     {% for quantityCopy1 in object.quantities %}
-                        {% if quantityCopy1.categorieProduits == quantity.categorieProduits and processedProduitPoiCouples[(quantityCopy1.produit.id ~ quantityCopy1.poi.id)] is not defined %}
+                        {% if quantityCopy1.poi == quantity.poi and processedProduitPoiCouples[(quantityCopy1.produit.id ~ quantityCopy1.poi.id)] is not defined %}
 
                             {% if not tableHeaderWritten %}
                                 <tr>
@@ -91,7 +91,7 @@ file that was distributed with this source code.
                                 {% set tableHeaderWritten = true %}
                             {% endif %}
                             <tr>
-                                <td><b>{{quantityCopy1.produit.libelle}} -- {{quantityCopy1.poi.libelle}}</b></td>
+                                <td><b>{{quantityCopy1.produit.sku}}</b></td>
                                 <td>{{quantityCopy1.qte}}</td>
                             </tr>
                             {% set processedProduitPoiCouples = processedProduitPoiCouples|merge({ (quantityCopy1.produit.id ~ quantityCopy1.poi.id) : quantityCopy1}) %}
@@ -101,7 +101,7 @@ file that was distributed with this source code.
                     </table>
                   </div>
                 {% endif %}
-                {% set previousCategorieProduits = quantity.categorieProduits %}
+                {% set previousPOI = quantity.poi %}
             {% endfor %}
         </div>
         {#object.quantities.count()#}
