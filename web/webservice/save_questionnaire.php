@@ -73,6 +73,12 @@
         }
     }
 
+    $thisMonday = date("Y-m-d",strtotime('monday this week'));
+
+    // set corresponding visite status to done
+    $request = "UPDATE visite v JOIN planning p ON v.planning_id = p.id JOIN localisation l ON v.pdv_id = l.pdv_id  SET v.done = 1 WHERE l.id = $localisationId AND p.datedebut_semaine = '$thisMonday' ";
+    mysql_query($request, $con);
+
 
     //$flag['code']=0;
 
