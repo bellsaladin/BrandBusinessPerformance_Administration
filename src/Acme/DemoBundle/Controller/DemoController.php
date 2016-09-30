@@ -358,6 +358,7 @@ class DemoController extends Controller
 
       if($request->get('export_data2') != null){
 
+        // categorie produit should be left outer join
         $sql = "SELECT date_creation as 'Date Début', tempsRemplissage as 'Temps de remplissage', PDV , SFO, Validé, SKU, Catégorie, POI, Quantité, CASE WHEN (ref.produit_id is not NULL AND Quantité = 0) THEN 'Oui' ELSE 'Non' END as 'OOS'
         FROM
         (SELECT q.date_creation , q.tempsRemplissage, p.nom 'PDV', sfo.nom 'SFO', CASE WHEN q.valide = 1 THEN 'Oui' ELSE 'Non' END 'Validé', produit.sku 'SKU', cat.name 'Catégorie', poi.libelle 'POI', qte 'Quantité'
@@ -365,7 +366,7 @@ class DemoController extends Controller
                 FROM questionnairedisponibilite q, questionnairedisponibilite_produit qm, localisation l, pdv p , sfo, produit, poi,
                      classification__category cat
                 WHERE q.localisation_id = l.id AND l.pdv_id = p.id AND l.sfo_id = sfo.id AND
-                 qm.questionnairedisponibilite_id = q.id AND qm.categorieProduits_id = cat.id AND
+                 qm.questionnairedisponibilite_id = q.id AND produit.categorie_id = cat.id AND
                  qm.poi_id = poi.id AND produit.id = qm.produit_id AND
                  q.date_creation >= '$dateDebut' AND q.date_creation <= '$dateFin'
                  ORDER BY q.date_creation) qdispo LEFT OUTER JOIN referencementproduit ref ON (ref.produit_id = qdispo.produit_id AND ref.pdv_id = qdispo.pdv_id)
