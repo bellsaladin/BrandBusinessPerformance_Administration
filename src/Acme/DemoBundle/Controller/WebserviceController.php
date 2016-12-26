@@ -208,7 +208,7 @@ class WebserviceController extends Controller
 	    $jsonContent = json_encode($dataArray, JSON_NUMERIC_CHECK);
 
 	    $response = new Response($jsonContent);
-		$response->headers->set('Content-Type', 'application/json');
+		  $response->headers->set('Content-Type', 'application/json');
 	    return $response;
     }
 
@@ -233,4 +233,50 @@ class WebserviceController extends Controller
         $queryResult = $em->getConnection()->executeQuery($sql);
         return new Response('Done');
     }
+
+    public function getGenerateRoutePlanDataAction(Request $request){
+      $em = $this->getDoctrine()->getManager();
+
+      $weekDate = $request->request->get('weekDate');
+
+      /* Get : shelfshare data */
+      $sql = "SELECT sfo_id FROM generate_routeplan WHERE week_date = '$weekDate'";
+             //"date_creation >= '" . $param_startDate . "' AND date_creation <= '" . $param_endDate ."'";
+      $queryResult = $em->getConnection()->executeQuery($sql);
+      $dataArray = array();
+      $gotColumnsNames = false;
+      while ($row = $queryResult->fetch()) {
+          $dataArray[] = array_values($row);// remove keys, keeping only values
+          //$dataArray[] = $row;
+      }
+
+      $jsonContent = json_encode($dataArray, JSON_NUMERIC_CHECK);
+
+      $response = new Response($jsonContent);
+      $response->headers->set('Content-Type', 'application/json');
+      return $response;
+    }
+
+    public function saveGenerateRoutePlanDataAction(Request $request){
+      $em = $this->getDoctrine()->getManager();
+      $weekDate           = $request->request->get('weekDate');
+      $weekNum           = $request->request->get('weekNum');
+      $sfosArrayStr = $request->request->get('sfosArrayStr');
+      $sfosArrayStr = explode(',', $sfosArrayStr);
+      /* Delete old references */
+      $sql = "DELETE FROM generate_routeplan WHERE week_date = '$weekDate'";
+      $queryResult = $em->getConnection()->executeQuery($sql);
+
+      $sqlInsertSequence = "";
+      foreach($sfosArrayStr as $sfoId){
+        $insertExpression  = "('$weekNum', '$weekDate', $sfoId)";
+        $sqlInsertSequence .= ($sqlInsertSequence == "")?$insertExpression:",".$insertExpression;
+      }
+      /* Insert new data */
+      $sql = "INSERT INTO generate_routeplan VALUES ". $sqlInsertSequence;
+
+      $queryResult = $em->getConnection()->executeQuery($sql);
+      return new Response('Done');
+    }
+
 }

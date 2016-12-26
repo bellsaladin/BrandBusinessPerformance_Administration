@@ -18,9 +18,17 @@ _webservice_getRefencementProduits:
     pattern:  /webservice/getReferencementData
     defaults: { _controller: AcmeDemoBundle:Webservice:getReferencementData }
 
+_webservice_getGenerateRoutePlanData:
+    pattern:  /webservice/getGenerateRoutePlanData
+    defaults: { _controller: AcmeDemoBundle:Webservice:getGenerateRoutePlanData }
+
 _webservice_saveRefencementProduits:
-    pattern:  /saveReferencementData
+    pattern:  /webservice/saveReferencementData
     defaults: { _controller: AcmeDemoBundle:Webservice:saveReferencementData }
+
+_webservice_saveGenerateRoutePlanData:
+    pattern:  /webservice/saveGenerateRoutePlanData
+    defaults: { _controller: AcmeDemoBundle:Webservice:saveGenerateRoutePlanData }
 
 _webservice_getSfoPlanningModel:
     pattern:  /webservice/getSfoPlanningModel/{sfoId}
@@ -33,6 +41,10 @@ _tableauDeBoard:
 _referencement:
     pattern:  /referecement
     defaults: { _controller: AcmeDemoBundle:Demo:referencement }
+
+_generateRoutePlan:
+    pattern:  /generateRoutePlan
+    defaults: { _controller: AcmeDemoBundle:Demo:generateRoutePlan }
 
 _mapDashboard:
     pattern:  /mapDashboard

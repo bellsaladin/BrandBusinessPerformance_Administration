@@ -154,6 +154,34 @@ class DemoController extends Controller
       return $this->render('AcmeDemoBundle::referencement.html.twig',array('admin_pool' => $admin_pool,'data'=>$data));
     }
 
+    public function generateRoutePlanAction(Request $request){
+      $admin_pool = $this->get('sonata.admin.pool');
+      $em = $this->getDoctrine()->getManager();
+      $data = array();
+      // get : weeks List
+      $weeksList = array();
+      $currentYear = date('Y');
+      $nextYear = date('Y') + 1;
+      $firstMondayOfCurrentYear = date("Y-m-d", strtotime("first monday". $currentYear."-1"));
+      $firstMondayOfNextYear = date("Y-m-d", strtotime("first monday ".$nextYear."-1"));
+      $weekNum = 1;
+      $nextWeekMonday = $firstMondayOfCurrentYear;
+      while ($nextWeekMonday < $firstMondayOfNextYear){
+          $weeksList[$nextWeekMonday] = 'Week '. $weekNum;
+          $nextWeekMonday = date("Y-m-d", strtotime( $nextWeekMonday . " +1 week"));
+          $weekNum++;
+      }
+      $data['weeksList'] = $weeksList;
+      // get : PDV List
+      $sql = "select id, nom, prenom FROM sfo";
+      $queryResult = $em->getConnection()->executeQuery($sql);
+      while ($row = $queryResult->fetch()) {
+            $data['sfosList'][] = $row;
+      }
+      //$data['produits'] = $this->getDoctrine()->getRepository('AcmeDemoBundle:Produit')->findAll();
+      return $this->render('AcmeDemoBundle::generateRoutePlan.html.twig',array('admin_pool' => $admin_pool,'data'=>$data));
+    }
+
     public function mapDashboardAction()
     {
         $admin_pool = $this->get('sonata.admin.pool');

@@ -1,0 +1,184 @@
+{% extends 'AcmeDemoBundle::app_layout.html.twig' %}
+
+{% block title %}{{ 'title_dashboard'|trans({}, 'SonataAdminBundle') }}{% endblock%}
+{% block breadcrumb %}{% endblock %}
+{% block content %}
+
+    {{ sonata_block_render_event('sonata.admin.dashboard.top', { 'admin_pool': admin_pool }) }}
+    <form action="" method="post">
+    </form>
+    <div class="row" style="margin:5px">
+		<div class="col-md-12 hidden">
+        {% if app.security.token and (is_granted('ROLE_ANALYST') or is_granted('ROLE_ADMIN') )%}
+            <div>
+            {# dump(data['sfosList']) #}
+            <br/><br/>
+            {# dump(data['weeksList']) #}
+            </div>
+    	{% endif %}
+	   </div>
+        <div class="input-group">
+            <select class="select" style="width:300px; margin-left:2px" id="select_week" name="week">
+                <option value="">Choisissez un WEEK</option>
+                {% for week_date, week_num in data['weeksList'] %}
+                <option value="{{ week_date }}">{{ week_num }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br/>
+        <div class="input-group">
+            <span class="input-group-addon">Filtrer</span>
+            <input id="filter" type="text" class="form-control" placeholder="Nom sfo...">
+        </div>
+        <script>
+            var weekDate = null;
+            var weekNum = null;
+
+            $(document).ready(function () {
+                $('select').select2();
+
+                (function ($) {
+                    $('#filter').keyup(function () {
+
+                        var rex = new RegExp($(this).val(), 'i');
+                        $('.searchable tr').hide();
+                        $('.searchable tr').filter(function () {
+                            return rex.test($(this).text());
+                        }).show();
+                    })
+                }(jQuery));
+                
+
+                $('#check_all').on('ifChecked ifUnchecked', function(event) {   
+                    if(weekDate == null) {
+                        if (event.type == 'ifChecked') {
+                            $('#check_all').iCheck('uncheck');
+                            alert('Veuillez commencer par choisir un week')
+                            return;
+                        }
+                        
+                    }
+                    if (event.type == 'ifChecked') {
+                        $('.checkbox-generate').iCheck('check');
+                    } else {
+                        $('.checkbox-generate').iCheck('uncheck');
+                    }
+                });
+
+                $('#select_week').on("change", function (e) { 
+                    //alert("change : " + $(this).val() ); 
+                    weekDate = $(this).val();
+                    weekNum =  $('#select_week').select2('data').text
+                    $('#hiddenInput_weekDate').val(weekDate);
+                    $('#hiddenInput_weekNum').val(weekNum);
+                    $.ajax({
+                      url: "{{ path('_webservice_getGenerateRoutePlanData' ) }}",
+                      data: {'weekDate': weekDate},
+                      method: 'post',
+                      dataType: "json",
+                      success: function(resultData) {
+                        var sfo_ids = resultData;
+                        
+                        $.each($('input.checkbox-generate'), function() {
+                            $(this).iCheck('uncheck');
+                            //alert($(this).val());
+                            for (var index = 0; index < sfo_ids.length; ++index) {
+                                if(sfo_ids[index] == $(this).val() ){
+                                    $(this).iCheck('check');
+                                }
+                            }
+                        });  
+
+                        updateSummary();     
+                      },
+                      error: function(resultData) {
+                       alert("error");
+                      },
+                    });
+
+                    updateSummary();
+                });
+                $('.checkbox-generate').on('ifChanged', function(event){
+                    if(weekDate == null){
+                        alert("Vous devez d'abord choisir un WEEK !");
+                        return;
+                    }
+                    //alert(event.type + ' callback');
+                    updateSummary();
+                });
+
+            });
+
+            function updateSummary(){
+                var msg = "";
+                var sfosCount = 0;
+                $.each($("input[name='sfo[]']:checked"), function() {
+                  sfosCount++;
+                });
+                msg = sfosCount + " Routes plans générés"
+                $('#summary').html(msg)
+            }
+        </script>
+        <form id="form">
+            <input type="hidden" name="WeekDate" id="hiddenInput_weekDate" />
+            <input type="hidden" name="WeekNum" id="hiddenInput_weekNum" />
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>SFO</th>
+                        <th>Générer <input type="checkbox" name="check_all" id="check_all"/></th>
+                    </tr>
+                </thead>
+                <tbody class="searchable">
+                    {% for sfo in data['sfosList'] %}
+                    <tr>
+                        <td style="width:90%">{{ sfo.prenom}} {{ sfo.nom}}</td>
+                        <td style="width:10%">
+                            <input type="checkbox" name="sfo[]" value="{{ sfo.id}}" class="checkbox-generate"/>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div id="summary" style="font-size:11px; color:#777">
+            </div>
+            <div id="saveMsg" style="font-size:11px;font-weight:bold">
+            </div>
+
+        </form>
+        <div>
+            <center><button type="button" id="btnSave" class="btn btn-info" style="width:200px">Enregistrer</button></center>
+            <script>
+                $(document).ready(function () {
+                    $('#btnSave').click(function () {
+                        // construct sfos ids stringified arrray
+                        var sfosArrayStr = "";
+                        $.each($("input[name='sfo[]']:checked"), function() {
+                          sfosArrayStr += (sfosArrayStr=="")?$(this).val():","+$(this).val();
+                        });
+                        if(sfosArrayStr == "" || weekDate == null){
+                            alert('Vous devez selectionner un WEEK et un ou plusieurs SFO');
+                        }
+                        // send request
+                        $.ajax({
+                          url: "{{ path('_webservice_saveGenerateRoutePlanData' ) }}",
+                          data: {'weekDate': weekDate, 'weekNum': weekNum, 'sfosArrayStr' : sfosArrayStr},
+                          method: 'post',
+                          success: function(resultData) {
+                           $('#saveMsg').html('Modifications enregistrées !');
+                           //alert("Save Complete");
+                          },
+                          error: function(resultData) {
+                            alert("error");
+                            console.log(resultData);
+                          },
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+
+    {{ sonata_block_render_event('sonata.admin.dashboard.bottom', { 'admin_pool': admin_pool }) }}
+
+{% endblock %}
