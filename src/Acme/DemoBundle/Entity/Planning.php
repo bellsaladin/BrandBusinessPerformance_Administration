@@ -29,6 +29,13 @@ class Planning
      */
     private $dateDebutSemaine;
 
+    /**
+     * @var \Integer
+     *
+     * @ORM\Column(name="year", type="integer", nullable=false)
+     */
+    private $year;
+
      /**
      * @var \SFO
      *
@@ -96,20 +103,28 @@ class Planning
     public function setDateDebutSemaine($dateDebutSemaine)
     {
         $this->dateDebutSemaine = $dateDebutSemaine;
-
         return $this;
     }
 
 
     public function getDateDebutSemaineToWeek(){
-      $weeksList = Utils::getWeeksList();
+      $weeksList = Utils::getWeeksList(intval($this->dateDebutSemaine->format('Y')));
       foreach ($weeksList as $dateDebutWeek => $weekLabel) {
         $dateDebutSemaineStr = $this->dateDebutSemaine->format('Y-m-d');
-        if( $dateDebutSemaineStr == $dateDebutWeek)
+        if($dateDebutSemaineStr == $dateDebutWeek)
         return $weekLabel;
       }
-      return 'Unknown week';
+      return '';
     }
+
+    public function setYear($year){
+      $this->year = $year;
+    }
+
+    public function getYear(){
+      return $this->year;
+    }
+
     /**
      * Get dateDebutSemaine
      *

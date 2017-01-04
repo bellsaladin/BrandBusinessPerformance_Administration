@@ -65,8 +65,9 @@ class PlanningAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            //->add('dateCreation')
-            //->add('author')
+            /*->add('dateDebutSemaine', null, array('label' => 'Week'), 'choice', array('choices' => Utils::getWeeksList()))*/
+            ->add('year', null, array('label' => 'Année'), 'choice', array('choices' => Utils::getYearsList())
+            );
         ;
     }
 
@@ -81,6 +82,7 @@ class PlanningAdmin extends Admin
                 )
              ));
              $listMapper
+            ->add('year', null, array('label' => 'Année'))
             ->add('sfo')
             //->add('visites')
 
@@ -92,9 +94,19 @@ class PlanningAdmin extends Admin
                 'edit' => array(),
                 'delete' => array(),
             )
-        ))
-        ;
+        ));
+    }
 
+    public function prePersist($subject)
+    {
+      $em = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getManager();
+      $subject->setYear($subject->getDateDebutSemaine()->format('Y'));
+    }
+
+    public function preUpdate($subject)
+    {
+      $em = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getManager();
+      $subject->setYear($subject->getDateDebutSemaine()->format('Y'));
     }
 
     protected function configureShowFields(ShowMapper $showMapper)

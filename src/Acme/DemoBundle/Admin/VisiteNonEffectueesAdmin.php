@@ -18,7 +18,6 @@ class VisiteNonEffectueesAdmin extends Admin
     protected $baseRoutePattern = 'visite-non-effectuee';
     protected $baseRouteName = 'admin_acmeDemoBundle_visiteNonEffectuee';
 
-
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -51,8 +50,9 @@ class VisiteNonEffectueesAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('planning.dateDebutSemaine', null, array('label' => 'Week'), 'choice', array('choices' => Utils::getWeeksList()))
-            //->add('author')
+            /*->add('planning.dateDebutSemaine', null, array('label' => 'Week'), 'choice', array('choices' => Utils::getWeeksList()))*/
+            ->add('planning.year', null, array('label' => 'Année'), 'choice', array('choices' => Utils::getYearsList())
+            );
         ;
     }
 
@@ -67,10 +67,10 @@ class VisiteNonEffectueesAdmin extends Admin
                     'name' => 'show'
                 )
              ))
+            ->add('planning.year')
             ->add('pdv')
             ->add('planning.sfo')
             ->add('commentaire')
-
             ->add('_action', 'actions', array(
             'actions' => array(
                 //'commenter' => array(),

@@ -60,8 +60,8 @@
     //                                      GET PDVs
     // ****************************************************************************************************
     $thisMonday = date("Y-m-d",strtotime('monday this week'));
-    $r  = mysql_query("select distinct p.* from planning pl, visite v, pdv p WHERE p.id = v.pdv_id AND v.planning_id = pl.id AND pl.sfo_id = $animateurId AND datedebut_semaine = '" . $thisMonday ."'",$con);
-    //$r  = mysql_query("select distinct p.* from pdv p order by p.ville ASC, p.secteur ASC, p.licence ASC",$con);
+    /*$r  = mysql_query("select distinct p.* from planning pl, visite v, pdv p WHERE p.id = v.pdv_id AND v.planning_id = pl.id AND pl.sfo_id = $animateurId AND datedebut_semaine = '" . $thisMonday ."'",$con);*/
+    $r  = mysql_query("select distinct p.* from pdv p order by p.ville ASC, p.secteur ASC, p.licence ASC",$con);
     $pdvs = array();
     while($row=mysql_fetch_array($r))
     {

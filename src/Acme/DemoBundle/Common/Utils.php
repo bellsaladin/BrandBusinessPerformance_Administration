@@ -14,24 +14,43 @@ use Acme\DemoBundle\Entity\Visite;
 class Utils
 {
     private static $weeksList = null;
+    private static $MAX_WEEKS = 52;
 
-    public static function getWeeksList() {
-      if(self::$weeksList) return self::$weeksList;
-      else
+    public static function getWeeksList($year = null) {
+      if($year == null) $year = date('Y');
+      
+      //if(self::$weeksList) return self::$weeksList;
+      //else
       $weeksList = array();
-      $currentYear = date('Y');
-      $nextYear = date('Y') + 1;
+      $currentYear = $year;
+      $nextYear = $year + 1;
       $firstMondayOfCurrentYear = date("Y-m-d", strtotime("first monday". $currentYear."-1"));
-      $firstMondayOfNextYear = date("Y-m-d", strtotime("first monday ".$nextYear."-1"));
       $weekNum = 1;
       $nextWeekMonday = $firstMondayOfCurrentYear;
-      while ($nextWeekMonday < $firstMondayOfNextYear){
+      while ($weekNum <= Utils::$MAX_WEEKS){
           $weeksList[$nextWeekMonday] = 'Week '. $weekNum;
           $nextWeekMonday = date("Y-m-d", strtotime( $nextWeekMonday . " +1 week"));
           $weekNum++;
       }
-      self::$weeksList = $weeksList;
+      //self::$weeksList = $weeksList;
       return $weeksList;
+    }
+
+    public static function getYearsList(){
+      $yearsList = array();
+      for($i = intval(date('Y')) - 1; $i <= intval(date('Y')); $i ++){
+        $yearsList[$i] = $i;
+      }
+      return $yearsList;
+    }
+
+    public static function getDateDebutSemaineOfYearAndWeek($pYear, $pWeek){
+      $weeksList = Utils::getWeeksList(intval($pYear));
+      foreach($weeksList as $date => $week){
+        if($week == $pWeek){
+          return $date;
+        }
+      }
     }
 
 }

@@ -12,9 +12,14 @@
     <form method="post" action="{{ path('_generateXlsFileExecute') }}" enctype="multipart/form-data">
     <p><b>Week :</b></p>
     <div style="margin:20px 0">
+      <select name="year">
+        {% for year in yearsList %}
+          <option value="{{ year }}" {{ (year == "now"|date("Y") ? ' selected ' : '') }}>{{ year }}</option>
+        {% endfor %}
+      </select>
       <select name="week">
         {% for date, libelle in weeksList %}
-          <option value="{{ date }}" {{ (date == currentWeek ? ' selected ' : '') }}>{{ libelle }}</option>
+          <option value="{{ libelle }}" {{ (date == currentWeek ? ' selected ' : '') }}>{{ libelle }}</option>
         {% endfor %}
       </select>
       <!-- Du :<input type="text" name="date_debut" id="date_debut" class="sonata-medium-date" data-date-format="DD/MM/YYYY" value="{{ "now"|date("d/m/Y") }}">

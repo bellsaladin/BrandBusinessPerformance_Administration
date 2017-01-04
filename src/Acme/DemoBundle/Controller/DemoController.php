@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sonata\CoreBundle\Exporter;
 use Exporter\Source\DoctrineORMQuerySourceIterator;
 use Exporter\Source\ArraySourceIterator;
+use Acme\DemoBundle\Common\Utils;
 
 class DemoController extends Controller
 {
@@ -159,19 +160,6 @@ class DemoController extends Controller
       $em = $this->getDoctrine()->getManager();
       $data = array();
       // get : weeks List
-      $weeksList = array();
-      $currentYear = date('Y');
-      $nextYear = date('Y') + 1;
-      $firstMondayOfCurrentYear = date("Y-m-d", strtotime("first monday". $currentYear."-1"));
-      $firstMondayOfNextYear = date("Y-m-d", strtotime("first monday ".$nextYear."-1"));
-      $weekNum = 1;
-      $nextWeekMonday = $firstMondayOfCurrentYear;
-      while ($nextWeekMonday < $firstMondayOfNextYear){
-          $weeksList[$nextWeekMonday] = 'Week '. $weekNum;
-          $nextWeekMonday = date("Y-m-d", strtotime( $nextWeekMonday . " +1 week"));
-          $weekNum++;
-      }
-      $data['weeksList'] = $weeksList;
       // get : PDV List
       $sql = "select id, nom, prenom FROM sfo";
       $queryResult = $em->getConnection()->executeQuery($sql);
@@ -332,20 +320,9 @@ class DemoController extends Controller
 
       $admin_pool = $this->get('sonata.admin.pool');
 
-      $weeksList = array();
-      $currentYear = date('Y');
-      $nextYear = date('Y') + 1;
-      $firstMondayOfCurrentYear = date("Y-m-d", strtotime("first monday". $currentYear."-1"));
-      $firstMondayOfNextYear = date("Y-m-d", strtotime("first monday ".$nextYear."-1"));
-      $weekNum = 1;
-      $nextWeekMonday = $firstMondayOfCurrentYear;
-      while ($nextWeekMonday < $firstMondayOfNextYear){
-          $weeksList[$nextWeekMonday] = 'Week '. $weekNum;
-          $nextWeekMonday = date("Y-m-d", strtotime( $nextWeekMonday . " +1 week"));
-          $weekNum++;
-      }
+      $weeksList = Utils::getWeeksList();
 
-      return $this->render('AcmeDemoBundle::exporter_vers_excel.html.twig', array('admin_pool' => $admin_pool, 'weeksList' => $weeksList, 'currentWeek' => $currentWeek));
+      return $this->render('AcmeDemoBundle::exporter_vers_excel.html.twig', array('admin_pool' => $admin_pool, 'weeksList' => $weeksList, 'currentWeek' => $currentWeek, 'yearsList' => Utils::getYearsList()));
     }
 
     public function generateXlsFileExecuteAction(Request $request)
@@ -353,11 +330,12 @@ class DemoController extends Controller
       $em = $this->getDoctrine()->getManager();
 
       $selectedWeek = $request->request->get('week');
+      $selectedYear = $request->request->get('year');
       //$dateDebut = \DateTime::createFromFormat('d/m/Y', $request->request->get('date_debut'))->format('Y-m-d');
       //$dateFin = \DateTime::createFromFormat('d/m/Y', $request->request->get('date_fin'))->format('Y-m-d');
 
-      $dateDebut = $selectedWeek;
-      $dateFin   = date("Y-m-d", strtotime( $selectedWeek . " +1 week"));
+      $dateDebut = Utils::getDateDebutSemaineOfYearAndWeek($selectedYear, $selectedWeek);
+      $dateFin   = date("Y-m-d", strtotime( $dateDebut . " +1 week"));
 
       if($request->get('export_data1') != null){
         $sql = "SELECT q.date_creation 'Date Début', q.tempsRemplissage as 'Temps de remplissage', p.nom 'PDV', sfo.nom 'SFO', CASE WHEN q.valide = 1 THEN 'Oui' ELSE 'Non' END 'Validé', m.libelle 'Marque', cat.name 'Catégorie', seg.name 'Segment', poi.libelle 'POI', qte 'Quantité'
@@ -376,7 +354,7 @@ class DemoController extends Controller
         }
 
         if(count($exportedRowArray) == 0){
-          $exportedRowArray[0] = array('Info' =>'Aucune donnée trouvée pour l\'interval spécifié');
+          $exportedRowArray[0] = array('Info' =>'Aucune donnée trouvée pour l\'interval spécifié ( du '.$dateDebut.' au '. $dateFin.')');
         }
 
         $sourceIterator = new ArraySourceIterator($exportedRowArray);
@@ -407,7 +385,7 @@ class DemoController extends Controller
         }
 
         if(count($exportedRowArray) == 0){
-          $exportedRowArray[0] = array('Info' =>'Aucune donnée trouvée pour l\'interval spécifié');
+          $exportedRowArray[0] = array('Info' =>'Aucune donnée trouvée pour l\'interval spécifié ( du '.$dateDebut.' au '. $dateFin.')');
         }
 
         $sourceIterator = new ArraySourceIterator($exportedRowArray);
